@@ -4,6 +4,7 @@ import haukientruc.hr.dto.PositionDTO;
 import haukientruc.hr.dto.PositionRequest;
 import haukientruc.hr.entity.*;
 import haukientruc.hr.repository.*;
+import haukientruc.hr.service.LuceneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +18,34 @@ public class PositionService {
     private final PositionRepository positionRepo;
     private final FacultyRepository facultyRepo;
     private final DepartmentRepository departmentRepo;
+    private final LuceneService luceneService;
 
     public List<PositionDTO> getAll() {
-        return positionRepo.findAll().stream()
+        return getAll(null);
+    }
+
+    public List<PositionDTO> getAll(String search) {
+        List<Position> positions;
+        if (search != null && !search.trim().isEmpty()) {
+            List<Long> ids = luceneService.searchEntities("position", search, new String[] { "code", "name" });
+            positions = positionRepo.findAllById(ids);
+        } else {
+            positions = positionRepo.findAll();
+        }
+
+        return positions.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
+    // Assuming this is the create method, based on the provided snippet
     public PositionDTO create(PositionRequest req) {
-        validateRequest(req);
         Position position = new Position();
+        validateRequest(req);
         mapRequestToEntity(req, position);
-        return convertToDTO(positionRepo.save(position));
+        Position saved = positionRepo.save(position);
+        luceneService.indexPosition(saved);
+        return convertToDTO(saved);
     }
 
     public PositionDTO update(Long id, PositionRequest req) {
@@ -36,11 +53,14 @@ public class PositionService {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy chức danh"));
         validateRequest(req);
         mapRequestToEntity(req, position);
-        return convertToDTO(positionRepo.save(position));
+        Position saved = positionRepo.save(position);
+        luceneService.indexPosition(saved);
+        return convertToDTO(saved);
     }
 
     public void delete(Long id) {
         positionRepo.deleteById(id);
+        luceneService.deleteEntityIndex("position", String.valueOf(id));
     }
 
     private void validateRequest(PositionRequest req) {

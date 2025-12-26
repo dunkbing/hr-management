@@ -1,0 +1,547 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< haukientruc:hr-management >----------------------
+[INFO] Building hr-management 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.5.6:run (default-cli) > test-compile @ hr-management >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ hr-management ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ hr-management ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ hr-management ---
+[INFO] skip non existing resourceDirectory D:\datn\my-project\hr-management\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ hr-management ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:3.5.6:run (default-cli) < test-compile @ hr-management <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.5.6:run (default-cli) @ hr-management ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.6)
+
+2025-12-26T16:20:36.107+07:00  INFO 5124 --- [  restartedMain] haukientruc.hr.HrManagementApplication   : Starting HrManagementApplication using Java 17.0.16 with PID 5124 (D:\datn\my-project\hr-management\target\classes started by Administrator in D:\datn\my-project\hr-management)
+2025-12-26T16:20:36.109+07:00 DEBUG 5124 --- [  restartedMain] haukientruc.hr.HrManagementApplication   : Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-12-26T16:20:36.109+07:00  INFO 5124 --- [  restartedMain] haukientruc.hr.HrManagementApplication   : No active profile set, falling back to 1 default profile: "default"
+2025-12-26T16:20:36.155+07:00  INFO 5124 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-12-26T16:20:36.155+07:00  INFO 5124 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-12-26T16:20:36.954+07:00  INFO 5124 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-26T16:20:37.142+07:00  INFO 5124 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 159 ms. Found 10 JPA repository interfaces.
+2025-12-26T16:20:38.408+07:00  INFO 5124 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-12-26T16:20:38.428+07:00  INFO 5124 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-12-26T16:20:38.429+07:00  INFO 5124 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-12-26T16:20:38.497+07:00  INFO 5124 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-12-26T16:20:38.498+07:00  INFO 5124 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2341 ms
+2025-12-26T16:20:38.584+07:00 DEBUG 5124 --- [  restartedMain] h.hr.security.JwtAuthenticationFilter    : Filter 'jwtAuthenticationFilter' configured for use
+2025-12-26T16:20:38.644+07:00  INFO 5124 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-26T16:20:39.003+07:00  INFO 5124 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@654d7ace
+2025-12-26T16:20:39.004+07:00  INFO 5124 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-26T16:20:39.104+07:00  INFO 5124 --- [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-26T16:20:39.236+07:00  INFO 5124 --- [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-12-26T16:20:39.307+07:00  INFO 5124 --- [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-26T16:20:39.864+07:00  INFO 5124 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-26T16:20:40.007+07:00  WARN 5124 --- [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-12-26T16:20:40.031+07:00  INFO 5124 --- [  restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-12-26T16:20:41.320+07:00  INFO 5124 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: alter table if exists departments add column department_code varchar(255) not null
+2025-12-26T16:20:41.487+07:00  WARN 5124 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists departments add column department_code varchar(255) not null" via JDBC [ERROR: column "department_code" of relation "departments" contains null values]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists departments add column department_code varchar(255) not null" via JDBC [ERROR: column "department_code" of relation "departments" contains null values]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:576) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:516) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.migrateTable(AbstractSchemaMigrator.java:334) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:84) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:233) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:112) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:280) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1517) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970) ~[spring-context-6.2.11.jar:6.2.11]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.11.jar:6.2.11]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.6.jar:3.5.6]
+	at haukientruc.hr.HrManagementApplication.main(HrManagementApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.6.jar:3.5.6]
+Caused by: org.postgresql.util.PSQLException: ERROR: column "department_code" of relation "departments" contains null values
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2734) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2421) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:518) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:435) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:357) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:342) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:318) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:313) ~[postgresql-42.7.7.jar:42.7.7]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-6.3.3.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-6.3.3.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	... 42 common frames omitted
+
+Hibernate: alter table if exists departments add column department_name varchar(255) not null
+2025-12-26T16:20:41.498+07:00  WARN 5124 --- [  restartedMain] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists departments add column department_name varchar(255) not null" via JDBC [ERROR: column "department_name" of relation "departments" contains null values]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists departments add column department_name varchar(255) not null" via JDBC [ERROR: column "department_name" of relation "departments" contains null values]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:576) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:516) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.migrateTable(AbstractSchemaMigrator.java:334) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:84) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:233) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:112) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:280) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:144) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:141) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:324) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:463) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1517) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:66) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:390) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:419) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:400) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:366) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1873) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1822) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:207) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:970) ~[spring-context-6.2.11.jar:6.2.11]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.11.jar:6.2.11]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.6.jar:3.5.6]
+	at haukientruc.hr.HrManagementApplication.main(HrManagementApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.6.jar:3.5.6]
+Caused by: org.postgresql.util.PSQLException: ERROR: column "department_name" of relation "departments" contains null values
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2734) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2421) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:518) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:435) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:357) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:342) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:318) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:313) ~[postgresql-42.7.7.jar:42.7.7]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-6.3.3.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-6.3.3.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	... 42 common frames omitted
+
+Hibernate: alter table if exists departments drop constraint if exists UK89g8qie2y696a3tarmty43sq9
+2025-12-26T16:20:41.525+07:00  WARN 5124 --- [  restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2025-12-26T16:20:41.525+07:00  WARN 5124 --- [  restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk89g8qie2y696a3tarmty43sq9" of relation "departments" does not exist, skipping
+Hibernate: alter table if exists departments add constraint UK89g8qie2y696a3tarmty43sq9 unique (department_code)
+2025-12-26T16:20:42.464+07:00  INFO 5124 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-26T16:20:42.941+07:00  INFO 5124 --- [  restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-12-26T16:20:43.561+07:00  INFO 5124 --- [  restartedMain] haukientruc.hr.service.LuceneService     : Lucene index directory initialized at: lucene-index/master
+Hibernate: select u1_0.user_id,u1_0.avatar,u1_0.cccd,u1_0.contract_end,u1_0.contract_start,u1_0.created_at,u1_0.department_id,u1_0.dob,u1_0.education_level,u1_0.email,u1_0.ethnicity,u1_0.faculty_id,u1_0.full_name,u1_0.gender,u1_0.is_active,u1_0.join_date,u1_0.nationality,u1_0.password_hash,u1_0.phone,u1_0.position_id,u1_0.role_id,u1_0.status,u1_0.username,u1_0.working_status from users u1_0
+Hibernate: select r1_0.role_id,r1_0.role_code,r1_0.role_name from roles r1_0 where r1_0.role_id=?
+Hibernate: select r1_0.role_id,r1_0.role_code,r1_0.role_name from roles r1_0 where r1_0.role_id=?
+Hibernate: select r1_0.role_id,r1_0.role_code,r1_0.role_name from roles r1_0 where r1_0.role_id=?
+Hibernate: select d1_0.department_id,d1_0.department_code,d1_0.department_name,d1_0.description,m1_0.user_id,m1_0.avatar,m1_0.cccd,m1_0.contract_end,m1_0.contract_start,m1_0.created_at,d2_0.department_id,d2_0.department_code,d2_0.department_name,d2_0.description,d2_0.manager_id,d2_0.display_order,p1_0.department_id,p1_0.department_code,p1_0.department_name,p1_0.description,p1_0.manager_id,p1_0.display_order,p1_0.parent_id,p1_0.status,d2_0.status,m1_0.dob,m1_0.education_level,m1_0.email,m1_0.ethnicity,f1_0.id,f1_0.code,f1_0.description,m4_0.user_id,m4_0.avatar,m4_0.cccd,m4_0.contract_end,m4_0.contract_start,m4_0.created_at,d3_0.department_id,d3_0.department_code,d3_0.department_name,d3_0.description,d3_0.manager_id,d3_0.display_order,p3_0.department_id,p3_0.department_code,p3_0.department_name,p3_0.description,p3_0.manager_id,p3_0.display_order,p3_0.parent_id,p3_0.status,d3_0.status,m4_0.dob,m4_0.education_level,m4_0.email,m4_0.ethnicity,m4_0.faculty_id,m4_0.full_name,m4_0.gender,m4_0.is_active,m4_0.join_date,m4_0.nationality,m4_0.password_hash,m4_0.phone,p5_0.id,p5_0.code,p5_0.created_at,d4_0.department_id,d4_0.department_code,d4_0.department_name,d4_0.description,d4_0.manager_id,d4_0.display_order,p6_0.department_id,p6_0.department_code,p6_0.department_name,p6_0.description,p6_0.manager_id,p6_0.display_order,p6_0.parent_id,p6_0.status,d4_0.status,p5_0.description,f3_0.id,f3_0.code,f3_0.description,f3_0.manager_id,f3_0.name,f3_0.status,f3_0.total_staff,p5_0.name,p5_0.updated_at,r1_0.role_id,r1_0.role_code,r1_0.role_name,m4_0.status,m4_0.username,m4_0.working_status,f1_0.name,f1_0.status,f1_0.total_staff,m1_0.full_name,m1_0.gender,m1_0.is_active,m1_0.join_date,m1_0.nationality,m1_0.password_hash,m1_0.phone,p8_0.id,p8_0.code,p8_0.created_at,d5_0.department_id,d5_0.department_code,d5_0.department_name,d5_0.description,d5_0.manager_id,d5_0.display_order,p9_0.department_id,p9_0.department_code,p9_0.department_name,p9_0.description,p9_0.manager_id,p9_0.display_order,p9_0.parent_id,p9_0.status,d5_0.status,p8_0.description,f4_0.id,f4_0.code,f4_0.description,m12_0.user_id,m12_0.avatar,m12_0.cccd,m12_0.contract_end,m12_0.contract_start,m12_0.created_at,d6_0.department_id,d6_0.department_code,d6_0.department_name,d6_0.description,d6_0.manager_id,d6_0.display_order,p11_0.department_id,p11_0.department_code,p11_0.department_name,p11_0.description,p11_0.manager_id,p11_0.display_order,p11_0.parent_id,p11_0.status,d6_0.status,m12_0.dob,m12_0.education_level,m12_0.email,m12_0.ethnicity,f5_0.id,f5_0.code,f5_0.description,f5_0.manager_id,f5_0.name,f5_0.status,f5_0.total_staff,m12_0.full_name,m12_0.gender,m12_0.is_active,m12_0.join_date,m12_0.nationality,m12_0.password_hash,m12_0.phone,m12_0.position_id,r2_0.role_id,r2_0.role_code,r2_0.role_name,m12_0.status,m12_0.username,m12_0.working_status,f4_0.name,f4_0.status,f4_0.total_staff,p8_0.name,p8_0.updated_at,r3_0.role_id,r3_0.role_code,r3_0.role_name,m1_0.status,m1_0.username,m1_0.working_status,d1_0.display_order,p14_0.department_id,p14_0.department_code,p14_0.department_name,p14_0.description,m16_0.user_id,m16_0.avatar,m16_0.cccd,m16_0.contract_end,m16_0.contract_start,m16_0.created_at,d7_0.department_id,d7_0.department_code,d7_0.department_name,d7_0.description,d7_0.manager_id,d7_0.display_order,d7_0.parent_id,d7_0.status,m16_0.dob,m16_0.education_level,m16_0.email,m16_0.ethnicity,f6_0.id,f6_0.code,f6_0.description,m18_0.user_id,m18_0.avatar,m18_0.cccd,m18_0.contract_end,m18_0.contract_start,m18_0.created_at,d8_0.department_id,d8_0.department_code,d8_0.department_name,d8_0.description,d8_0.manager_id,d8_0.display_order,d8_0.parent_id,d8_0.status,m18_0.dob,m18_0.education_level,m18_0.email,m18_0.ethnicity,m18_0.faculty_id,m18_0.full_name,m18_0.gender,m18_0.is_active,m18_0.join_date,m18_0.nationality,m18_0.password_hash,m18_0.phone,p17_0.id,p17_0.code,p17_0.created_at,d9_0.department_id,d9_0.department_code,d9_0.department_name,d9_0.description,d9_0.manager_id,d9_0.display_order,d9_0.parent_id,d9_0.status,p17_0.description,f8_0.id,f8_0.code,f8_0.description,f8_0.manager_id,f8_0.name,f8_0.status,f8_0.total_staff,p17_0.name,p17_0.updated_at,r4_0.role_id,r4_0.role_code,r4_0.role_name,m18_0.status,m18_0.username,m18_0.working_status,f6_0.name,f6_0.status,f6_0.total_staff,m16_0.full_name,m16_0.gender,m16_0.is_active,m16_0.join_date,m16_0.nationality,m16_0.password_hash,m16_0.phone,p19_0.id,p19_0.code,p19_0.created_at,d10_0.department_id,d10_0.department_code,d10_0.department_name,d10_0.description,d10_0.manager_id,d10_0.display_order,d10_0.parent_id,d10_0.status,p19_0.description,f9_0.id,f9_0.code,f9_0.description,m23_0.user_id,m23_0.avatar,m23_0.cccd,m23_0.contract_end,m23_0.contract_start,m23_0.created_at,d11_0.department_id,d11_0.department_code,d11_0.department_name,d11_0.description,d11_0.manager_id,d11_0.display_order,d11_0.parent_id,d11_0.status,m23_0.dob,m23_0.education_level,m23_0.email,m23_0.ethnicity,f10_0.id,f10_0.code,f10_0.description,f10_0.manager_id,f10_0.name,f10_0.status,f10_0.total_staff,m23_0.full_name,m23_0.gender,m23_0.is_active,m23_0.join_date,m23_0.nationality,m23_0.password_hash,m23_0.phone,m23_0.position_id,r5_0.role_id,r5_0.role_code,r5_0.role_name,m23_0.status,m23_0.username,m23_0.working_status,f9_0.name,f9_0.status,f9_0.total_staff,p19_0.name,p19_0.updated_at,r6_0.role_id,r6_0.role_code,r6_0.role_name,m16_0.status,m16_0.username,m16_0.working_status,p14_0.display_order,p14_0.parent_id,p14_0.status,d1_0.status from departments d1_0 left join users m1_0 on m1_0.user_id=d1_0.manager_id left join departments d2_0 on d2_0.department_id=m1_0.department_id left join departments p1_0 on p1_0.department_id=d2_0.parent_id left join faculties f1_0 on f1_0.id=m1_0.faculty_id left join users m4_0 on m4_0.user_id=f1_0.manager_id left join departments d3_0 on d3_0.department_id=m4_0.department_id left join departments p3_0 on p3_0.department_id=d3_0.parent_id left join positions p5_0 on p5_0.id=m4_0.position_id left join departments d4_0 on d4_0.department_id=p5_0.department_id left join departments p6_0 on p6_0.department_id=d4_0.parent_id left join faculties f3_0 on f3_0.id=p5_0.faculty_id left join roles r1_0 on r1_0.role_id=m4_0.role_id left join positions p8_0 on p8_0.id=m1_0.position_id left join departments d5_0 on d5_0.department_id=p8_0.department_id left join departments p9_0 on p9_0.department_id=d5_0.parent_id left join faculties f4_0 on f4_0.id=p8_0.faculty_id left join users m12_0 on m12_0.user_id=f4_0.manager_id left join departments d6_0 on d6_0.department_id=m12_0.department_id left join departments p11_0 on p11_0.department_id=d6_0.parent_id left join faculties f5_0 on f5_0.id=m12_0.faculty_id left join roles r2_0 on r2_0.role_id=m12_0.role_id left join roles r3_0 on r3_0.role_id=m1_0.role_id left join departments p14_0 on p14_0.department_id=d1_0.parent_id left join users m16_0 on m16_0.user_id=p14_0.manager_id left join departments d7_0 on d7_0.department_id=m16_0.department_id left join faculties f6_0 on f6_0.id=m16_0.faculty_id left join users m18_0 on m18_0.user_id=f6_0.manager_id left join departments d8_0 on d8_0.department_id=m18_0.department_id left join positions p17_0 on p17_0.id=m18_0.position_id left join departments d9_0 on d9_0.department_id=p17_0.department_id left join faculties f8_0 on f8_0.id=p17_0.faculty_id left join roles r4_0 on r4_0.role_id=m18_0.role_id left join positions p19_0 on p19_0.id=m16_0.position_id left join departments d10_0 on d10_0.department_id=p19_0.department_id left join faculties f9_0 on f9_0.id=p19_0.faculty_id left join users m23_0 on m23_0.user_id=f9_0.manager_id left join departments d11_0 on d11_0.department_id=m23_0.department_id left join faculties f10_0 on f10_0.id=m23_0.faculty_id left join roles r5_0 on r5_0.role_id=m23_0.role_id left join roles r6_0 on r6_0.role_id=m16_0.role_id where d1_0.department_id=?
+2025-12-26T16:20:43.698+07:00  WARN 5124 --- [  restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 42703
+2025-12-26T16:20:43.698+07:00 ERROR 5124 --- [  restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: column d1_0.department_code does not exist
+  Hint: Perhaps you meant to reference the column "d1_0.department_id".
+  Position: 27
+2025-12-26T16:20:43.700+07:00  INFO 5124 --- [  restartedMain] o.h.e.internal.DefaultLoadEventListener  : HHH000327: Error performing load command
+
+org.hibernate.exception.SQLGrammarException: JDBC exception executing SQL [select d1_0.department_id,d1_0.department_code,d1_0.department_name,d1_0.description,m1_0.user_id,m1_0.avatar,m1_0.cccd,m1_0.contract_end,m1_0.contract_start,m1_0.created_at,d2_0.department_id,d2_0.department_code,d2_0.department_name,d2_0.description,d2_0.manager_id,d2_0.display_order,p1_0.department_id,p1_0.department_code,p1_0.department_name,p1_0.description,p1_0.manager_id,p1_0.display_order,p1_0.parent_id,p1_0.status,d2_0.status,m1_0.dob,m1_0.education_level,m1_0.email,m1_0.ethnicity,f1_0.id,f1_0.code,f1_0.description,m4_0.user_id,m4_0.avatar,m4_0.cccd,m4_0.contract_end,m4_0.contract_start,m4_0.created_at,d3_0.department_id,d3_0.department_code,d3_0.department_name,d3_0.description,d3_0.manager_id,d3_0.display_order,p3_0.department_id,p3_0.department_code,p3_0.department_name,p3_0.description,p3_0.manager_id,p3_0.display_order,p3_0.parent_id,p3_0.status,d3_0.status,m4_0.dob,m4_0.education_level,m4_0.email,m4_0.ethnicity,m4_0.faculty_id,m4_0.full_name,m4_0.gender,m4_0.is_active,m4_0.join_date,m4_0.nationality,m4_0.password_hash,m4_0.phone,p5_0.id,p5_0.code,p5_0.created_at,d4_0.department_id,d4_0.department_code,d4_0.department_name,d4_0.description,d4_0.manager_id,d4_0.display_order,p6_0.department_id,p6_0.department_code,p6_0.department_name,p6_0.description,p6_0.manager_id,p6_0.display_order,p6_0.parent_id,p6_0.status,d4_0.status,p5_0.description,f3_0.id,f3_0.code,f3_0.description,f3_0.manager_id,f3_0.name,f3_0.status,f3_0.total_staff,p5_0.name,p5_0.updated_at,r1_0.role_id,r1_0.role_code,r1_0.role_name,m4_0.status,m4_0.username,m4_0.working_status,f1_0.name,f1_0.status,f1_0.total_staff,m1_0.full_name,m1_0.gender,m1_0.is_active,m1_0.join_date,m1_0.nationality,m1_0.password_hash,m1_0.phone,p8_0.id,p8_0.code,p8_0.created_at,d5_0.department_id,d5_0.department_code,d5_0.department_name,d5_0.description,d5_0.manager_id,d5_0.display_order,p9_0.department_id,p9_0.department_code,p9_0.department_name,p9_0.description,p9_0.manager_id,p9_0.display_order,p9_0.parent_id,p9_0.status,d5_0.status,p8_0.description,f4_0.id,f4_0.code,f4_0.description,m12_0.user_id,m12_0.avatar,m12_0.cccd,m12_0.contract_end,m12_0.contract_start,m12_0.created_at,d6_0.department_id,d6_0.department_code,d6_0.department_name,d6_0.description,d6_0.manager_id,d6_0.display_order,p11_0.department_id,p11_0.department_code,p11_0.department_name,p11_0.description,p11_0.manager_id,p11_0.display_order,p11_0.parent_id,p11_0.status,d6_0.status,m12_0.dob,m12_0.education_level,m12_0.email,m12_0.ethnicity,f5_0.id,f5_0.code,f5_0.description,f5_0.manager_id,f5_0.name,f5_0.status,f5_0.total_staff,m12_0.full_name,m12_0.gender,m12_0.is_active,m12_0.join_date,m12_0.nationality,m12_0.password_hash,m12_0.phone,m12_0.position_id,r2_0.role_id,r2_0.role_code,r2_0.role_name,m12_0.status,m12_0.username,m12_0.working_status,f4_0.name,f4_0.status,f4_0.total_staff,p8_0.name,p8_0.updated_at,r3_0.role_id,r3_0.role_code,r3_0.role_name,m1_0.status,m1_0.username,m1_0.working_status,d1_0.display_order,p14_0.department_id,p14_0.department_code,p14_0.department_name,p14_0.description,m16_0.user_id,m16_0.avatar,m16_0.cccd,m16_0.contract_end,m16_0.contract_start,m16_0.created_at,d7_0.department_id,d7_0.department_code,d7_0.department_name,d7_0.description,d7_0.manager_id,d7_0.display_order,d7_0.parent_id,d7_0.status,m16_0.dob,m16_0.education_level,m16_0.email,m16_0.ethnicity,f6_0.id,f6_0.code,f6_0.description,m18_0.user_id,m18_0.avatar,m18_0.cccd,m18_0.contract_end,m18_0.contract_start,m18_0.created_at,d8_0.department_id,d8_0.department_code,d8_0.department_name,d8_0.description,d8_0.manager_id,d8_0.display_order,d8_0.parent_id,d8_0.status,m18_0.dob,m18_0.education_level,m18_0.email,m18_0.ethnicity,m18_0.faculty_id,m18_0.full_name,m18_0.gender,m18_0.is_active,m18_0.join_date,m18_0.nationality,m18_0.password_hash,m18_0.phone,p17_0.id,p17_0.code,p17_0.created_at,d9_0.department_id,d9_0.department_code,d9_0.department_name,d9_0.description,d9_0.manager_id,d9_0.display_order,d9_0.parent_id,d9_0.status,p17_0.description,f8_0.id,f8_0.code,f8_0.description,f8_0.manager_id,f8_0.name,f8_0.status,f8_0.total_staff,p17_0.name,p17_0.updated_at,r4_0.role_id,r4_0.role_code,r4_0.role_name,m18_0.status,m18_0.username,m18_0.working_status,f6_0.name,f6_0.status,f6_0.total_staff,m16_0.full_name,m16_0.gender,m16_0.is_active,m16_0.join_date,m16_0.nationality,m16_0.password_hash,m16_0.phone,p19_0.id,p19_0.code,p19_0.created_at,d10_0.department_id,d10_0.department_code,d10_0.department_name,d10_0.description,d10_0.manager_id,d10_0.display_order,d10_0.parent_id,d10_0.status,p19_0.description,f9_0.id,f9_0.code,f9_0.description,m23_0.user_id,m23_0.avatar,m23_0.cccd,m23_0.contract_end,m23_0.contract_start,m23_0.created_at,d11_0.department_id,d11_0.department_code,d11_0.department_name,d11_0.description,d11_0.manager_id,d11_0.display_order,d11_0.parent_id,d11_0.status,m23_0.dob,m23_0.education_level,m23_0.email,m23_0.ethnicity,f10_0.id,f10_0.code,f10_0.description,f10_0.manager_id,f10_0.name,f10_0.status,f10_0.total_staff,m23_0.full_name,m23_0.gender,m23_0.is_active,m23_0.join_date,m23_0.nationality,m23_0.password_hash,m23_0.phone,m23_0.position_id,r5_0.role_id,r5_0.role_code,r5_0.role_name,m23_0.status,m23_0.username,m23_0.working_status,f9_0.name,f9_0.status,f9_0.total_staff,p19_0.name,p19_0.updated_at,r6_0.role_id,r6_0.role_code,r6_0.role_name,m16_0.status,m16_0.username,m16_0.working_status,p14_0.display_order,p14_0.parent_id,p14_0.status,d1_0.status from departments d1_0 left join users m1_0 on m1_0.user_id=d1_0.manager_id left join departments d2_0 on d2_0.department_id=m1_0.department_id left join departments p1_0 on p1_0.department_id=d2_0.parent_id left join faculties f1_0 on f1_0.id=m1_0.faculty_id left join users m4_0 on m4_0.user_id=f1_0.manager_id left join departments d3_0 on d3_0.department_id=m4_0.department_id left join departments p3_0 on p3_0.department_id=d3_0.parent_id left join positions p5_0 on p5_0.id=m4_0.position_id left join departments d4_0 on d4_0.department_id=p5_0.department_id left join departments p6_0 on p6_0.department_id=d4_0.parent_id left join faculties f3_0 on f3_0.id=p5_0.faculty_id left join roles r1_0 on r1_0.role_id=m4_0.role_id left join positions p8_0 on p8_0.id=m1_0.position_id left join departments d5_0 on d5_0.department_id=p8_0.department_id left join departments p9_0 on p9_0.department_id=d5_0.parent_id left join faculties f4_0 on f4_0.id=p8_0.faculty_id left join users m12_0 on m12_0.user_id=f4_0.manager_id left join departments d6_0 on d6_0.department_id=m12_0.department_id left join departments p11_0 on p11_0.department_id=d6_0.parent_id left join faculties f5_0 on f5_0.id=m12_0.faculty_id left join roles r2_0 on r2_0.role_id=m12_0.role_id left join roles r3_0 on r3_0.role_id=m1_0.role_id left join departments p14_0 on p14_0.department_id=d1_0.parent_id left join users m16_0 on m16_0.user_id=p14_0.manager_id left join departments d7_0 on d7_0.department_id=m16_0.department_id left join faculties f6_0 on f6_0.id=m16_0.faculty_id left join users m18_0 on m18_0.user_id=f6_0.manager_id left join departments d8_0 on d8_0.department_id=m18_0.department_id left join positions p17_0 on p17_0.id=m18_0.position_id left join departments d9_0 on d9_0.department_id=p17_0.department_id left join faculties f8_0 on f8_0.id=p17_0.faculty_id left join roles r4_0 on r4_0.role_id=m18_0.role_id left join positions p19_0 on p19_0.id=m16_0.position_id left join departments d10_0 on d10_0.department_id=p19_0.department_id left join faculties f9_0 on f9_0.id=p19_0.faculty_id left join users m23_0 on m23_0.user_id=f9_0.manager_id left join departments d11_0 on d11_0.department_id=m23_0.department_id left join faculties f10_0 on f10_0.id=m23_0.faculty_id left join roles r5_0 on r5_0.role_id=m23_0.role_id left join roles r6_0 on r6_0.role_id=m16_0.role_id where d1_0.department_id=?] [ERROR: column d1_0.department_code does not exist
+  Hint: Perhaps you meant to reference the column "d1_0.department_id".
+  Position: 27] [n/a]
+	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:91) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:94) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.executeQuery(DeferredResultSetAccess.java:269) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.getResultSet(DeferredResultSetAccess.java:172) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.<init>(JdbcValuesResultSetImpl.java:74) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.resolveJdbcValuesSource(JdbcSelectExecutorStandardImpl.java:355) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:137) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.loader.ast.internal.SingleIdLoadPlan.load(SingleIdLoadPlan.java:145) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.loader.ast.internal.SingleIdLoadPlan.load(SingleIdLoadPlan.java:117) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.loader.ast.internal.SingleIdEntityLoaderStandardImpl.load(SingleIdEntityLoaderStandardImpl.java:74) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.persister.entity.AbstractEntityPersister.doLoad(AbstractEntityPersister.java:3908) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.persister.entity.AbstractEntityPersister.load(AbstractEntityPersister.java:3897) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.loadFromDatasource(DefaultLoadEventListener.java:604) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.loadFromCacheOrDatasource(DefaultLoadEventListener.java:590) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.load(DefaultLoadEventListener.java:560) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.doLoad(DefaultLoadEventListener.java:544) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.load(DefaultLoadEventListener.java:206) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.loadWithRegularProxy(DefaultLoadEventListener.java:289) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.proxyOrLoad(DefaultLoadEventListener.java:241) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.doOnLoad(DefaultLoadEventListener.java:110) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.onLoad(DefaultLoadEventListener.java:69) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:138) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.internal.SessionImpl.fireLoadNoChecks(SessionImpl.java:1229) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.internal.SessionImpl.internalLoad(SessionImpl.java:1075) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.graph.entity.internal.EntitySelectFetchInitializer.initialize(EntitySelectFetchInitializer.java:236) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.graph.entity.internal.EntitySelectFetchInitializer.resolveInstance(EntitySelectFetchInitializer.java:153) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.graph.entity.internal.EntitySelectFetchInitializer.resolveInstance(EntitySelectFetchInitializer.java:44) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.internal.StandardRowReader.coordinateInitializers(StandardRowReader.java:239) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.internal.StandardRowReader.readRow(StandardRowReader.java:141) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.spi.ListResultsConsumer.read(ListResultsConsumer.java:249) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:201) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:35) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:224) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:380) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.query.Query.getResultList(Query.java:120) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.springframework.data.jpa.repository.support.SimpleJpaRepository.findAll(SimpleJpaRepository.java:405) ~[spring-data-jpa-3.5.4.jar:3.5.4]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker$RepositoryFragmentMethodInvoker.lambda$new$0(RepositoryMethodInvoker.java:277) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:515) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:284) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:734) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:174) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165) ~[spring-data-jpa-3.5.4.jar:3.5.4]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223) ~[spring-aop-6.2.11.jar:6.2.11]
+	at jdk.proxy4/jdk.proxy4.$Proxy137.findAll(Unknown Source) ~[na:na]
+	at haukientruc.hr.service.UserService.reindex(UserService.java:506) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMethod.invoke(InitDestroyAnnotationBeanPostProcessor.java:457) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:401) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:219) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:429) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1818) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1698) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1643) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1698) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1643) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1221) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1187) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.11.jar:6.2.11]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.11.jar:6.2.11]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.6.jar:3.5.6]
+	at haukientruc.hr.HrManagementApplication.main(HrManagementApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.6.jar:3.5.6]
+Caused by: org.postgresql.util.PSQLException: ERROR: column d1_0.department_code does not exist
+  Hint: Perhaps you meant to reference the column "d1_0.department_id".
+  Position: 27
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2734) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2421) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:518) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:435) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:196) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgPreparedStatement.executeQuery(PgPreparedStatement.java:139) ~[postgresql-42.7.7.jar:42.7.7]
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52) ~[HikariCP-6.3.3.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeQuery(HikariProxyPreparedStatement.java) ~[HikariCP-6.3.3.jar:na]
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.executeQuery(DeferredResultSetAccess.java:251) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	... 128 common frames omitted
+
+2025-12-26T16:20:43.712+07:00  WARN 5124 --- [  restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dashboardController' defined in file [D:\datn\my-project\hr-management\target\classes\haukientruc\hr\controller\DashboardController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'dashboardService' defined in file [D:\datn\my-project\hr-management\target\classes\haukientruc\hr\service\DashboardService.class]: Unsatisfied dependency expressed through constructor parameter 4: Error creating bean with name 'userService': Invocation of init method failed
+2025-12-26T16:20:43.713+07:00  INFO 5124 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-12-26T16:20:43.718+07:00  INFO 5124 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-12-26T16:20:43.721+07:00  INFO 5124 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-12-26T16:20:43.727+07:00  INFO 5124 --- [  restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2025-12-26T16:20:43.749+07:00  INFO 5124 --- [  restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-12-26T16:20:43.770+07:00 ERROR 5124 --- [  restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dashboardController' defined in file [D:\datn\my-project\hr-management\target\classes\haukientruc\hr\controller\DashboardController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'dashboardService' defined in file [D:\datn\my-project\hr-management\target\classes\haukientruc\hr\service\DashboardService.class]: Unsatisfied dependency expressed through constructor parameter 4: Error creating bean with name 'userService': Invocation of init method failed
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1221) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1187) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.11.jar:6.2.11]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.11.jar:6.2.11]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.6.jar:3.5.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.6.jar:3.5.6]
+	at haukientruc.hr.HrManagementApplication.main(HrManagementApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.6.jar:3.5.6]
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'dashboardService' defined in file [D:\datn\my-project\hr-management\target\classes\haukientruc\hr\service\DashboardService.class]: Unsatisfied dependency expressed through constructor parameter 4: Error creating bean with name 'userService': Invocation of init method failed
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1698) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1643) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.11.jar:6.2.11]
+	... 26 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userService': Invocation of init method failed
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:222) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:429) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1818) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:607) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1698) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1643) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.11.jar:6.2.11]
+	... 39 common frames omitted
+Caused by: org.springframework.dao.InvalidDataAccessResourceUsageException: JDBC exception executing SQL [select d1_0.department_id,d1_0.department_code,d1_0.department_name,d1_0.description,m1_0.user_id,m1_0.avatar,m1_0.cccd,m1_0.contract_end,m1_0.contract_start,m1_0.created_at,d2_0.department_id,d2_0.department_code,d2_0.department_name,d2_0.description,d2_0.manager_id,d2_0.display_order,p1_0.department_id,p1_0.department_code,p1_0.department_name,p1_0.description,p1_0.manager_id,p1_0.display_order,p1_0.parent_id,p1_0.status,d2_0.status,m1_0.dob,m1_0.education_level,m1_0.email,m1_0.ethnicity,f1_0.id,f1_0.code,f1_0.description,m4_0.user_id,m4_0.avatar,m4_0.cccd,m4_0.contract_end,m4_0.contract_start,m4_0.created_at,d3_0.department_id,d3_0.department_code,d3_0.department_name,d3_0.description,d3_0.manager_id,d3_0.display_order,p3_0.department_id,p3_0.department_code,p3_0.department_name,p3_0.description,p3_0.manager_id,p3_0.display_order,p3_0.parent_id,p3_0.status,d3_0.status,m4_0.dob,m4_0.education_level,m4_0.email,m4_0.ethnicity,m4_0.faculty_id,m4_0.full_name,m4_0.gender,m4_0.is_active,m4_0.join_date,m4_0.nationality,m4_0.password_hash,m4_0.phone,p5_0.id,p5_0.code,p5_0.created_at,d4_0.department_id,d4_0.department_code,d4_0.department_name,d4_0.description,d4_0.manager_id,d4_0.display_order,p6_0.department_id,p6_0.department_code,p6_0.department_name,p6_0.description,p6_0.manager_id,p6_0.display_order,p6_0.parent_id,p6_0.status,d4_0.status,p5_0.description,f3_0.id,f3_0.code,f3_0.description,f3_0.manager_id,f3_0.name,f3_0.status,f3_0.total_staff,p5_0.name,p5_0.updated_at,r1_0.role_id,r1_0.role_code,r1_0.role_name,m4_0.status,m4_0.username,m4_0.working_status,f1_0.name,f1_0.status,f1_0.total_staff,m1_0.full_name,m1_0.gender,m1_0.is_active,m1_0.join_date,m1_0.nationality,m1_0.password_hash,m1_0.phone,p8_0.id,p8_0.code,p8_0.created_at,d5_0.department_id,d5_0.department_code,d5_0.department_name,d5_0.description,d5_0.manager_id,d5_0.display_order,p9_0.department_id,p9_0.department_code,p9_0.department_name,p9_0.description,p9_0.manager_id,p9_0.display_order,p9_0.parent_id,p9_0.status,d5_0.status,p8_0.description,f4_0.id,f4_0.code,f4_0.description,m12_0.user_id,m12_0.avatar,m12_0.cccd,m12_0.contract_end,m12_0.contract_start,m12_0.created_at,d6_0.department_id,d6_0.department_code,d6_0.department_name,d6_0.description,d6_0.manager_id,d6_0.display_order,p11_0.department_id,p11_0.department_code,p11_0.department_name,p11_0.description,p11_0.manager_id,p11_0.display_order,p11_0.parent_id,p11_0.status,d6_0.status,m12_0.dob,m12_0.education_level,m12_0.email,m12_0.ethnicity,f5_0.id,f5_0.code,f5_0.description,f5_0.manager_id,f5_0.name,f5_0.status,f5_0.total_staff,m12_0.full_name,m12_0.gender,m12_0.is_active,m12_0.join_date,m12_0.nationality,m12_0.password_hash,m12_0.phone,m12_0.position_id,r2_0.role_id,r2_0.role_code,r2_0.role_name,m12_0.status,m12_0.username,m12_0.working_status,f4_0.name,f4_0.status,f4_0.total_staff,p8_0.name,p8_0.updated_at,r3_0.role_id,r3_0.role_code,r3_0.role_name,m1_0.status,m1_0.username,m1_0.working_status,d1_0.display_order,p14_0.department_id,p14_0.department_code,p14_0.department_name,p14_0.description,m16_0.user_id,m16_0.avatar,m16_0.cccd,m16_0.contract_end,m16_0.contract_start,m16_0.created_at,d7_0.department_id,d7_0.department_code,d7_0.department_name,d7_0.description,d7_0.manager_id,d7_0.display_order,d7_0.parent_id,d7_0.status,m16_0.dob,m16_0.education_level,m16_0.email,m16_0.ethnicity,f6_0.id,f6_0.code,f6_0.description,m18_0.user_id,m18_0.avatar,m18_0.cccd,m18_0.contract_end,m18_0.contract_start,m18_0.created_at,d8_0.department_id,d8_0.department_code,d8_0.department_name,d8_0.description,d8_0.manager_id,d8_0.display_order,d8_0.parent_id,d8_0.status,m18_0.dob,m18_0.education_level,m18_0.email,m18_0.ethnicity,m18_0.faculty_id,m18_0.full_name,m18_0.gender,m18_0.is_active,m18_0.join_date,m18_0.nationality,m18_0.password_hash,m18_0.phone,p17_0.id,p17_0.code,p17_0.created_at,d9_0.department_id,d9_0.department_code,d9_0.department_name,d9_0.description,d9_0.manager_id,d9_0.display_order,d9_0.parent_id,d9_0.status,p17_0.description,f8_0.id,f8_0.code,f8_0.description,f8_0.manager_id,f8_0.name,f8_0.status,f8_0.total_staff,p17_0.name,p17_0.updated_at,r4_0.role_id,r4_0.role_code,r4_0.role_name,m18_0.status,m18_0.username,m18_0.working_status,f6_0.name,f6_0.status,f6_0.total_staff,m16_0.full_name,m16_0.gender,m16_0.is_active,m16_0.join_date,m16_0.nationality,m16_0.password_hash,m16_0.phone,p19_0.id,p19_0.code,p19_0.created_at,d10_0.department_id,d10_0.department_code,d10_0.department_name,d10_0.description,d10_0.manager_id,d10_0.display_order,d10_0.parent_id,d10_0.status,p19_0.description,f9_0.id,f9_0.code,f9_0.description,m23_0.user_id,m23_0.avatar,m23_0.cccd,m23_0.contract_end,m23_0.contract_start,m23_0.created_at,d11_0.department_id,d11_0.department_code,d11_0.department_name,d11_0.description,d11_0.manager_id,d11_0.display_order,d11_0.parent_id,d11_0.status,m23_0.dob,m23_0.education_level,m23_0.email,m23_0.ethnicity,f10_0.id,f10_0.code,f10_0.description,f10_0.manager_id,f10_0.name,f10_0.status,f10_0.total_staff,m23_0.full_name,m23_0.gender,m23_0.is_active,m23_0.join_date,m23_0.nationality,m23_0.password_hash,m23_0.phone,m23_0.position_id,r5_0.role_id,r5_0.role_code,r5_0.role_name,m23_0.status,m23_0.username,m23_0.working_status,f9_0.name,f9_0.status,f9_0.total_staff,p19_0.name,p19_0.updated_at,r6_0.role_id,r6_0.role_code,r6_0.role_name,m16_0.status,m16_0.username,m16_0.working_status,p14_0.display_order,p14_0.parent_id,p14_0.status,d1_0.status from departments d1_0 left join users m1_0 on m1_0.user_id=d1_0.manager_id left join departments d2_0 on d2_0.department_id=m1_0.department_id left join departments p1_0 on p1_0.department_id=d2_0.parent_id left join faculties f1_0 on f1_0.id=m1_0.faculty_id left join users m4_0 on m4_0.user_id=f1_0.manager_id left join departments d3_0 on d3_0.department_id=m4_0.department_id left join departments p3_0 on p3_0.department_id=d3_0.parent_id left join positions p5_0 on p5_0.id=m4_0.position_id left join departments d4_0 on d4_0.department_id=p5_0.department_id left join departments p6_0 on p6_0.department_id=d4_0.parent_id left join faculties f3_0 on f3_0.id=p5_0.faculty_id left join roles r1_0 on r1_0.role_id=m4_0.role_id left join positions p8_0 on p8_0.id=m1_0.position_id left join departments d5_0 on d5_0.department_id=p8_0.department_id left join departments p9_0 on p9_0.department_id=d5_0.parent_id left join faculties f4_0 on f4_0.id=p8_0.faculty_id left join users m12_0 on m12_0.user_id=f4_0.manager_id left join departments d6_0 on d6_0.department_id=m12_0.department_id left join departments p11_0 on p11_0.department_id=d6_0.parent_id left join faculties f5_0 on f5_0.id=m12_0.faculty_id left join roles r2_0 on r2_0.role_id=m12_0.role_id left join roles r3_0 on r3_0.role_id=m1_0.role_id left join departments p14_0 on p14_0.department_id=d1_0.parent_id left join users m16_0 on m16_0.user_id=p14_0.manager_id left join departments d7_0 on d7_0.department_id=m16_0.department_id left join faculties f6_0 on f6_0.id=m16_0.faculty_id left join users m18_0 on m18_0.user_id=f6_0.manager_id left join departments d8_0 on d8_0.department_id=m18_0.department_id left join positions p17_0 on p17_0.id=m18_0.position_id left join departments d9_0 on d9_0.department_id=p17_0.department_id left join faculties f8_0 on f8_0.id=p17_0.faculty_id left join roles r4_0 on r4_0.role_id=m18_0.role_id left join positions p19_0 on p19_0.id=m16_0.position_id left join departments d10_0 on d10_0.department_id=p19_0.department_id left join faculties f9_0 on f9_0.id=p19_0.faculty_id left join users m23_0 on m23_0.user_id=f9_0.manager_id left join departments d11_0 on d11_0.department_id=m23_0.department_id left join faculties f10_0 on f10_0.id=m23_0.faculty_id left join roles r5_0 on r5_0.role_id=m23_0.role_id left join roles r6_0 on r6_0.role_id=m16_0.role_id where d1_0.department_id=?] [ERROR: column d1_0.department_code does not exist
+  Hint: Perhaps you meant to reference the column "d1_0.department_id".
+  Position: 27] [n/a]; SQL [n/a]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:281) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.convertHibernateAccessException(HibernateJpaDialect.java:256) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:241) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560) ~[spring-orm-6.2.11.jar:6.2.11]
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:165) ~[spring-data-jpa-3.5.4.jar:3.5.4]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223) ~[spring-aop-6.2.11.jar:6.2.11]
+	at jdk.proxy4/jdk.proxy4.$Proxy137.findAll(Unknown Source) ~[na:na]
+	at haukientruc.hr.service.UserService.reindex(UserService.java:506) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMethod.invoke(InitDestroyAnnotationBeanPostProcessor.java:457) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:401) ~[spring-beans-6.2.11.jar:6.2.11]
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:219) ~[spring-beans-6.2.11.jar:6.2.11]
+	... 51 common frames omitted
+Caused by: org.hibernate.exception.SQLGrammarException: JDBC exception executing SQL [select d1_0.department_id,d1_0.department_code,d1_0.department_name,d1_0.description,m1_0.user_id,m1_0.avatar,m1_0.cccd,m1_0.contract_end,m1_0.contract_start,m1_0.created_at,d2_0.department_id,d2_0.department_code,d2_0.department_name,d2_0.description,d2_0.manager_id,d2_0.display_order,p1_0.department_id,p1_0.department_code,p1_0.department_name,p1_0.description,p1_0.manager_id,p1_0.display_order,p1_0.parent_id,p1_0.status,d2_0.status,m1_0.dob,m1_0.education_level,m1_0.email,m1_0.ethnicity,f1_0.id,f1_0.code,f1_0.description,m4_0.user_id,m4_0.avatar,m4_0.cccd,m4_0.contract_end,m4_0.contract_start,m4_0.created_at,d3_0.department_id,d3_0.department_code,d3_0.department_name,d3_0.description,d3_0.manager_id,d3_0.display_order,p3_0.department_id,p3_0.department_code,p3_0.department_name,p3_0.description,p3_0.manager_id,p3_0.display_order,p3_0.parent_id,p3_0.status,d3_0.status,m4_0.dob,m4_0.education_level,m4_0.email,m4_0.ethnicity,m4_0.faculty_id,m4_0.full_name,m4_0.gender,m4_0.is_active,m4_0.join_date,m4_0.nationality,m4_0.password_hash,m4_0.phone,p5_0.id,p5_0.code,p5_0.created_at,d4_0.department_id,d4_0.department_code,d4_0.department_name,d4_0.description,d4_0.manager_id,d4_0.display_order,p6_0.department_id,p6_0.department_code,p6_0.department_name,p6_0.description,p6_0.manager_id,p6_0.display_order,p6_0.parent_id,p6_0.status,d4_0.status,p5_0.description,f3_0.id,f3_0.code,f3_0.description,f3_0.manager_id,f3_0.name,f3_0.status,f3_0.total_staff,p5_0.name,p5_0.updated_at,r1_0.role_id,r1_0.role_code,r1_0.role_name,m4_0.status,m4_0.username,m4_0.working_status,f1_0.name,f1_0.status,f1_0.total_staff,m1_0.full_name,m1_0.gender,m1_0.is_active,m1_0.join_date,m1_0.nationality,m1_0.password_hash,m1_0.phone,p8_0.id,p8_0.code,p8_0.created_at,d5_0.department_id,d5_0.department_code,d5_0.department_name,d5_0.description,d5_0.manager_id,d5_0.display_order,p9_0.department_id,p9_0.department_code,p9_0.department_name,p9_0.description,p9_0.manager_id,p9_0.display_order,p9_0.parent_id,p9_0.status,d5_0.status,p8_0.description,f4_0.id,f4_0.code,f4_0.description,m12_0.user_id,m12_0.avatar,m12_0.cccd,m12_0.contract_end,m12_0.contract_start,m12_0.created_at,d6_0.department_id,d6_0.department_code,d6_0.department_name,d6_0.description,d6_0.manager_id,d6_0.display_order,p11_0.department_id,p11_0.department_code,p11_0.department_name,p11_0.description,p11_0.manager_id,p11_0.display_order,p11_0.parent_id,p11_0.status,d6_0.status,m12_0.dob,m12_0.education_level,m12_0.email,m12_0.ethnicity,f5_0.id,f5_0.code,f5_0.description,f5_0.manager_id,f5_0.name,f5_0.status,f5_0.total_staff,m12_0.full_name,m12_0.gender,m12_0.is_active,m12_0.join_date,m12_0.nationality,m12_0.password_hash,m12_0.phone,m12_0.position_id,r2_0.role_id,r2_0.role_code,r2_0.role_name,m12_0.status,m12_0.username,m12_0.working_status,f4_0.name,f4_0.status,f4_0.total_staff,p8_0.name,p8_0.updated_at,r3_0.role_id,r3_0.role_code,r3_0.role_name,m1_0.status,m1_0.username,m1_0.working_status,d1_0.display_order,p14_0.department_id,p14_0.department_code,p14_0.department_name,p14_0.description,m16_0.user_id,m16_0.avatar,m16_0.cccd,m16_0.contract_end,m16_0.contract_start,m16_0.created_at,d7_0.department_id,d7_0.department_code,d7_0.department_name,d7_0.description,d7_0.manager_id,d7_0.display_order,d7_0.parent_id,d7_0.status,m16_0.dob,m16_0.education_level,m16_0.email,m16_0.ethnicity,f6_0.id,f6_0.code,f6_0.description,m18_0.user_id,m18_0.avatar,m18_0.cccd,m18_0.contract_end,m18_0.contract_start,m18_0.created_at,d8_0.department_id,d8_0.department_code,d8_0.department_name,d8_0.description,d8_0.manager_id,d8_0.display_order,d8_0.parent_id,d8_0.status,m18_0.dob,m18_0.education_level,m18_0.email,m18_0.ethnicity,m18_0.faculty_id,m18_0.full_name,m18_0.gender,m18_0.is_active,m18_0.join_date,m18_0.nationality,m18_0.password_hash,m18_0.phone,p17_0.id,p17_0.code,p17_0.created_at,d9_0.department_id,d9_0.department_code,d9_0.department_name,d9_0.description,d9_0.manager_id,d9_0.display_order,d9_0.parent_id,d9_0.status,p17_0.description,f8_0.id,f8_0.code,f8_0.description,f8_0.manager_id,f8_0.name,f8_0.status,f8_0.total_staff,p17_0.name,p17_0.updated_at,r4_0.role_id,r4_0.role_code,r4_0.role_name,m18_0.status,m18_0.username,m18_0.working_status,f6_0.name,f6_0.status,f6_0.total_staff,m16_0.full_name,m16_0.gender,m16_0.is_active,m16_0.join_date,m16_0.nationality,m16_0.password_hash,m16_0.phone,p19_0.id,p19_0.code,p19_0.created_at,d10_0.department_id,d10_0.department_code,d10_0.department_name,d10_0.description,d10_0.manager_id,d10_0.display_order,d10_0.parent_id,d10_0.status,p19_0.description,f9_0.id,f9_0.code,f9_0.description,m23_0.user_id,m23_0.avatar,m23_0.cccd,m23_0.contract_end,m23_0.contract_start,m23_0.created_at,d11_0.department_id,d11_0.department_code,d11_0.department_name,d11_0.description,d11_0.manager_id,d11_0.display_order,d11_0.parent_id,d11_0.status,m23_0.dob,m23_0.education_level,m23_0.email,m23_0.ethnicity,f10_0.id,f10_0.code,f10_0.description,f10_0.manager_id,f10_0.name,f10_0.status,f10_0.total_staff,m23_0.full_name,m23_0.gender,m23_0.is_active,m23_0.join_date,m23_0.nationality,m23_0.password_hash,m23_0.phone,m23_0.position_id,r5_0.role_id,r5_0.role_code,r5_0.role_name,m23_0.status,m23_0.username,m23_0.working_status,f9_0.name,f9_0.status,f9_0.total_staff,p19_0.name,p19_0.updated_at,r6_0.role_id,r6_0.role_code,r6_0.role_name,m16_0.status,m16_0.username,m16_0.working_status,p14_0.display_order,p14_0.parent_id,p14_0.status,d1_0.status from departments d1_0 left join users m1_0 on m1_0.user_id=d1_0.manager_id left join departments d2_0 on d2_0.department_id=m1_0.department_id left join departments p1_0 on p1_0.department_id=d2_0.parent_id left join faculties f1_0 on f1_0.id=m1_0.faculty_id left join users m4_0 on m4_0.user_id=f1_0.manager_id left join departments d3_0 on d3_0.department_id=m4_0.department_id left join departments p3_0 on p3_0.department_id=d3_0.parent_id left join positions p5_0 on p5_0.id=m4_0.position_id left join departments d4_0 on d4_0.department_id=p5_0.department_id left join departments p6_0 on p6_0.department_id=d4_0.parent_id left join faculties f3_0 on f3_0.id=p5_0.faculty_id left join roles r1_0 on r1_0.role_id=m4_0.role_id left join positions p8_0 on p8_0.id=m1_0.position_id left join departments d5_0 on d5_0.department_id=p8_0.department_id left join departments p9_0 on p9_0.department_id=d5_0.parent_id left join faculties f4_0 on f4_0.id=p8_0.faculty_id left join users m12_0 on m12_0.user_id=f4_0.manager_id left join departments d6_0 on d6_0.department_id=m12_0.department_id left join departments p11_0 on p11_0.department_id=d6_0.parent_id left join faculties f5_0 on f5_0.id=m12_0.faculty_id left join roles r2_0 on r2_0.role_id=m12_0.role_id left join roles r3_0 on r3_0.role_id=m1_0.role_id left join departments p14_0 on p14_0.department_id=d1_0.parent_id left join users m16_0 on m16_0.user_id=p14_0.manager_id left join departments d7_0 on d7_0.department_id=m16_0.department_id left join faculties f6_0 on f6_0.id=m16_0.faculty_id left join users m18_0 on m18_0.user_id=f6_0.manager_id left join departments d8_0 on d8_0.department_id=m18_0.department_id left join positions p17_0 on p17_0.id=m18_0.position_id left join departments d9_0 on d9_0.department_id=p17_0.department_id left join faculties f8_0 on f8_0.id=p17_0.faculty_id left join roles r4_0 on r4_0.role_id=m18_0.role_id left join positions p19_0 on p19_0.id=m16_0.position_id left join departments d10_0 on d10_0.department_id=p19_0.department_id left join faculties f9_0 on f9_0.id=p19_0.faculty_id left join users m23_0 on m23_0.user_id=f9_0.manager_id left join departments d11_0 on d11_0.department_id=m23_0.department_id left join faculties f10_0 on f10_0.id=m23_0.faculty_id left join roles r5_0 on r5_0.role_id=m23_0.role_id left join roles r6_0 on r6_0.role_id=m16_0.role_id where d1_0.department_id=?] [ERROR: column d1_0.department_code does not exist
+  Hint: Perhaps you meant to reference the column "d1_0.department_id".
+  Position: 27] [n/a]
+	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:91) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:58) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:108) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:94) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.executeQuery(DeferredResultSetAccess.java:269) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.getResultSet(DeferredResultSetAccess.java:172) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.<init>(JdbcValuesResultSetImpl.java:74) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.resolveJdbcValuesSource(JdbcSelectExecutorStandardImpl.java:355) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:137) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.loader.ast.internal.SingleIdLoadPlan.load(SingleIdLoadPlan.java:145) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.loader.ast.internal.SingleIdLoadPlan.load(SingleIdLoadPlan.java:117) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.loader.ast.internal.SingleIdEntityLoaderStandardImpl.load(SingleIdEntityLoaderStandardImpl.java:74) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.persister.entity.AbstractEntityPersister.doLoad(AbstractEntityPersister.java:3908) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.persister.entity.AbstractEntityPersister.load(AbstractEntityPersister.java:3897) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.loadFromDatasource(DefaultLoadEventListener.java:604) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.loadFromCacheOrDatasource(DefaultLoadEventListener.java:590) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.load(DefaultLoadEventListener.java:560) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.doLoad(DefaultLoadEventListener.java:544) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.load(DefaultLoadEventListener.java:206) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.loadWithRegularProxy(DefaultLoadEventListener.java:289) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.proxyOrLoad(DefaultLoadEventListener.java:241) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.doOnLoad(DefaultLoadEventListener.java:110) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.internal.DefaultLoadEventListener.onLoad(DefaultLoadEventListener.java:69) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:138) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.internal.SessionImpl.fireLoadNoChecks(SessionImpl.java:1229) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.internal.SessionImpl.internalLoad(SessionImpl.java:1075) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.graph.entity.internal.EntitySelectFetchInitializer.initialize(EntitySelectFetchInitializer.java:236) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.graph.entity.internal.EntitySelectFetchInitializer.resolveInstance(EntitySelectFetchInitializer.java:153) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.graph.entity.internal.EntitySelectFetchInitializer.resolveInstance(EntitySelectFetchInitializer.java:44) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.internal.StandardRowReader.coordinateInitializers(StandardRowReader.java:239) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.internal.StandardRowReader.readRow(StandardRowReader.java:141) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.spi.ListResultsConsumer.read(ListResultsConsumer.java:249) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:201) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:35) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:224) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:380) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.hibernate.query.Query.getResultList(Query.java:120) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	at org.springframework.data.jpa.repository.support.SimpleJpaRepository.findAll(SimpleJpaRepository.java:405) ~[spring-data-jpa-3.5.4.jar:3.5.4]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:360) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker$RepositoryFragmentMethodInvoker.lambda$new$0(RepositoryMethodInvoker.java:277) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments.invoke(RepositoryComposition.java:515) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.data.repository.core.support.RepositoryComposition.invoke(RepositoryComposition.java:284) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport$ImplementationMethodExecutionInterceptor.invoke(RepositoryFactorySupport.java:734) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:174) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69) ~[spring-data-commons-3.5.4.jar:3.5.4]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-6.2.11.jar:6.2.11]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184) ~[spring-aop-6.2.11.jar:6.2.11]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138) ~[spring-tx-6.2.11.jar:6.2.11]
+	... 64 common frames omitted
+Caused by: org.postgresql.util.PSQLException: ERROR: column d1_0.department_code does not exist
+  Hint: Perhaps you meant to reference the column "d1_0.department_id".
+  Position: 27
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2734) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2421) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:372) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:518) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:435) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:196) ~[postgresql-42.7.7.jar:42.7.7]
+	at org.postgresql.jdbc.PgPreparedStatement.executeQuery(PgPreparedStatement.java:139) ~[postgresql-42.7.7.jar:42.7.7]
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52) ~[HikariCP-6.3.3.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeQuery(HikariProxyPreparedStatement.java) ~[HikariCP-6.3.3.jar:na]
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.executeQuery(DeferredResultSetAccess.java:251) ~[hibernate-core-6.6.29.Final.jar:6.6.29.Final]
+	... 128 common frames omitted
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  12.306 s
+[INFO] Finished at: 2025-12-26T16:20:43+07:00
+[INFO] ------------------------------------------------------------------------

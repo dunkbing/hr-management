@@ -1,360 +1,210 @@
-import React, { useState } from "react";
-import { Plus, X, MoreVertical } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Plus, X, Eye, Loader2, Send, Clock, CheckCircle2, XCircle } from "lucide-react";
+import axiosClient from "../api/axiosClient";
 
 const FacultyProposals = () => {
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [showReason, setShowReason] = useState(false);
-  const [selectedProposal, setSelectedProposal] = useState(null);
-  const [filterStatus, setFilterStatus] = useState("all");
-
-  const [openMenuId, setOpenMenuId] = useState(null);
-
-  const [proposals, setProposals] = useState([
-    {
-      id: 1,
-      title: "Đề xuất tuyển thêm giảng viên môn CSDL",
-      content: "Môn CSDL đang thiếu 2 giảng viên do tăng số lượng lớp.",
-      date: "2025-01-12",
-      status: "approved",
-      reason: "Phê duyệt: Nhu cầu nhân lực tăng",
-      file: null,
-    },
-    {
-      id: 2,
-      title: "Đề xuất nghỉ phép 2 ngày",
-      content: "Tôi xin nghỉ phép ngày 12 và 13/02/2025.",
-      date: "2025-02-01",
-      status: "pending",
-      reason: "",
-      file: null,
-    },
-    {
-      id: 3,
-      title: "Đề xuất thay đổi chức vụ nhân sự",
-      content: "Đề xuất nâng chức vụ cho nhân sự có thành tích tốt.",
-      date: "2025-02-03",
-      status: "rejected",
-      reason: "Từ chối: Chưa đủ điều kiện đánh giá",
-      file: null,
-    },
-  ]);
+  const [submitting, setSubmitting] = useState(false);
+  const [selectedReq, setSelectedReq] = useState(null);
 
   const [formData, setFormData] = useState({
     title: "",
-    content: "",
-    file: null,
-    editId: null,
+    type: "NGHI_PHEP",
+    content: ""
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    fetchRequests();
+  }, []);
 
-    if (formData.editId) {
-      setProposals(
-        proposals.map((p) =>
-          p.id === formData.editId
-            ? {
-                ...p,
-                title: formData.title,
-                content: formData.content,
-                file: formData.file || p.file,
-              }
-            : p
-        )
-      );
-
-      setFormData({ title: "", content: "", file: null, editId: null });
-      setShowForm(false);
-      return;
+  const fetchRequests = async () => {
+    try {
+      const res = await axiosClient.get("/personnel-requests/my");
+      setRequests(res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-
-    const newProposal = {
-      id: proposals.length + 1,
-      title: formData.title,
-      content: formData.content,
-      date: new Date().toISOString().split("T")[0],
-      status: "pending",
-      reason: "",
-      file: formData.file,
-    };
-
-    setProposals([newProposal, ...proposals]);
-    setShowForm(false);
-    setFormData({ title: "", content: "", file: null, editId: null });
   };
 
-  const filteredProposals =
-    filterStatus === "all"
-      ? proposals
-      : proposals.filter((p) => p.status === filterStatus);
-
-  const statusLabel = {
-    pending: "Chờ duyệt",
-    approved: "Đã duyệt",
-    rejected: "Từ chối",
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      await axiosClient.post("/personnel-requests", formData);
+      setShowForm(false);
+      setFormData({ title: "", type: "NGHI_PHEP", content: "" });
+      fetchRequests();
+    } catch (err) {
+      console.error(err);
+      alert("Gửi đề xuất thất bại");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const statusColor = {
-    pending: "text-yellow-600 bg-yellow-100",
-    approved: "text-green-600 bg-green-100",
-    rejected: "text-red-600 bg-red-100",
+  const getStatusInfo = (status) => {
+    switch (status) {
+      case "PENDING_ADMIN": return { label: "Chờ Admin duyệt", color: "text-blue-600 bg-blue-50", icon: Clock };
+      case "PENDING_PRINCIPAL": return { label: "Chờ Hiệu trưởng duyệt", color: "text-amber-600 bg-amber-50", icon: Clock };
+      case "APPROVED": return { label: "Đã duyệt", color: "text-emerald-600 bg-emerald-50", icon: CheckCircle2 };
+      case "REJECTED": return { label: "Từ chối", color: "text-rose-600 bg-rose-50", icon: XCircle };
+      default: return { label: status, color: "text-gray-600 bg-gray-50", icon: Clock };
+    }
   };
+
+  if (loading) return <div className="p-10 text-center"><Loader2 className="animate-spin mx-auto w-10 h-10 text-blue-500" /></div>;
 
   return (
-    <div className="p-8">
-      {/* HEADER */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Đề xuất & Yêu cầu</h1>
-
+    <div className="p-8 space-y-8 animate-in fade-in duration-500">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">Đề xuất & Yêu cầu của tôi</h1>
+          <p className="text-sm text-gray-500 font-medium">Theo dõi các yêu cầu công tác hoặc cá nhân gửi lên cấp trên.</p>
+        </div>
         <button
-          onClick={() => {
-            setFormData({ title: "", content: "", file: null, editId: null });
-            setShowForm(true);
-          }}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+          onClick={() => setShowForm(true)}
+          className="flex items-center gap-2 bg-[#009FE3] hover:bg-[#0087c2] text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg shadow-blue-100"
         >
-          <Plus size={20} /> Thêm đề xuất
+          <Plus size={20} />
+          Gửi đề xuất mới
         </button>
       </div>
 
-      {/* FILTER */}
-      <div className="mb-6">
-        <h3 className="text-sm font-semibold text-gray-600 mb-2">Bộ lọc</h3>
-        <div className="flex gap-2">
-          {[
-            { key: "all", label: "Tất cả" },
-            { key: "pending", label: "Chờ duyệt" },
-            { key: "approved", label: "Đã duyệt" },
-            { key: "rejected", label: "Từ chối" },
-          ].map((f) => (
-            <button
-              key={f.key}
-              onClick={() => setFilterStatus(f.key)}
-              className={`px-4 py-2 rounded-lg border text-sm transition ${
-                filterStatus === f.key
-                  ? "bg-blue-600 text-white border-blue-600"
-                  : "bg-white text-gray-700 hover:bg-gray-100"
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* LIST */}
-      <div className="flex flex-col gap-4">
-        {filteredProposals.map((p) => (
-          <div
-            key={p.id}
-            className="bg-white p-5 shadow-md rounded-xl border hover:shadow-lg transition relative"
-          >
-            <div className="flex justify-between items-start">
-              <div>
-                <h2 className="text-lg font-bold text-gray-800">{p.title}</h2>
-                <p className="text-sm text-gray-500 mt-1">Ngày gửi: {p.date}</p>
-
-                <span
-                  className={`inline-block mt-2 px-3 py-1 rounded-full text-sm ${statusColor[p.status]}`}
-                >
-                  {statusLabel[p.status]}
-                </span>
-              </div>
-
-              <div className="relative">
-                <button
-                  onClick={() =>
-                    setOpenMenuId(openMenuId === p.id ? null : p.id)
-                  }
-                  className="p-2 hover:bg-gray-100 rounded-full"
-                >
-                  <MoreVertical size={20} />
-                </button>
-
-                {openMenuId === p.id && (
-                  <div className="absolute right-0 mt-2 bg-white shadow-lg border rounded-lg w-40 z-10">
-                    <button
-                      onClick={() => {
-                        setSelectedProposal(p);
-                        setShowReason(true);
-                        setOpenMenuId(null);
-                      }}
-                      className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                    >
-                      Xem chi tiết
-                    </button>
-
-                    {p.status === "pending" && (
-                      <>
-                        <button
-                          onClick={() => {
-                            setFormData({
-                              title: p.title,
-                              content: p.content,
-                              file: p.file,
-                              editId: p.id,
-                            });
-                            setShowForm(true);
-                            setOpenMenuId(null);
-                          }}
-                          className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                        >
-                          Chỉnh sửa
-                        </button>
-
-                        <button
-                          onClick={() => {
-                            setProposals(
-                              proposals.filter((item) => item.id !== p.id)
-                            );
-                            setOpenMenuId(null);
-                          }}
-                          className="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600"
-                        >
-                          Huỷ
-                        </button>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
+      <div className="grid grid-cols-1 gap-4">
+        {requests.length === 0 ? (
+          <div className="bg-white p-20 rounded-[2.5rem] border border-dashed border-slate-200 text-center text-gray-400 font-bold uppercase tracking-widest">
+            Chưa có đề xuất nào
           </div>
-        ))}
-
-        {filteredProposals.length === 0 && (
-          <p className="text-center text-gray-500 pt-10">
-            Không có đề xuất nào.
-          </p>
+        ) : (
+          requests.map(req => {
+            const status = getStatusInfo(req.status);
+            return (
+              <div key={req.id} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition-all flex items-center justify-between group">
+                <div className="flex items-center gap-5">
+                  <div className={`p-4 rounded-2xl ${status.color}`}>
+                    <status.icon size={24} />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className="text-[10px] font-black text-blue-500 bg-blue-50 px-2 py-0.5 rounded-md uppercase tracking-wider">{req.type}</span>
+                      <span className="text-xs text-gray-400 font-medium">{new Date(req.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-800 group-hover:text-[#009FE3] transition-colors">{req.title}</h3>
+                    <p className={`text-xs font-bold mt-1 ${status.color.split(' ')[0]}`}>{status.label}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedReq(req)}
+                  className="p-3 bg-slate-50 hover:bg-[#e0f3fc] text-slate-400 hover:text-[#009FE3] rounded-xl transition-all"
+                >
+                  <Eye size={20} />
+                </button>
+              </div>
+            );
+          })
         )}
       </div>
 
-      {/* MODAL: FORM */}
+      {/* MODAL: SUBMIT FORM */}
       {showForm && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-xl shadow-xl w-[500px] relative">
-            <button
-              onClick={() => setShowForm(false)}
-              className="absolute right-4 top-4 text-gray-500 hover:text-black"
-            >
-              <X size={20} />
-            </button>
-
-            <h2 className="text-xl font-bold mb-4">
-              {formData.editId ? "Chỉnh sửa đề xuất" : "Gửi đề xuất mới"}
-            </h2>
-
-            <form onSubmit={handleSubmit}>
-              <label className="block mb-2 font-medium">Tiêu đề</label>
-              <input
-                type="text"
-                required
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
-                className="w-full border rounded-lg p-2 mb-4"
-              />
-
-              <label className="block mb-2 font-medium">Nội dung đề xuất</label>
-              <textarea
-                rows={4}
-                required
-                value={formData.content}
-                onChange={(e) =>
-                  setFormData({ ...formData, content: e.target.value })
-                }
-                className="w-full border rounded-lg p-2 mb-4"
-              />
-
-              <label className="block mb-2 font-medium">Đính kèm file</label>
-              <input
-                type="file"
-                onChange={(e) =>
-                  setFormData({ ...formData, file: e.target.files[0] })
-                }
-                className="w-full border rounded-lg p-2 mb-4"
-              />
-
-              {formData.file && (
-                <p className="text-sm text-gray-600 mb-4">
-                  📎 File đã chọn: <strong>{formData.file.name}</strong>
-                </p>
-              )}
-
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-[2.5rem] w-full max-w-xl shadow-2xl animate-in zoom-in duration-300 overflow-hidden">
+            <div className="p-8 border-b border-slate-50 flex justify-between items-center">
+              <h2 className="text-xl font-bold text-gray-800">Soạn đề xuất mới</h2>
+              <button onClick={() => setShowForm(false)} className="text-gray-400 hover:text-gray-600"><X size={24} /></button>
+            </div>
+            <form onSubmit={handleSubmit} className="p-8 space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Loại đề xuất</label>
+                  <select
+                    className="w-full bg-slate-50 border-none rounded-2xl p-4 font-bold text-gray-700 focus:ring-2 focus:ring-blue-400 transition-all shadow-inner"
+                    value={formData.type}
+                    onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                  >
+                    <option value="NGHI_PHEP">Nghỉ phép</option>
+                    <option value="THANG_CHUC">Thăng chức</option>
+                    <option value="DIEU_CHUYEN">Điều chuyển</option>
+                    <option value="KHAC">Khác</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Tiêu đề</label>
+                  <input
+                    type="text"
+                    className="w-full bg-slate-50 border-none rounded-2xl p-4 font-bold text-gray-700 focus:ring-2 focus:ring-blue-400 transition-all shadow-inner"
+                    placeholder="VD: Đề xuất nhân sự..."
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Nội dung chi tiết</label>
+                <textarea
+                  className="w-full bg-slate-50 border-none rounded-2xl p-4 font-medium text-gray-700 focus:ring-2 focus:ring-blue-400 transition-all shadow-inner min-h-[150px]"
+                  placeholder="Nhập nội dung đề xuất của bạn..."
+                  value={formData.content}
+                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                  required
+                />
+              </div>
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                disabled={submitting}
+                className="w-full bg-[#009FE3] hover:bg-[#0087c2] text-white py-4 rounded-2xl font-bold shadow-xl shadow-blue-100 transition-all flex items-center justify-center gap-2"
               >
-                {formData.editId ? "Cập nhật" : "Gửi đề xuất"}
+                {submitting ? <Loader2 className="animate-spin w-5 h-5" /> : <Send size={20} />}
+                Xác nhận gửi đề xuất
               </button>
             </form>
           </div>
         </div>
       )}
 
-      {/* MODAL: XEM CHI TIẾT */}
-      {showReason && selectedProposal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-xl shadow-xl w-[550px] relative max-h-[90vh] overflow-y-auto">
-            <button
-              onClick={() => setShowReason(false)}
-              className="absolute right-4 top-4 text-gray-500 hover:text-black"
-            >
-              <X size={20} />
-            </button>
-
-            <h2 className="text-xl font-bold mb-4">Chi tiết đề xuất</h2>
-
-            {/* Tiêu đề */}
-            <div className="mb-4">
-              <p className="text-gray-600 font-medium mb-1">Tiêu đề:</p>
-              <p className="text-gray-800 font-semibold text-lg">
-                {selectedProposal.title}
-              </p>
-            </div>
-
-            {/* Nội dung trong 1 khung */}
-            <div className="mb-4">
-              <p className="text-gray-600 font-medium mb-1">Nội dung đề xuất:</p>
-              <div className="border rounded-lg bg-gray-50 p-4 text-gray-800 leading-relaxed max-h-[250px] overflow-y-auto">
-                {selectedProposal.content}
+      {/* MODAL: DETAIL */}
+      {selectedReq && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-[2.5rem] w-full max-w-xl shadow-2xl animate-in zoom-in duration-300 overflow-hidden">
+            <div className="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+              <div>
+                <span className="text-[10px] font-black text-blue-500 bg-blue-100/50 px-3 py-1 rounded-full uppercase tracking-widest">{selectedReq.type}</span>
+                <h2 className="text-xl font-bold text-gray-800 mt-2">{selectedReq.title}</h2>
               </div>
+              <button onClick={() => setSelectedReq(null)} className="text-gray-400 hover:text-gray-600"><X size={24} /></button>
             </div>
-
-            {/* Trạng thái */}
-            <div className="mb-4">
-              <p className="text-gray-600 font-medium mb-1">Trạng thái:</p>
-              <p className="font-semibold">
-                {statusLabel[selectedProposal.status]}
-              </p>
-            </div>
-
-            {/* Lý do */}
-            <div className="mb-4">
-              <p className="text-gray-600 font-medium mb-1">Lý do duyệt / từ chối:</p>
-              <div className="border rounded-lg bg-gray-50 p-3 text-gray-700">
-                {selectedProposal.reason || "Không có"}
+            <div className="p-8 space-y-6">
+              <div>
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Nội dung đề xuất</p>
+                <div className="bg-slate-50 p-6 rounded-2xl text-gray-700 italic border border-slate-100">
+                  "{selectedReq.content}"
+                </div>
               </div>
-            </div>
 
-            {/* File đính kèm */}
-            {selectedProposal.file && (
-              <div className="mb-4">
-                <p className="text-gray-600 font-medium mb-1">File đính kèm:</p>
-                <a className="text-blue-600 underline cursor-pointer" href="#">
-                  {selectedProposal.file.name}
-                </a>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-blue-50/50 rounded-2xl border border-blue-100/50">
+                  <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Phản hồi Admin</p>
+                  <p className="text-sm font-bold text-gray-600 mt-1">{selectedReq.adminNote || "Chưa có phản hồi"}</p>
+                </div>
+                <div className="p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100/50">
+                  <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Hiệu trưởng quyết định</p>
+                  <p className="text-sm font-bold text-gray-600 mt-1">{selectedReq.principalNote || "Chưa có phản hồi"}</p>
+                </div>
               </div>
-            )}
 
-            <div className="mt-6 text-right">
-              <button
-                onClick={() => setShowReason(false)}
-                className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
-              >
-                Đóng
-              </button>
+              <div className="pt-4 border-t border-slate-50 flex justify-center">
+                <button
+                  onClick={() => setSelectedReq(null)}
+                  className="bg-slate-100 hover:bg-slate-200 text-gray-500 px-8 py-3 rounded-xl font-bold transition-all"
+                >
+                  Đóng
+                </button>
+              </div>
             </div>
           </div>
         </div>

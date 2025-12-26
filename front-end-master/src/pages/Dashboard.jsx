@@ -1,225 +1,250 @@
-import React, { useState } from "react";
-import { Card, CardContent } from "../components/Card";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Users,
-  Building2,
-  Briefcase,
-  BarChart3,
-  Bell,
-  Settings,
+  School,
+  Network,
+  UserCog,
+  Clock,
+  ArrowUpRight,
+  MoreVertical,
   Calendar,
+  LayoutDashboard,
 } from "lucide-react";
 import {
   BarChart,
   Bar,
   XAxis,
+  YAxis,
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
+  Cell,
 } from "recharts";
 
 const Dashboard = () => {
-  const username = localStorage.getItem("username") || "Quản trị viên";
-  const [selectedYear, setSelectedYear] = useState("2025");
-
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalFaculties: 0,
+    totalDepartments: 0,
+    totalPositions: 0,
+    monthlyGrowth: [],
+    recentUsers: [],
+  });
+  const [loading, setLoading] = useState(true);
   const mainColor = "#009FE3";
+  const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username") || "Quản trị viên";
 
-  const dataByYear = {
-    "2023": [
-      { month: "T1", employees: 55 },
-      { month: "T2", employees: 70 },
-      { month: "T3", employees: 65 },
-      { month: "T4", employees: 75 },
-      { month: "T5", employees: 85 },
-      { month: "T6", employees: 90 },
-      { month: "T7", employees: 80 },
-      { month: "T8", employees: 95 },
-      { month: "T9", employees: 88 },
-      { month: "T10", employees: 68 },
-      { month: "T11", employees: 60 },
-      { month: "T12", employees: 50 },
-    ],
-    "2024": [
-      { month: "T1", employees: 60 },
-      { month: "T2", employees: 75 },
-      { month: "T3", employees: 65 },
-      { month: "T4", employees: 80 },
-      { month: "T5", employees: 90 },
-      { month: "T6", employees: 110 },
-      { month: "T7", employees: 85 },
-      { month: "T8", employees: 100 },
-      { month: "T9", employees: 95 },
-      { month: "T10", employees: 70 },
-      { month: "T11", employees: 60 },
-      { month: "T12", employees: 55 },
-    ],
-    "2025": [
-      { month: "T1", employees: 65 },
-      { month: "T2", employees: 80 },
-      { month: "T3", employees: 75 },
-      { month: "T4", employees: 85 },
-      { month: "T5", employees: 100 },
-      { month: "T6", employees: 120 },
-      { month: "T7", employees: 95 },
-      { month: "T8", employees: 110 },
-      { month: "T9", employees: 105 },
-      { month: "T10", employees: 85 },
-      { month: "T11", employees: 75 },
-      { month: "T12", employees: 65 },
-    ],
-  };
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await axios.get("http://localhost:8080/api/dashboard/stats", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setStats(res.data);
+      } catch (err) {
+        console.error("Failed to fetch dashboard stats", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, [token]);
 
-  const chartData = dataByYear[selectedYear];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#009FE3]"></div>
+      </div>
+    );
+  }
 
-  const notifications = [
-    { title: "Nhắc nhở cuộc họp", desc: "Cuộc họp với phòng IT lúc 14:00 hôm nay.", color: "bg-blue-500" },
-    { title: "Thông báo nghỉ lễ", desc: "Văn phòng sẽ nghỉ vào thứ Sáu, ngày 7 tháng 4.", color: "bg-green-500" },
-    { title: "Nhân viên mới", desc: "Nguyễn Văn An đã gia nhập công ty.", color: "bg-yellow-500" },
-    { title: "Cập nhật chính sách", desc: "Vui lòng xem lại tài liệu chính sách nhân sự mới nhất.", color: "bg-purple-500" },
+  const statCards = [
+    {
+      title: "Tổng nhân sự",
+      value: stats.totalUsers,
+      icon: Users,
+      trend: "+12%",
+      color: "from-blue-500 to-blue-600",
+      lightColor: "bg-blue-50",
+    },
+    {
+      title: "Số lượng Khoa",
+      value: stats.totalFaculties,
+      icon: School,
+      trend: "Ổn định",
+      color: "from-emerald-500 to-emerald-600",
+      lightColor: "bg-emerald-50",
+    },
+    {
+      title: "Phòng ban",
+      value: stats.totalDepartments,
+      icon: Network,
+      trend: "+2 mới",
+      color: "from-orange-500 to-orange-600",
+      lightColor: "bg-orange-50",
+    },
+    {
+      title: "Chức vụ",
+      value: stats.totalPositions,
+      icon: UserCog,
+      trend: "Cập nhật",
+      color: "from-purple-500 to-purple-600",
+      lightColor: "bg-purple-50",
+    },
   ];
 
   return (
-    <div className="space-y-8 p-6 bg-gray-50 min-h-screen">
-      {/* Tiêu đề */}
-      <h1 className="text-2xl font-bold text-gray-800">
-        👋 Xin chào, <span style={{ color: mainColor }}>{username}</span>! Đây là trang quản trị.
-      </h1>
+    <div className="p-6 lg:p-10 bg-[#F8FAFC] min-h-screen space-y-8 animate-in fade-in duration-500">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold text-gray-800 flex items-center gap-3">
+            <LayoutDashboard className="w-8 h-8 text-[#009FE3]" />
+            Tổng quan Hệ thống
+          </h1>
+          <p className="text-gray-500 mt-1 font-medium">
+            👋 Chào mừng quay trở lại, <span className="text-[#009FE3] font-bold">{username}</span>.
+          </p>
+        </div>
+        <div className="flex items-center gap-3 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
+          <Calendar className="w-5 h-5 text-slate-400" />
+          <span className="text-sm font-semibold text-slate-600">
+            {new Date().toLocaleDateString("vi-VN", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            })}
+          </span>
+        </div>
+      </div>
 
-      {/* Thống kê nhanh */}
+      {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="shadow-md hover:shadow-lg transition">
-          <CardContent className="flex items-center space-x-4 p-6">
-            <div className="bg-[#D0E9F9] p-3 rounded-full">
-              <Users size={28} style={{ color: mainColor }} />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Tổng số người dùng</p>
-              <p className="text-2xl font-semibold text-gray-800">125</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-md hover:shadow-lg transition">
-          <CardContent className="flex items-center space-x-4 p-6">
-            <div className="bg-green-100 p-3 rounded-full">
-              <Building2 className="text-green-600" size={28} />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Tổng số khoa</p>
-              <p className="text-2xl font-semibold text-gray-800">8</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-md hover:shadow-lg transition">
-          <CardContent className="flex items-center space-x-4 p-6">
-            <div className="bg-yellow-100 p-3 rounded-full">
-              <Briefcase className="text-yellow-600" size={28} />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Tổng số phòng ban</p>
-              <p className="text-2xl font-semibold text-gray-800">15</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-md hover:shadow-lg transition">
-          <CardContent className="flex items-center space-x-4 p-6">
-            <div className="bg-red-100 p-3 rounded-full">
-              <BarChart3 className="text-red-600" size={28} />
-            </div>
-            <div>
-              <p className="text-sm text-gray-500">Chức danh</p>
-              <p className="text-2xl font-semibold text-gray-800">12</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Biểu đồ thống kê */}
-      <Card className="shadow-md">
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-gray-700">
-              Thống kê số lượng nhân viên theo tháng
-            </h2>
-            <div className="flex items-center gap-2">
-              <Calendar className="text-gray-500 w-4 h-4" />
-              <select
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(e.target.value)}
-                className="border border-gray-300 rounded-lg text-sm px-3 py-1 focus:outline-none"
-                style={{ borderColor: mainColor, boxShadow: `0 0 0 2px ${mainColor}33` }}
-              >
-                <option value="2023">Năm 2023</option>
-                <option value="2024">Năm 2024</option>
-                <option value="2025">Năm 2025</option>
-              </select>
-            </div>
-          </div>
-
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="month" />
-              <Tooltip />
-              <Bar dataKey="employees" fill={mainColor} radius={[6, 6, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
-
-      {/* Hoạt động và cấu hình */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="shadow-md">
-          <CardContent className="p-6">
-            <h2 className="text-lg font-semibold mb-4 flex items-center">
-              <Bell className="mr-2" style={{ color: mainColor }} /> Hoạt động gần đây
-            </h2>
-            <ul className="space-y-3 text-gray-700">
-              <li>📅 Nhân viên Nguyễn Văn A vừa được thêm vào phòng Kế Toán.</li>
-              <li>🧾 Báo cáo tháng 10 đã được tạo.</li>
-              <li>👥 Phòng IT đã bổ sung 2 nhân sự mới.</li>
-              <li>🏆 Khen thưởng nhân viên xuất sắc quý III.</li>
-            </ul>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-md">
-          <CardContent className="p-6">
-            <h2 className="text-lg font-semibold mb-4 flex items-center">
-              <Settings className="mr-2 text-green-600" /> Cấu hình hệ thống
-            </h2>
-            <p className="text-gray-700">
-              Quản trị viên có thể thay đổi cài đặt chung, quản lý người dùng và phân quyền truy cập tại đây.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Thông báo gần đây */}
-      <Card className="shadow-md">
-        <CardContent className="p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Bell className="w-5 h-5" style={{ color: mainColor }} />
-            <h2 className="font-semibold text-gray-700 text-lg">Thông báo gần đây</h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-4">
-            {notifications.map((note, i) => (
-              <div
-                key={i}
-                className="flex items-start gap-3 p-4 rounded-xl border border-gray-100 hover:bg-gray-50 transition"
-              >
-                <span className={`mt-1 w-3 h-3 ${note.color} rounded-full`}></span>
-                <div>
-                  <p className="font-semibold text-gray-800">{note.title}</p>
-                  <p className="text-gray-500 text-sm">{note.desc}</p>
-                </div>
+        {statCards.map((card, idx) => (
+          <div
+            key={idx}
+            className="group relative bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="flex justify-between items-start">
+              <div className={`${card.lightColor} p-4 rounded-2xl`}>
+                <card.icon className={`w-7 h-7 bg-gradient-to-br ${card.color} bg-clip-text text-transparent`} />
               </div>
-            ))}
+              <span className="flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                {card.trend}
+              </span>
+            </div>
+            <div className="mt-5">
+              <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">{card.title}</p>
+              <p className="text-2xl font-bold text-gray-800 mt-1">{card.value}</p>
+            </div>
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-slate-50 to-transparent -z-0 opacity-50 rounded-bl-[100px]" />
           </div>
-        </CardContent>
-      </Card>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Growth Chart */}
+        <div className="lg:col-span-2 bg-white p-8 rounded-[32px] shadow-sm border border-slate-100">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-800">Tốc độ gia tăng nhân sự</h2>
+              <p className="text-gray-400 text-sm font-medium mt-1">Dữ liệu 6 tháng gần nhất</p>
+            </div>
+            <button className="p-2 hover:bg-slate-50 rounded-xl transition-colors">
+              <MoreVertical className="w-5 h-5 text-slate-400" />
+            </button>
+          </div>
+          <div className="h-[350px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={stats.monthlyGrowth} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
+                <XAxis
+                  dataKey="month"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: "#94A3B8", fontSize: 12, fontWeight: 600 }}
+                  dy={10}
+                />
+                <YAxis hide />
+                <Tooltip
+                  cursor={{ fill: "#F1F5F9" }}
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      return (
+                        <div className="bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl border-none">
+                          <p className="text-xs font-bold text-slate-400 mb-1 uppercase tracking-tight">{payload[0].payload.month}</p>
+                          <p className="text-lg font-black">{payload[0].value} nhân sự mới</p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                <Bar
+                  dataKey="count"
+                  radius={[12, 12, 4, 4]}
+                  barSize={40}
+                >
+                  {stats.monthlyGrowth.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={index === stats.monthlyGrowth.length - 1 ? "#009FE3" : "#CBD5E1"}
+                      className="transition-all duration-300 hover:fill-[#009FE3]"
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Recent Personnel */}
+        <div className="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-lg font-semibold text-gray-800">Nhân sự mới gia nhập</h2>
+            <button className="text-[#009FE3] text-sm font-semibold hover:underline">Xem tất cả</button>
+          </div>
+          <div className="space-y-6">
+            {stats.recentUsers?.length > 0 ? (
+              stats.recentUsers.map((user, idx) => (
+                <div key={idx} className="flex items-center gap-4 group cursor-pointer">
+                  <div className="relative">
+                    <img
+                      src={user.avatar || "https://i.pravatar.cc/100?u=" + user.userId}
+                      alt={user.fullName}
+                      className="w-12 h-12 rounded-2xl object-cover ring-2 ring-slate-50 group-hover:ring-[#009FE3] transition-all"
+                    />
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-slate-800 truncate group-hover:text-[#009FE3] transition-colors">
+                      {user.fullName}
+                    </p>
+                    <p className="text-xs font-medium text-slate-400 capitalize">{user.roleName || "Nhân viên"}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] font-bold text-slate-300 flex items-center gap-1 justify-end">
+                      <Clock className="w-3 h-3" />
+                      Mới
+                    </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-10">
+                <p className="text-slate-400 font-medium italic">Chưa có dữ liệu mới</p>
+              </div>
+            )}
+
+            <button className="w-full mt-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-slate-600 font-bold hover:bg-slate-100 transition-all flex items-center justify-center gap-2 group">
+              Thêm nhân sự mới
+              <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

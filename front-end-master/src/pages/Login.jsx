@@ -31,7 +31,7 @@ function Login() {
         // Chuyển hướng theo quyền
         const userRole = res.data.role; // normalized from backend
 
-        if (userRole === "admin") {
+        if (userRole === "admin" || userRole === "superadmin") {
           window.location.href = "/dashboard";
         } else if (userRole === "hieutruong" || userRole === "hieu_truong") {
           window.location.href = "/principal/dashboard";
@@ -95,7 +95,8 @@ function Login() {
               onChange={(e) => setRole(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#009FE3] focus:outline-none appearance-none"
             >
-              <option value="admin">Admin (Quản trị hệ thống)</option>
+              <option value="superadmin">Siêu quản trị (Super Admin)</option>
+              <option value="admin">Quản trị hệ thống (Admin)</option>
               <option value="truong_don_vi">Trưởng khoa / Trưởng đơn vị</option>
               <option value="hieu_truong">Hiệu trưởng</option>
               <option value="nhan_su">Giảng viên / Nhân sự</option>

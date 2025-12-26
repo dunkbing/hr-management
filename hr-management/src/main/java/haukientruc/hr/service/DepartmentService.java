@@ -11,6 +11,8 @@ public interface DepartmentService {
 
     List<DepartmentTreeResponse> getAllDepartments();
 
+    List<DepartmentTreeResponse> getAllDepartments(String search);
+
     DepartmentTreeResponse createDepartment(DepartmentRequest request);
 
     void updateDepartment(Long departmentId, DepartmentRequest request);

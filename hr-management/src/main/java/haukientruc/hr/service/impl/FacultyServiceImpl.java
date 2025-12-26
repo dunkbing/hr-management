@@ -10,6 +10,8 @@ import haukientruc.hr.repository.FacultyDeanRepository;
 import haukientruc.hr.repository.FacultyRepository;
 import haukientruc.hr.repository.UserRepository;
 import haukientruc.hr.service.FacultyService;
+import haukientruc.hr.service.LuceneService;
+import haukientruc.hr.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +25,21 @@ public class FacultyServiceImpl implements FacultyService {
         private final FacultyRepository facultyRepository;
         private final FacultyDeanRepository facultyDeanRepository;
         private final UserRepository userRepository;
+        private final LuceneService luceneService;
+        private final UserService userService;
 
         @Override
         public List<FacultyDTO> getAll(String search, String status) {
-                return facultyRepository.findAll().stream()
-                                .filter(f -> search == null || search.isEmpty() ||
-                                                f.getName().toLowerCase().contains(search.toLowerCase()) ||
-                                                f.getCode().toLowerCase().contains(search.toLowerCase()))
+                List<Faculty> faculties;
+                if (search != null && !search.trim().isEmpty()) {
+                        List<Long> ids = luceneService.searchEntities("faculty", search,
+                                        new String[] { "code", "name" });
+                        faculties = facultyRepository.findAllById(ids);
+                } else {
+                        faculties = facultyRepository.findAll();
+                }
+
+                return faculties.stream()
                                 .filter(f -> status == null || status.isEmpty() ||
                                                 f.getStatus().equals(status))
                                 .map(this::toDTO)
@@ -89,20 +99,13 @@ public class FacultyServiceImpl implements FacultyService {
                         throw new RuntimeException("Không tìm thấy khoa");
                 }
                 facultyRepository.deleteById(id);
+                luceneService.deleteEntityIndex("faculty", String.valueOf(id));
         }
 
         @Override
         public List<UserDTO> getStaffByFacultyId(Long id) {
                 return userRepository.findByFaculty_Id(id).stream()
-                                .map(user -> {
-                                        UserDTO dto = new UserDTO();
-                                        dto.setUserId(user.getUserId());
-                                        dto.setUsername(user.getUsername());
-                                        dto.setFullName(user.getUsername()); // Placeholder if fullName not in User
-                                        dto.setStatus(user.getStatus());
-                                        dto.setRoleCode(user.getRole() != null ? user.getRole().getRoleCode() : null);
-                                        return dto;
-                                })
+                                .map(userService::convertToDto)
                                 .collect(Collectors.toList());
         }
 

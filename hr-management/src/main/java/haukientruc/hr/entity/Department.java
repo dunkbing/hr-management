@@ -14,15 +14,19 @@ public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "department_id")
     private Long id;
 
-    @Column(name = "code", nullable = false, unique = true)
+    @Column(name = "department_code", nullable = false, unique = true)
     private String departmentCode;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "department_name", nullable = false)
     private String departmentName;
 
-    @Column(name = "order_index")
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "display_order")
     private Integer orderIndex;
 
     @ManyToOne

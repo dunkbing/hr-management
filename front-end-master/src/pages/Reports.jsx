@@ -1,8 +1,21 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  FileText,
+  Download,
+  Users,
+  UserCheck,
+  UserMinus,
+  TrendingUp,
+  PieChart as PieIcon,
+  BarChart as BarIcon,
+  Loader2,
+} from "lucide-react";
 import {
   BarChart,
   Bar,
   XAxis,
+  YAxis,
   Tooltip,
   ResponsiveContainer,
   PieChart,
@@ -11,134 +24,180 @@ import {
   Legend,
   CartesianGrid,
 } from "recharts";
-import { FileText } from "lucide-react";
 
 const Reports = () => {
-  const mainColor = "#009FE3"; // Màu chính
-  const [year, setYear] = useState(2024);
-  const [month, setMonth] = useState("Tất cả");
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
+  const mainColor = "#009FE3";
+  const token = localStorage.getItem("token");
 
-  // Dữ liệu biểu đồ cột: số lượng nhân viên theo phòng ban
-  const departmentData = [
-    { department: "Phòng IT", employees: 25 },
-    { department: "Phòng Hành chính", employees: 30 },
-    { department: "Phòng Kế toán", employees: 18 },
-    { department: "Phòng Nhân sự", employees: 22 },
-    { department: "Phòng Kỹ thuật", employees: 28 },
+  const COLORS = [mainColor, "#10B981", "#F59E0B", "#8B5CF6", "#EC4899", "#3B82F6", "#F43F5E"];
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/reports/stats", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setStats(res.data);
+    } catch (err) {
+      console.error("Failed to fetch report stats", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      const response = await axios.get("http://localhost:8080/api/reports/export", {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: "blob",
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Bao_cao_nhan_su_${new Date().toLocaleDateString()}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error("Export failed", err);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+        <Loader2 className="w-12 h-12 text-[#009FE3] animate-spin" />
+        <p className="text-gray-500 font-medium">Đang chuẩn bị dữ liệu báo cáo...</p>
+      </div>
+    );
+  }
+
+  const summaryCards = [
+    { title: "Tổng nhân sự", value: stats?.totalEmployees, icon: Users, color: "text-blue-600", bg: "bg-blue-50" },
+    { title: "Đang làm việc", value: stats?.activeEmployees, icon: UserCheck, color: "text-emerald-600", bg: "bg-emerald-50" },
+    { title: "Đã nghỉ việc", value: stats?.inactiveEmployees, icon: UserMinus, color: "text-rose-600", bg: "bg-rose-50" },
+    { title: "Tỷ lệ hoạt động", value: stats?.totalEmployees ? `${Math.round((stats.activeEmployees / stats.totalEmployees) * 100)}%` : "0%", icon: TrendingUp, color: "text-purple-600", bg: "bg-purple-50" },
   ];
-
-  // Dữ liệu biểu đồ tròn: giới tính
-  const genderData = [
-    { name: "Nam", value: 70 },
-    { name: "Nữ", value: 50 },
-  ];
-
-  const COLORS = [mainColor, "#F472B6"];
 
   return (
-    <div className="space-y-8 p-6 bg-gray-50 min-h-screen">
-      {/* Tiêu đề */}
-      <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-        <FileText className={`text-[${mainColor}] w-6 h-6`} />
-        Báo cáo & Thống kê nhân sự
-      </h1>
-
-      {/* Bộ lọc */}
-      <div className="flex flex-wrap gap-4 bg-white p-4 rounded-2xl shadow-sm">
+    <div className="p-6 lg:p-10 bg-[#F8FAFC] min-h-screen space-y-8 animate-in fade-in duration-500">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <label className="text-sm font-medium text-gray-600">Chọn năm</label>
-          <select
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-            className={`ml-2 border border-gray-300 rounded-lg px-3 py-1 text-sm focus:ring-2 focus:ring-[${mainColor}] focus:outline-none`}
-          >
-            {[2022, 2023, 2024, 2025].map((y) => (
-              <option key={y} value={y}>
-                {y}
-              </option>
-            ))}
-          </select>
+          <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
+            <FileText className="w-8 h-8 text-[#009FE3]" />
+            Báo cáo & Thống kê chuyên sâu
+          </h1>
+          <p className="text-gray-500 mt-1 font-medium">Phân tích dữ liệu nhân sự thời gian thực</p>
         </div>
-
-        <div>
-          <label className="text-sm font-medium text-gray-600">Chọn tháng</label>
-          <select
-            value={month}
-            onChange={(e) => setMonth(e.target.value)}
-            className={`ml-2 border border-gray-300 rounded-lg px-3 py-1 text-sm focus:ring-2 focus:ring-[${mainColor}] focus:outline-none`}
-          >
-            <option>Tất cả</option>
-            {Array.from({ length: 12 }, (_, i) => `Tháng ${i + 1}`).map((m) => (
-              <option key={m}>{m}</option>
-            ))}
-          </select>
-        </div>
+        <button
+          onClick={handleExport}
+          disabled={exporting}
+          className="flex items-center gap-2 bg-[#009FE3] hover:bg-[#0087c2] text-white px-6 py-3 rounded-2xl shadow-lg shadow-blue-200 transition-all font-semibold disabled:opacity-50"
+        >
+          {exporting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+          Xuất báo cáo Excel
+        </button>
       </div>
 
-      {/* Biểu đồ thống kê nhân viên theo phòng ban */}
-      <div className="bg-white rounded-2xl shadow-sm p-6">
-        <h2 className="font-semibold text-gray-700 mb-4">
-          Thống kê số lượng nhân viên theo phòng ban
-        </h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={departmentData}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="department" />
-            <Tooltip />
-            <Bar dataKey="employees" fill={mainColor} radius={[6, 6, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+      {/* Summary Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {summaryCards.map((card, idx) => (
+          <div key={idx} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 ring-1 ring-slate-900/5">
+            <div className={`${card.bg} ${card.color} w-12 h-12 flex items-center justify-center rounded-2xl mb-4`}>
+              <card.icon className="w-6 h-6" />
+            </div>
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{card.title}</p>
+            <p className="text-3xl font-bold text-gray-800 mt-1">{card.value}</p>
+          </div>
+        ))}
       </div>
 
-      {/* Biểu đồ tròn giới tính */}
-      <div className="bg-white rounded-2xl shadow-sm p-6">
-        <h2 className="font-semibold text-gray-700 mb-4">
-          Tỷ lệ giới tính trong công ty
-        </h2>
-        <div className="flex justify-center">
-          <ResponsiveContainer width="60%" height={250}>
-            <PieChart>
-              <Pie
-                data={genderData}
-                dataKey="value"
-                nameKey="name"
-                outerRadius={100}
-                label
-              >
-                {genderData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index]} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+      {/* Charts Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Gender Distribution */}
+        <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center">
+          <div className="flex items-center gap-3 self-start mb-6">
+            <PieIcon className="w-5 h-5 text-gray-400" />
+            <h2 className="text-lg font-bold text-gray-800">Cơ cấu giới tính</h2>
+          </div>
+          <div className="w-full h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={stats?.genderDistribution}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {stats?.genderDistribution.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                />
+                <Legend iconType="circle" />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </div>
 
-      {/* Bảng tổng hợp */}
-      <div className="bg-white rounded-2xl shadow-sm p-6">
-        <h2 className="font-semibold text-gray-700 mb-4">Tổng hợp nhanh</h2>
-        <table className="w-full text-sm border-t border-gray-200">
-          <thead>
-            <tr className="bg-gray-50 text-gray-600">
-              <th className="text-left py-2 px-3">Phòng ban</th>
-              <th className="text-left py-2 px-3">Số nhân viên</th>
-              <th className="text-left py-2 px-3">Giới tính nam</th>
-              <th className="text-left py-2 px-3">Giới tính nữ</th>
-            </tr>
-          </thead>
-          <tbody>
-            {departmentData.map((d, i) => (
-              <tr key={i} className="border-t">
-                <td className="py-2 px-3">{d.department}</td>
-                <td className="py-2 px-3">{d.employees}</td>
-                <td className="py-2 px-3">{Math.floor(d.employees * 0.6)}</td>
-                <td className="py-2 px-3">{Math.ceil(d.employees * 0.4)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {/* Status Distribution */}
+        <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col">
+          <div className="flex items-center gap-3 mb-6">
+            <BarIcon className="w-5 h-5 text-gray-400" />
+            <h2 className="text-lg font-bold text-gray-800">Trạng thái công tác</h2>
+          </div>
+          <div className="w-full h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={stats?.statusDistribution}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748B', fontSize: 12 }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748B', fontSize: 12 }} />
+                <Tooltip
+                  cursor={{ fill: '#F8FAFC' }}
+                  contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                />
+                <Bar dataKey="value" fill={mainColor} radius={[8, 8, 0, 0]} barSize={40} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Education Level */}
+        <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col lg:col-span-2">
+          <div className="flex items-center gap-3 mb-6">
+            <TrendingUp className="w-5 h-5 text-gray-400" />
+            <h2 className="text-lg font-bold text-gray-800">Phân loại theo trình độ đào tạo</h2>
+          </div>
+          <div className="w-full h-[350px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={stats?.educationDistribution} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#E2E8F0" />
+                <XAxis type="number" axisLine={false} tickLine={false} />
+                <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} width={150} tick={{ fill: '#1E293B', fontWeight: 500 }} />
+                <Tooltip
+                  cursor={{ fill: '#F8FAFC' }}
+                  contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                />
+                <Bar dataKey="value" fill="#8B5CF6" radius={[0, 8, 8, 0]} barSize={30} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </div>
     </div>
   );

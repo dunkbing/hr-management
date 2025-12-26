@@ -1,24 +1,30 @@
 package haukientruc.hr.service;
 
 import haukientruc.hr.entity.*;
-import haukientruc.hr.repository.UserRepository;
+import haukientruc.hr.repository.*;
+import haukientruc.hr.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@lombok.extern.slf4j.Slf4j
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
-    private final haukientruc.hr.repository.RoleRepository roleRepository;
-    private final haukientruc.hr.repository.FacultyRepository facultyRepository;
-    private final haukientruc.hr.repository.DepartmentRepository departmentRepository;
-    private final haukientruc.hr.repository.PositionRepository positionRepository;
+    private final RoleRepository roleRepository;
+    private final FacultyRepository facultyRepository;
+    private final DepartmentRepository departmentRepository;
+    private final PositionRepository positionRepository;
     private final PasswordEncoder passwordEncoder;
     private final LuceneService luceneService;
 
@@ -42,7 +48,8 @@ public class UserService {
         return saved;
     }
 
-    public User createUser(haukientruc.hr.dto.UserDTO dto) {
+    public User createUser(UserDTO dto) {
+        checkRoleChangePermission(dto, null);
         if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
             throw new RuntimeException("Tài khoản đã tồn tại");
         }
@@ -59,10 +66,11 @@ public class UserService {
         return saved;
     }
 
-    public User updateUser(Long id, haukientruc.hr.dto.UserDTO dto) {
+    public User updateUser(Long id, UserDTO dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
 
+        checkRoleChangePermission(dto, user);
         mapDtoToEntity(dto, user);
         if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
             user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
@@ -73,27 +81,52 @@ public class UserService {
         return saved;
     }
 
-    private void mapDtoToEntity(haukientruc.hr.dto.UserDTO dto, User user) {
-        user.setUsername(dto.getUsername());
-        user.setFullName(dto.getFullName());
-        user.setEmail(dto.getEmail());
-        user.setPhone(dto.getPhone());
-        user.setDob(dto.getDob());
-        user.setGender(dto.getGender());
-        user.setJoinDate(dto.getJoinDate());
-        user.setContractStart(dto.getContractStart());
-        user.setContractEnd(dto.getContractEnd());
-        user.setCccd(dto.getCccd());
-        user.setEthnicity(dto.getEthnicity());
-        user.setNationality(dto.getNationality());
-        user.setEducationLevel(dto.getEducationLevel());
-        user.setWorkingStatus(dto.getWorkingStatus());
+    private void mapDtoToEntity(UserDTO dto, User user) {
+        if (dto.getUsername() != null)
+            user.setUsername(dto.getUsername());
+        if (dto.getFullName() != null)
+            user.setFullName(dto.getFullName());
+        if (dto.getEmail() != null)
+            user.setEmail(dto.getEmail());
+        if (dto.getPhone() != null)
+            user.setPhone(dto.getPhone());
+        if (dto.getDob() != null)
+            user.setDob(dto.getDob());
+        if (dto.getGender() != null)
+            user.setGender(dto.getGender());
+        if (dto.getJoinDate() != null)
+            user.setJoinDate(dto.getJoinDate());
+        if (dto.getContractStart() != null)
+            user.setContractStart(dto.getContractStart());
+        if (dto.getContractEnd() != null)
+            user.setContractEnd(dto.getContractEnd());
+        if (dto.getCccd() != null)
+            user.setCccd(dto.getCccd());
+        if (dto.getEthnicity() != null)
+            user.setEthnicity(dto.getEthnicity());
+        if (dto.getNationality() != null)
+            user.setNationality(dto.getNationality());
+        if (dto.getEducationLevel() != null)
+            user.setEducationLevel(dto.getEducationLevel());
+        if (dto.getWorkingStatus() != null)
+            user.setWorkingStatus(dto.getWorkingStatus());
+        if (dto.getAvatar() != null)
+            user.setAvatar(dto.getAvatar());
 
         if (dto.getRoleId() != null) {
             user.setRole(roleRepository.findById(dto.getRoleId()).orElse(null));
         } else if (dto.getRoleCode() != null) {
-            user.setRole(roleRepository.findAll().stream()
-                    .filter(r -> r.getRoleCode().equalsIgnoreCase(dto.getRoleCode()))
+            String roleCode = dto.getRoleCode().trim();
+            List<Role> allRoles = roleRepository.findAll();
+            user.setRole(allRoles.stream()
+                    .filter(r -> {
+                        String code = r.getRoleCode();
+                        String name = r.getRoleName();
+                        return (code != null && (code.equalsIgnoreCase(roleCode) ||
+                                code.equalsIgnoreCase("ROLE_" + roleCode) ||
+                                ("ROLE_" + code).equalsIgnoreCase(roleCode))) ||
+                                (name != null && name.equalsIgnoreCase(roleCode));
+                    })
                     .findFirst().orElse(null));
         }
 
@@ -108,8 +141,8 @@ public class UserService {
         }
     }
 
-    public haukientruc.hr.dto.UserDTO convertToDto(User user) {
-        haukientruc.hr.dto.UserDTO dto = new haukientruc.hr.dto.UserDTO();
+    public UserDTO convertToDto(User user) {
+        UserDTO dto = new UserDTO();
         dto.setUserId(user.getUserId());
         dto.setUsername(user.getUsername());
         dto.setFullName(user.getFullName());
@@ -125,6 +158,7 @@ public class UserService {
         dto.setNationality(user.getNationality());
         dto.setEducationLevel(user.getEducationLevel());
         dto.setWorkingStatus(user.getWorkingStatus());
+        dto.setAvatar(user.getAvatar());
         dto.setStatus(user.getStatus());
         dto.setIsActive(user.getIsActive());
 
@@ -149,8 +183,18 @@ public class UserService {
     }
 
     // ===== ADMIN FUNCTIONS =====
-    public List<User> getAll() {
-        return userRepository.findAll();
+    public UserDTO getCurrentUser() {
+        String username = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        return userRepository.findByUsername(username)
+                .map(this::convertToDto)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public List<UserDTO> getAll() {
+        return userRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     public User getById(Long id) {
@@ -159,8 +203,82 @@ public class UserService {
     }
 
     public void delete(Long id) {
+        User target = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+
+        String currentUsername = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        User currentUser = userRepository.findByUsername(currentUsername).orElse(null);
+
+        if (currentUser == null)
+            throw new RuntimeException("Chưa đăng nhập");
+
+        // 1. Chặn tự xóa chính mình
+        if (currentUser.getUserId().equals(target.getUserId())) {
+            throw new RuntimeException("Bạn không thể tự xóa tài khoản của chính mình");
+        }
+
+        boolean isSuperAdmin = currentUser.getRole() != null
+                && "superadmin".equalsIgnoreCase(currentUser.getRole().getRoleCode());
+        String targetRole = target.getRole() != null ? target.getRole().getRoleCode() : "";
+
+        // 2. Chặn xóa SUPER_ADMIN
+        if ("superadmin".equalsIgnoreCase(targetRole)) {
+            throw new RuntimeException("Không thể xóa tài khoản SUPER_ADMIN");
+        }
+
+        // 3. Chặn xóa ADMIN nếu người xóa không phải là SUPER_ADMIN
+        if ("admin".equalsIgnoreCase(targetRole) && !isSuperAdmin) {
+            throw new RuntimeException("Chỉ SUPER_ADMIN mới có quyền xóa tài khoản ADMIN");
+        }
+
         userRepository.deleteById(id);
-        luceneService.deleteUserIndex(id);
+        luceneService.deleteEntityIndex("user", String.valueOf(id));
+    }
+
+    private void checkRoleChangePermission(UserDTO dto, User existingUser) {
+        String currentUsername = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        User currentUser = userRepository.findByUsername(currentUsername).orElse(null);
+
+        if (currentUser == null)
+            return;
+
+        boolean isCurrentUserSuperAdmin = currentUser.getRole() != null
+                && "superadmin".equalsIgnoreCase(currentUser.getRole().getRoleCode());
+
+        // Target role requested in DTO
+        String targetRoleCode = dto.getRoleCode();
+        String existingRoleCode = (existingUser != null && existingUser.getRole() != null)
+                ? existingUser.getRole().getRoleCode()
+                : null;
+
+        // 1. Phải là SUPERADMIN mới được sửa tài khoản SUPERADMIN hoặc ADMIN
+        if (existingUser != null) {
+            String roleToProtect = existingRoleCode != null ? existingRoleCode : "";
+            if (("superadmin".equalsIgnoreCase(roleToProtect) || "admin".equalsIgnoreCase(roleToProtect))
+                    && !isCurrentUserSuperAdmin) {
+                // Ngoại lệ: Cho phép user tự sửa thông tin của chính mình (nếu cần, nhưng
+                // thường admin/superadmin tự sửa được)
+                // Tuy nhiên theo yêu cầu user, ta cứ chặn admin sửa admin
+                if (!currentUser.getUsername().equals(existingUser.getUsername())) {
+                    throw new RuntimeException(
+                            "Chỉ SUPER_ADMIN mới có quyền chỉnh sửa tài khoản " + roleToProtect.toUpperCase());
+                }
+            }
+        }
+
+        // 2. Kiểm tra nếu có sự thay đổi vai trò hoặc gán vai trò mới
+        boolean isRoleChanging = existingUser == null
+                || (targetRoleCode != null && !targetRoleCode.equalsIgnoreCase(existingRoleCode));
+
+        if (isRoleChanging) {
+            if ("admin".equalsIgnoreCase(targetRoleCode) || "superadmin".equalsIgnoreCase(targetRoleCode)) {
+                if (!isCurrentUserSuperAdmin) {
+                    throw new RuntimeException("Chỉ SUPER_ADMIN mới có quyền gán vai trò ADMIN hoặc SUPERADMIN");
+                }
+            }
+        }
     }
 
     // ===== EXCEL EXPORT TEMPLATE =====
@@ -169,10 +287,31 @@ public class UserService {
             // Sheet 1: Data Entry
             org.apache.poi.ss.usermodel.Sheet sheet1 = workbook.createSheet("Nhập dữ liệu");
             org.apache.poi.ss.usermodel.Row header = sheet1.createRow(0);
-            String[] columns = { "Họ tên", "Tên đăng nhập", "Mật khẩu", "Email", "Số điện thoại",
-                    "Ngày sinh (yyyy-MM-dd)", "Vai trò (ADMIN/USER/...)", "Mã Khoa/Phòng ban", "Mã Chức vụ" };
+
+            // Define headers with * for mandatory fields
+            String[] columns = {
+                    "Họ tên*",
+                    "Tên đăng nhập*",
+                    "Mật khẩu*",
+                    "Email",
+                    "Số điện thoại",
+                    "Ngày sinh (yyyy-MM-dd)",
+                    "Vai trò (Mã)*",
+                    "Mã Khoa/Phòng ban",
+                    "Mã Chức vụ"
+            };
+
+            // Style for header
+            org.apache.poi.ss.usermodel.CellStyle headerStyle = workbook.createCellStyle();
+            org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerStyle.setFont(headerFont);
+
             for (int i = 0; i < columns.length; i++) {
-                header.createCell(i).setCellValue(columns[i]);
+                org.apache.poi.ss.usermodel.Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet1.autoSizeColumn(i);
             }
 
             // Sheet 2: Instructions
@@ -182,13 +321,14 @@ public class UserService {
             instrHeader.createCell(1).setCellValue("Mô tả");
 
             String[][] instructions = {
-                    { "Họ tên", "Nhập đầy đủ họ tên nhân viên" },
-                    { "Tên đăng nhập", "Duy nhất trong hệ thống" },
-                    { "Mật khẩu", "Ít nhất 6 ký tự" },
+                    { "Họ tên*", "Bắt buộc. Nhập đầy đủ họ tên nhân viên" },
+                    { "Tên đăng nhập*", "Bắt buộc. Duy nhất trong hệ thống" },
+                    { "Mật khẩu*", "Bắt buộc. Ít nhất 6 ký tự" },
                     { "Ngày sinh", "Định dạng yyyy-MM-dd (VD: 1990-01-01)" },
-                    { "Vai trò", "Nhập mã vai trò (ADMIN, GIANGVIEN, TRUONGKHOA, ...)" },
-                    { "Mã Khoa/Phòng ban", "Lấy mã tương ứng trong quản lý Khoa/Phòng ban" },
-                    { "Mã Chức vụ", "Lấy mã tương ứng trong quản lý chức vụ" }
+                    { "Vai trò (Mã)*",
+                            "Bắt buộc. Nhập mã vai trò: admin (Quản trị), hieutruong (Hiệu trưởng), truongkhoa (Trưởng khoa), giangvien (Giảng viên)" },
+                    { "Mã Khoa/Phòng ban", "Lấy mã tương ứng trong quản lý Khoa/Phòng ban (VD: CNTT, KETOAN, ...)" },
+                    { "Mã Chức vụ", "Lấy mã tương ứng trong quản lý chức vụ (VD: TrG, PhG, ...)" }
             };
 
             for (int i = 0; i < instructions.length; i++) {
@@ -196,6 +336,8 @@ public class UserService {
                 row.createCell(0).setCellValue(instructions[i][0]);
                 row.createCell(1).setCellValue(instructions[i][1]);
             }
+            sheet2.autoSizeColumn(0);
+            sheet2.autoSizeColumn(1);
 
             java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
             workbook.write(out);
@@ -204,13 +346,24 @@ public class UserService {
     }
 
     // ===== EXCEL IMPORT =====
-    @org.springframework.transaction.annotation.Transactional
-    public void importUsersFromExcel(org.springframework.web.multipart.MultipartFile file) throws Exception {
+    @Transactional
+    public byte[] importUsersFromExcel(MultipartFile file) throws Exception {
         try (org.apache.poi.xssf.usermodel.XSSFWorkbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook(
                 file.getInputStream())) {
             org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0);
-            java.util.List<User> successfulUsers = new java.util.ArrayList<>();
-            java.util.List<String> errors = new java.util.ArrayList<>();
+            boolean hasError = false;
+
+            // Header for Error Log
+            org.apache.poi.ss.usermodel.Row headerRow = sheet.getRow(0);
+            int logColumnIndex = headerRow.getLastCellNum();
+            org.apache.poi.ss.usermodel.Cell logHeader = headerRow.createCell(logColumnIndex);
+            logHeader.setCellValue("Log lỗi");
+
+            org.apache.poi.ss.usermodel.CellStyle errorStyle = workbook.createCellStyle();
+            org.apache.poi.ss.usermodel.Font errorFont = workbook.createFont();
+            errorFont.setColor(org.apache.poi.ss.usermodel.IndexedColors.RED.getIndex());
+            errorStyle.setFont(errorFont);
+            logHeader.setCellStyle(errorStyle);
 
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
@@ -219,66 +372,133 @@ public class UserService {
 
                 String fullName = getCellValue(row.getCell(0));
                 String username = getCellValue(row.getCell(1));
+                String password = getCellValue(row.getCell(2));
+                String email = getCellValue(row.getCell(3));
+                String phone = getCellValue(row.getCell(4));
+                String dobStr = getCellValue(row.getCell(5));
+                String roleCode = getCellValue(row.getCell(6));
+                String unitCode = getCellValue(row.getCell(7));
+                String posCode = getCellValue(row.getCell(8));
 
-                // Skip truly empty rows or rows without mandatory info
-                if (username.isEmpty() && fullName.isEmpty()) {
+                // Skip truly empty rows
+                if (username.isEmpty() && fullName.isEmpty() && roleCode.isEmpty()) {
                     continue;
                 }
 
+                org.apache.poi.ss.usermodel.Cell logCell = row.createCell(logColumnIndex);
                 try {
-                    if (username.isEmpty()) {
-                        throw new RuntimeException("Tên đăng nhập không được để trống");
+                    // Mandatory validation
+                    java.util.List<String> rowErrors = new java.util.ArrayList<>();
+                    if (fullName.isEmpty())
+                        rowErrors.add("Họ tên không được trống");
+                    if (username.isEmpty())
+                        rowErrors.add("Tên đăng nhập không được trống");
+                    if (password.isEmpty())
+                        rowErrors.add("Mật khẩu không được trống");
+                    if (roleCode.isEmpty())
+                        rowErrors.add("Vai trò không được trống");
+
+                    if (!rowErrors.isEmpty()) {
+                        throw new RuntimeException(String.join(", ", rowErrors));
                     }
 
-                    haukientruc.hr.dto.UserDTO dto = new haukientruc.hr.dto.UserDTO();
+                    UserDTO dto = new UserDTO();
                     dto.setFullName(fullName);
                     dto.setUsername(username);
-                    dto.setPassword(getCellValue(row.getCell(2)));
-                    dto.setEmail(getCellValue(row.getCell(3)));
-                    dto.setPhone(getCellValue(row.getCell(4)));
+                    dto.setPassword(password);
+                    dto.setEmail(email);
+                    dto.setPhone(phone);
 
-                    String dobStr = getCellValue(row.getCell(5));
                     if (!dobStr.isEmpty()) {
                         try {
                             dto.setDob(java.time.LocalDate.parse(dobStr));
                         } catch (java.time.format.DateTimeParseException e) {
-                            log.warn("Invalid date format at row {}: {}", i, dobStr);
-                            // Optionally try more formats or just skip DOB
+                            throw new RuntimeException("Ngày sinh sai định dạng (yyyy-MM-dd)");
                         }
                     }
 
-                    dto.setRoleCode(getCellValue(row.getCell(6)));
-
-                    String unitCode = getCellValue(row.getCell(7));
-                    String posCode = getCellValue(row.getCell(8));
-
                     // Map codes to IDs
+                    if (!roleCode.isEmpty()) {
+                        String finalRoleCode = roleCode.trim();
+                        List<Role> allRoles = roleRepository.findAll();
+                        Role role = allRoles.stream()
+                                .filter(r -> {
+                                    String code = r.getRoleCode();
+                                    String name = r.getRoleName();
+                                    return (code != null && (code.equalsIgnoreCase(finalRoleCode) ||
+                                            code.equalsIgnoreCase("ROLE_" + finalRoleCode) ||
+                                            ("ROLE_" + code).equalsIgnoreCase(finalRoleCode))) ||
+                                            (name != null && name.equalsIgnoreCase(finalRoleCode));
+                                })
+                                .findFirst()
+                                .orElseThrow(() -> {
+                                    String validInfo = allRoles.stream()
+                                            .map(r -> (r.getRoleCode() != null ? r.getRoleCode() : "") +
+                                                    (r.getRoleName() != null ? " (" + r.getRoleName() + ")" : ""))
+                                            .collect(java.util.stream.Collectors.joining(", "));
+                                    return new RuntimeException("Vai trò '" + finalRoleCode
+                                            + "' không tồn tại. Danh sách hợp lệ: " + validInfo);
+                                });
+                        dto.setRoleCode(role.getRoleCode());
+                    }
+
                     if (!unitCode.isEmpty()) {
-                        facultyRepository.findByCode(unitCode).ifPresent(f -> dto.setFacultyId(f.getId()));
-                        departmentRepository.findByDepartmentCode(unitCode)
-                                .ifPresent(d -> dto.setDepartmentId(d.getId()));
+                        facultyRepository.findByCode(unitCode).ifPresentOrElse(
+                                f -> dto.setFacultyId(f.getId()),
+                                () -> departmentRepository.findByDepartmentCode(unitCode)
+                                        .ifPresent(d -> dto.setDepartmentId(d.getId())));
+
+                        // Fallback mapping by Name if code didn't match anything
+                        if (dto.getFacultyId() == null && dto.getDepartmentId() == null) {
+                            facultyRepository.findAll().stream()
+                                    .filter(f -> f.getName().equalsIgnoreCase(unitCode))
+                                    .findFirst()
+                                    .ifPresent(f -> dto.setFacultyId(f.getId()));
+
+                            if (dto.getFacultyId() == null) {
+                                departmentRepository.findAll().stream()
+                                        .filter(d -> d.getDepartmentName().equalsIgnoreCase(unitCode))
+                                        .findFirst()
+                                        .ifPresent(d -> dto.setDepartmentId(d.getId()));
+                            }
+                        }
                     }
 
                     if (!posCode.isEmpty()) {
-                        positionRepository.findByCode(posCode).ifPresent(p -> dto.setPositionId(p.getId()));
+                        positionRepository.findByCode(posCode).ifPresentOrElse(
+                                p -> dto.setPositionId(p.getId()),
+                                () -> positionRepository.findAll().stream()
+                                        .filter(p -> p.getName().equalsIgnoreCase(posCode))
+                                        .findFirst()
+                                        .ifPresent(p -> dto.setPositionId(p.getId())));
                     }
 
                     // Process creation
-                    User saved = createUser(dto);
-                    successfulUsers.add(saved);
+                    createUser(dto);
+                    logCell.setCellValue("Thành công");
                 } catch (Exception e) {
-                    log.error("Error importing row {}: {}", i, e.getMessage());
-                    errors.add("Dòng " + (i + 1) + ": " + e.getMessage());
+                    hasError = true;
+                    // Provide a more user-friendly message for duplicate keys
+                    String msg = e.getMessage();
+                    if (msg != null && msg.contains("Tài khoản đã tồn tại")) {
+                        msg = "Tài khoản '" + username + "' đã tồn tại";
+                    } else if (msg == null) {
+                        msg = "Lỗi hệ thống không xác định";
+                    }
+                    logCell.setCellValue(msg);
+                    logCell.setCellStyle(errorStyle);
+                    log.error("Error importing row {}: {}", i, msg);
                 }
             }
 
-            if (!errors.isEmpty()) {
-                throw new RuntimeException("Có lỗi xảy ra khi nhập dữ liệu: \n" + String.join("\n", errors));
+            if (hasError) {
+                // Return workbook bytes if there are errors
+                java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+                workbook.write(out);
+                return out.toByteArray();
             }
 
-            // Re-index is already handled by createUser -> luceneService.indexUser(saved)
-            // But if we want it to be even faster, we could modify LuceneService to handle
-            // batch.
+            return null; // Success, no error log file needed
         }
     }
 

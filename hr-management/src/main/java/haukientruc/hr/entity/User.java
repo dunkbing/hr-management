@@ -15,6 +15,7 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
 
+    @Column(unique = true, nullable = false)
     private String username;
 
     @Column(name = "password_hash")
@@ -50,6 +51,8 @@ public class User {
     @JoinColumn(name = "position_id")
     private Position position;
 
+    @Column(columnDefinition = "TEXT")
+    private String avatar;
     private Boolean status;
     private Boolean isActive;
 

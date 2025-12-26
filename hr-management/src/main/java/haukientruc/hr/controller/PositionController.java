@@ -11,14 +11,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/positions")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class PositionController {
 
     private final PositionService positionService;
 
     @GetMapping
-    public List<PositionDTO> getAll() {
-        return positionService.getAll();
+    public List<PositionDTO> getAll(@RequestParam(required = false) String search) {
+        return positionService.getAll(search);
     }
 
     @PostMapping

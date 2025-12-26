@@ -391,17 +391,40 @@ function ImportExcelModal({ onClose, onSuccess }) {
     try {
       setUploading(true);
       const token = localStorage.getItem("token");
-      await axios.post(`${API_BASE_URL}/users/import`, formData, {
+      const response = await axios.post(`${API_BASE_URL}/users/import`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data"
-        }
+        },
+        responseType: 'arraybuffer' // Quan trọng để nhận file blob
       });
-      alert("Nhập dữ liệu thành công");
+
+      // Kiểm tra header lỗi từ backend
+      if (response.headers['x-import-error'] === 'true') {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'import_errors.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        alert("⚠️ Một số dòng bị lỗi. Vui lòng kiểm tra file 'import_errors.xlsx' vừa tải xuống.");
+      } else {
+        alert("✅ Nhập dữ liệu thành công");
+      }
       onSuccess();
     } catch (error) {
       console.error("Error uploading file:", error);
-      alert("Lỗi khi tải file: " + (error.response?.data || error.message));
+      let errorMsg = "Lỗi khi tải file";
+      if (error.response?.data instanceof ArrayBuffer) {
+        const decodedString = new TextDecoder().decode(error.response.data);
+        try {
+          const errorJson = JSON.parse(decodedString);
+          errorMsg = errorJson.message || errorMsg;
+        } catch (e) {
+          errorMsg = decodedString || errorMsg;
+        }
+      }
+      alert("❌ " + errorMsg);
     } finally {
       setUploading(false);
     }

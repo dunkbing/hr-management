@@ -12,4 +12,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
     boolean existsByDepartmentCode(String departmentCode);
 
     java.util.Optional<Department> findByDepartmentCode(String departmentCode);
+
+    @org.springframework.data.jpa.repository.Query("SELECT COUNT(DISTINCT u.department) FROM User u WHERE u.faculty.id = :facultyId")
+    long countDepartmentsByFacultyId(@org.springframework.data.repository.query.Param("facultyId") Long facultyId);
 }

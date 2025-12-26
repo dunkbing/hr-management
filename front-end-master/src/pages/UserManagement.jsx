@@ -172,7 +172,12 @@ function UserManagement() {
                   onChange={(e) => setNewUser({ ...newUser, roleCode: e.target.value })}
                   className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
                 >
-                  <option value="admin">Admin (Quản trị)</option>
+                  {localStorage.getItem("role") === "superadmin" && (
+                    <>
+                      <option value="superadmin">Siêu quản trị (Super Admin)</option>
+                      <option value="admin">Quản trị hệ thống (Admin)</option>
+                    </>
+                  )}
                   <option value="hieutruong">Hiệu trưởng</option>
                   <option value="truongkhoa">Trưởng khoa</option>
                   <option value="giangvien">Giảng viên / Nhân sự</option>

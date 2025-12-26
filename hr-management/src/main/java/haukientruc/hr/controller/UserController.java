@@ -17,9 +17,23 @@ public class UserController {
 
     @GetMapping
     public List<haukientruc.hr.dto.UserDTO> getAllUsers() {
-        return userService.getAll().stream()
-                .map(userService::convertToDto)
-                .collect(java.util.stream.Collectors.toList());
+        return userService.getAll();
+    }
+
+    @GetMapping("/me")
+    public haukientruc.hr.dto.UserDTO getCurrentUser() {
+        return userService.getCurrentUser();
+    }
+
+    @PostMapping("/avatar")
+    public haukientruc.hr.dto.UserDTO uploadAvatar(
+            @RequestParam("file") org.springframework.web.multipart.MultipartFile file) throws java.io.IOException {
+        String base64 = java.util.Base64.getEncoder().encodeToString(file.getBytes());
+        String avatarData = "data:" + file.getContentType() + ";base64," + base64;
+
+        haukientruc.hr.dto.UserDTO currentUser = userService.getCurrentUser();
+        currentUser.setAvatar(avatarData);
+        return userService.convertToDto(userService.updateUser(currentUser.getUserId(), currentUser));
     }
 
     @GetMapping("/{id}")
@@ -64,10 +78,18 @@ public class UserController {
     }
 
     @PostMapping("/import")
-    public org.springframework.http.ResponseEntity<String> importUsers(
+    public org.springframework.http.ResponseEntity<?> importUsers(
             @RequestParam("file") org.springframework.web.multipart.MultipartFile file) {
         try {
-            userService.importUsersFromExcel(file);
+            byte[] errorFile = userService.importUsersFromExcel(file);
+            if (errorFile != null) {
+                return org.springframework.http.ResponseEntity.ok()
+                        .header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION,
+                                "attachment; filename=import_errors.xlsx")
+                        .header("X-Import-Error", "true")
+                        .contentType(org.springframework.http.MediaType.APPLICATION_OCTET_STREAM)
+                        .body(errorFile);
+            }
             return org.springframework.http.ResponseEntity.ok("Import thành công");
         } catch (Exception e) {
             return org.springframework.http.ResponseEntity.status(500).body("Import thất bại: " + e.getMessage());

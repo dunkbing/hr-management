@@ -29,6 +29,7 @@ public class UserDTO {
     private String facultyName;
     private Long positionId;
     private String positionName;
+    private String avatar;
     private Boolean status;
     private Boolean isActive;
 }

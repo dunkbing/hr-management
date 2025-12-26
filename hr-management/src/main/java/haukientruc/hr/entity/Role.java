@@ -5,7 +5,8 @@ import lombok.*;
 
 @Entity
 @Table(name = "roles")
-@Getter @Setter
+@Getter
+@Setter
 public class Role {
 
     @Id
@@ -13,7 +14,7 @@ public class Role {
     @Column(name = "role_id")
     private Long roleId;
 
-    @Column(name = "role_code")
+    @Column(name = "role_code", unique = true)
     private String roleCode;
 
     @Column(name = "role_name")

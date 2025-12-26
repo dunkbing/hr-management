@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AdminLayout from "./layouts/AdminLayout";
 import FacultyLayout from "./layouts/FacultyLayout";
 import PrincipalLayout from "./layouts/PrincipalLayout";
+import LecturerLayout from "./layouts/LecturerLayout";
 
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -36,7 +37,22 @@ import FacultySettings from "./pages/FacultySettings";
 // import Departments from "./pages/Departments";
 // import FacultyManagement from "./pages/FacultyManagement";
 import LecturerDashboard from "./pages/LecturerDashboard";
+import LecturerProfile from "./pages/LecturerProfile";
+import LecturerSubmitRequest from "./pages/LecturerSubmitRequest";
+import LecturerMyRequests from "./pages/LecturerMyRequests";
 
+
+// Helper component to wrap Profile with correct layout based on role
+const ProfileWithLayout = () => {
+  const role = localStorage.getItem("role");
+  if (role === "hieutruong" || role === "hieu_truong") {
+    return <PrincipalLayout><Profile /></PrincipalLayout>;
+  }
+  if (role === "truongkhoa" || role === "truong_don_vi") {
+    return <FacultyLayout><Profile /></FacultyLayout>;
+  }
+  return <AdminLayout><Profile /></AdminLayout>;
+};
 
 function App() {
   return (
@@ -143,14 +159,10 @@ function App() {
           }
         />
 
-        {/* PROFILE PAGE — dùng layout ADMIN (tạm) */}
+        {/* PROFILE PAGE — Tự động nhận diện layout theo Role */}
         <Route
           path="/profile"
-          element={
-            <AdminLayout>
-              <Profile />
-            </AdminLayout>
-          }
+          element={<ProfileWithLayout />}
         />
 
         {/* ------ FACULTY ROUTES (Trưởng khoa) ------ */}
@@ -301,9 +313,33 @@ function App() {
         <Route
           path="/lecturer/dashboard"
           element={
-            <FacultyLayout>
+            <LecturerLayout>
               <LecturerDashboard />
-            </FacultyLayout>
+            </LecturerLayout>
+          }
+        />
+        <Route
+          path="/lecturer/profile"
+          element={
+            <LecturerLayout>
+              <LecturerProfile />
+            </LecturerLayout>
+          }
+        />
+        <Route
+          path="/lecturer/submit-request"
+          element={
+            <LecturerLayout>
+              <LecturerSubmitRequest />
+            </LecturerLayout>
+          }
+        />
+        <Route
+          path="/lecturer/my-requests"
+          element={
+            <LecturerLayout>
+              <LecturerMyRequests />
+            </LecturerLayout>
           }
         />
       </Routes>

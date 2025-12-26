@@ -1,40 +1,32 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bell } from "lucide-react";
+import axios from "axios";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [notiOpen, setNotiOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const menuRef = useRef();
   const notiRef = useRef();
   const navigate = useNavigate();
 
-  // 🛎️ Dữ liệu thông báo (giả lập backend)
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      title: "Trưởng khoa gửi yêu cầu phê duyệt nhân sự",
-      time: "5 phút trước",
-      read: false,
-    },
-    {
-      id: 2,
-      title: "Phòng tổ chức đã cập nhật hồ sơ nhân viên",
-      time: "1 giờ trước",
-      read: false,
-    },
-    {
-      id: 3,
-      title: "Bạn có 1 cuộc họp vào lúc 15:00",
-      time: "Hôm nay",
-      read: true,
-    },
-  ]);
+  // 🛎️ Dữ liệu thông báo thực tế
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const token = localStorage.getItem("token");
 
-  // Đóng dropdown khi click ra ngoài
   useEffect(() => {
+    fetchUser();
+    fetchNotifications();
+
+    // Polling every 30 seconds for new notifications
+    const interval = setInterval(fetchNotifications, 30000);
+
+    const handleUpdate = () => fetchUser();
+    window.addEventListener("userUpdated", handleUpdate);
+
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setMenuOpen(false);
@@ -44,23 +36,74 @@ const Header = () => {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("userUpdated", handleUpdate);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
+
+  const fetchUser = async () => {
+    if (!token) return;
+    try {
+      const res = await axios.get("http://localhost:8080/api/users/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUser(res.data);
+    } catch (err) {
+      console.error("Failed to fetch user info", err);
+    }
+  };
+
+  const fetchNotifications = async () => {
+    if (!token) return;
+    try {
+      const [listRes, countRes] = await Promise.all([
+        axios.get("http://localhost:8080/api/notifications", {
+          headers: { Authorization: `Bearer ${token}` }
+        }),
+        axios.get("http://localhost:8080/api/notifications/unread-count", {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      ]);
+      setNotifications(listRes.data);
+      setUnreadCount(countRes.data);
+    } catch (err) {
+      console.error("Failed to fetch notifications", err);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
 
-  // Khi nhấn vào thông báo → chuyển trang + đánh dấu đã đọc
-  const handleOpenNotification = (id) => {
-    setNotifications((prev) =>
-      prev.map((n) =>
-        n.id === id ? { ...n, read: true } : n
-      )
-    );
-    navigate(`/notification/${id}`);
-    setNotiOpen(false);
+  const handleOpenNotification = async (id) => {
+    try {
+      await axios.put(`http://localhost:8080/api/notifications/${id}/read`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+      setUnreadCount(prev => Math.max(0, prev - 1));
+      setNotiOpen(false);
+      // Logic navigate có thể tùy thuộc vào loại thông báo, hiện tại để mặc định
+      // navigate(`/notification/${id}`);
+    } catch (err) {
+      console.error("Failed to mark notification as read", err);
+    }
+  };
+
+  const handleReadAll = async () => {
+    try {
+      await axios.put("http://localhost:8080/api/notifications/read-all", {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+      setUnreadCount(0);
+    } catch (err) {
+      console.error("Failed to mark all as read", err);
+    }
   };
 
   return (
@@ -123,39 +166,54 @@ const Header = () => {
                   <button
                     key={item.id}
                     onClick={() => handleOpenNotification(item.id)}
-                    className={`w-full text-left px-4 py-3 border-b hover:bg-gray-50 ${
-                      !item.read ? "bg-gray-100" : ""
-                    }`}
+                    className={`w-full text-left px-4 py-3 border-b hover:bg-gray-50 flex flex-col gap-1 ${!item.read ? "bg-blue-50/50" : ""
+                      }`}
                   >
-                    <div className="text-sm font-medium text-gray-800">
+                    <div className={`text-sm ${!item.read ? "font-bold text-gray-900" : "font-medium text-gray-600"}`}>
                       {item.title}
                     </div>
-                    <div className="text-xs text-gray-500">{item.time}</div>
+                    {item.message && <div className="text-xs text-gray-500 line-clamp-1">{item.message}</div>}
+                    <div className="text-[10px] text-gray-400">{item.timeDisplay || item.time}</div>
                   </button>
                 ))}
               </div>
 
-              <button
-                className="w-full py-2 text-sm text-blue-600 hover:bg-gray-50 rounded-b-lg"
-                onClick={() => navigate("/notification")}
-              >
-                Xem tất cả thông báo
-              </button>
+              <div className="flex border-t">
+                <button
+                  className="flex-1 py-2 text-xs text-gray-500 hover:bg-gray-50 border-r"
+                  onClick={handleReadAll}
+                >
+                  Đánh dấu đã đọc hết
+                </button>
+                <button
+                  className="flex-1 py-2 text-xs text-blue-600 font-semibold hover:bg-gray-50"
+                  onClick={() => {
+                    navigate("/notification");
+                    setNotiOpen(false);
+                  }}
+                >
+                  Xem tất cả
+                </button>
+              </div>
             </div>
           )}
         </div>
 
         {/* Avatar + Dropdown */}
-        <div className="relative" ref={menuRef}>
+        <div className="flex items-center gap-3 relative" ref={menuRef}>
+          <div className="text-right hidden sm:block">
+            <p className="text-sm font-semibold text-gray-800">{user?.fullName || "Người dùng"}</p>
+            <p className="text-xs text-gray-500 uppercase">{user?.roleName || "N/A"}</p>
+          </div>
           <img
-            src="https://i.pravatar.cc/40"
+            src={user?.avatar || "https://i.pravatar.cc/40"}
             alt="User"
-            className="rounded-full w-10 h-10 border border-gray-200 cursor-pointer"
+            className="rounded-full w-10 h-10 border border-gray-200 cursor-pointer object-cover"
             onClick={() => setMenuOpen(!menuOpen)}
           />
 
           {menuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+            <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
               <button
                 onClick={() => {
                   setMenuOpen(false);

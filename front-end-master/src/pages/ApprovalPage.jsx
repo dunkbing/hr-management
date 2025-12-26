@@ -1,260 +1,162 @@
-import { useState } from "react";
-import {
-  ClipboardCheck,
-  MoreVertical,
-  Clock,
-  CheckCircle,
-  XCircle,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { ClipboardCheck, Clock, CheckCircle2, XCircle, Search, Eye, Loader2, MessageSquare } from "lucide-react";
+import axiosClient from "../api/axiosClient";
 
 const ApprovalPage = () => {
-  const [selectedRequest, setSelectedRequest] = useState(null);
-  const [rejectRequest, setRejectRequest] = useState(null);
-  const [reason, setReason] = useState("");
-  const [openMenu, setOpenMenu] = useState(null);
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("all");
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedReq, setSelectedReq] = useState(null);
+  const [note, setNote] = useState("");
+  const [actionLoading, setActionLoading] = useState(false);
 
-  const requests = [
-    {
-      id: 1,
-      employee: "Nguyễn Văn A",
-      type: "Nghỉ phép",
-      date: "2025-11-10",
-      status: "pending",
-      department: "Khoa CNTT",
-    },
-    {
-      id: 2,
-      employee: "Trần Thị B",
-      type: "Tăng lương",
-      date: "2025-11-09",
-      status: "approved",
-      department: "Khoa Kinh tế",
-    },
-    {
-      id: 3,
-      employee: "Lê Văn C",
-      type: "Cập nhật hồ sơ",
-      date: "2025-11-08",
-      status: "rejected",
-      department: "Khoa Nội thất",
-      reason: "Thiếu minh chứng hợp lệ",
-    },
-  ];
+  useEffect(() => {
+    fetchRequests();
+  }, []);
 
-  const statusBadge = {
-    pending: (
-      <span className="inline-flex px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-xs items-center gap-1 mt-2 w-fit">
-        <Clock size={14} /> Chờ duyệt
-      </span>
-    ),
-    approved: (
-      <span className="inline-flex px-2 py-1 rounded bg-green-100 text-green-700 text-xs items-center gap-1 mt-2 w-fit">
-        <CheckCircle size={14} /> Đã duyệt
-      </span>
-    ),
-    rejected: (
-      <span className="inline-flex px-2 py-1 rounded bg-red-100 text-red-700 text-xs items-center gap-1 mt-2 w-fit">
-        <XCircle size={14} /> Từ chối
-      </span>
-    ),
+  const fetchRequests = async () => {
+    try {
+      const res = await axiosClient.get("/personnel-requests/pending/admin");
+      setRequests(res.data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const filteredRequests = requests.filter((r) => {
-    const matchSearch = r.employee.toLowerCase().includes(search.toLowerCase());
-    const matchFilter = filter === "all" || r.status === filter;
-    return matchSearch && matchFilter;
-  });
+  const handleApprove = async (id) => {
+    setActionLoading(true);
+    try {
+      await axiosClient.post(`/personnel-requests/${id}/approve-admin`, { note });
+      setRequests(requests.filter(r => r.id !== id));
+      setSelectedReq(null);
+      setNote("");
+    } catch (err) {
+      console.error(err);
+      alert("Phê duyệt thất bại");
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleReject = async (id) => {
+    setActionLoading(true);
+    try {
+      await axiosClient.post(`/personnel-requests/${id}/reject`, { note, isAdmin: "true" });
+      setRequests(requests.filter(r => r.id !== id));
+      setSelectedReq(null);
+      setNote("");
+    } catch (err) {
+      console.error(err);
+      alert("Từ chối thất bại");
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  if (loading) return <div className="p-10 text-center"><Loader2 className="animate-spin mx-auto w-10 h-10 text-blue-500" /></div>;
 
   return (
-    <div className="p-3">
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-4">
-        <ClipboardCheck size={30} className="text-[#009FE3]" />
-        <h1 className="text-2xl font-bold text-gray-700">Phê duyệt yêu cầu</h1>
-      </div>
-
-      {/* Search + Filter */}
-      <div className="flex gap-3 mb-4">
-        <input
-          type="text"
-          placeholder="Tìm kiếm nhân viên..."
-          className="border p-2 rounded w-64"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <select
-          className="border p-2 rounded"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        >
-          <option value="all">Tất cả trạng thái</option>
-          <option value="pending">Chờ duyệt</option>
-          <option value="approved">Đã duyệt</option>
-          <option value="rejected">Từ chối</option>
-        </select>
-      </div>
-
-      {/* Danh sách yêu cầu */}
-      <div className="space-y-3">
-        {filteredRequests.map((req) => (
-          <div
-            key={req.id}
-            className="bg-white shadow rounded-xl p-4 relative border hover:shadow-md transition flex items-start justify-between"
-          >
-            {/* Bên trái */}
-            <div className="flex-1">
-              <p className="font-semibold text-gray-800 text-lg">
-                {req.employee}
-              </p>
-              <p className="text-sm text-gray-600">{req.department}</p>
-
-              {statusBadge[req.status]}
-
-              <div className="mt-2 text-sm">
-                <p>
-                  <strong>Loại yêu cầu:</strong> {req.type}
-                </p>
-                <p>
-                  <strong>Ngày gửi:</strong> {req.date}
-                </p>
-              </div>
-
-              {req.status === "rejected" && req.reason && (
-                <p className="text-sm text-red-600 mt-2">
-                  <strong>Lý do từ chối:</strong> {req.reason}
-                </p>
-              )}
-            </div>
-
-            {/* Nút 3 chấm */}
-            <button
-              className="text-gray-500 hover:text-gray-700 ml-3"
-              onClick={() => setOpenMenu(openMenu === req.id ? null : req.id)}
-            >
-              <MoreVertical size={22} />
-            </button>
-
-            {/* Menu */}
-            {openMenu === req.id && (
-              <div className="absolute top-12 right-4 bg-white shadow-lg rounded-lg border z-20 w-40">
-                <button
-                  onClick={() => {
-                    setSelectedRequest(req);
-                    setOpenMenu(null);
-                  }}
-                  className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-sm"
-                >
-                  Xem chi tiết
-                </button>
-
-                {/* Chỉ pending mới có duyệt/từ chối */}
-                {req.status === "pending" && (
-                  <>
-                    <button
-                      onClick={() => {
-                        alert("Đã duyệt yêu cầu!");
-                        setOpenMenu(null);
-                      }}
-                      className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-sm"
-                    >
-                      Duyệt
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setRejectRequest(req);
-                        setOpenMenu(null);
-                      }}
-                      className="block w-full text-left px-3 py-2 hover:bg-gray-100 text-sm text-red-600"
-                    >
-                      Từ chối
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Popup chi tiết */}
-      {selectedRequest && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Chi tiết yêu cầu</h2>
-
-            <p className="mb-2">
-              <strong>Nhân viên:</strong> {selectedRequest.employee}
-            </p>
-            <p className="mb-2">
-              <strong>Khoa gửi:</strong> {selectedRequest.department}
-            </p>
-            <p className="mb-2">
-              <strong>Loại yêu cầu:</strong> {selectedRequest.type}
-            </p>
-            <p className="mb-2">
-              <strong>Ngày gửi:</strong> {selectedRequest.date}
-            </p>
-            <p className="mb-2">
-              <strong>Trạng thái:</strong> {statusBadge[selectedRequest.status]}
-            </p>
-
-            {selectedRequest.status === "rejected" && selectedRequest.reason && (
-              <p className="text-red-600">
-                <strong>Lý do từ chối:</strong> {selectedRequest.reason}
-              </p>
-            )}
-
-            <div className="flex justify-end mt-4">
-              <button
-                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
-                onClick={() => setSelectedRequest(null)}
-              >
-                Đóng
-              </button>
-            </div>
-          </div>
+    <div className="p-6">
+      <div className="flex items-center gap-3 mb-8">
+        <div className="p-3 bg-blue-50 text-[#009FE3] rounded-2xl">
+          <ClipboardCheck size={28} />
         </div>
-      )}
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">Phê duyệt yêu cầu (Cấp 1 - Admin)</h1>
+          <p className="text-sm text-gray-500 font-medium">Bạn đang xem danh sách các yêu cầu chờ Admin thẩm định trước khi chuyển lên Hiệu trưởng.</p>
+        </div>
+      </div>
 
-      {/* Popup từ chối */}
-      {rejectRequest && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-3">Từ chối yêu cầu</h2>
-
-            <textarea
-              rows="4"
-              placeholder="Nhập lý do từ chối..."
-              className="w-full border rounded-lg p-2 text-sm"
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-            ></textarea>
-
-            <div className="flex justify-end gap-3 mt-4">
+      <div className="grid grid-cols-1 gap-4">
+        {requests.length === 0 ? (
+          <div className="bg-white p-12 rounded-3xl border border-dashed text-center text-gray-400">
+            Hiện không có yêu cầu nào chờ phê duyệt.
+          </div>
+        ) : (
+          requests.map(req => (
+            <div key={req.id} className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 flex items-center justify-between hover:shadow-md transition-all">
+              <div className="flex items-center gap-4">
+                <div className="p-4 bg-blue-50 text-blue-600 rounded-2xl">
+                  <Clock size={24} />
+                </div>
+                <div>
+                  <div className="flex items-center gap-3 mb-1">
+                    <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-md uppercase tracking-wider">{req.type}</span>
+                    <span className="text-xs text-gray-400 font-medium">{new Date(req.createdAt).toLocaleDateString()}</span>
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-800">{req.title}</h3>
+                  <p className="text-sm text-gray-400 font-medium">Người gửi: <span className="text-gray-700">{req.requesterName}</span></p>
+                </div>
+              </div>
               <button
-                className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
-                onClick={() => {
-                  setRejectRequest(null);
-                  setReason("");
-                }}
+                onClick={() => setSelectedReq(req)}
+                className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-600 px-5 py-3 rounded-xl font-bold text-sm transition-all"
               >
-                Hủy
+                <Eye size={18} />
+                Xem & Phê duyệt
               </button>
+            </div>
+          ))
+        )}
+      </div>
 
-              <button
-                className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700"
-                onClick={() => {
-                  alert("Đã từ chối: " + reason);
-                  setRejectRequest(null);
-                  setReason("");
-                }}
-              >
-                Xác nhận
-              </button>
+      {/* Modal chi tiết */}
+      {selectedReq && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-[2.5rem] w-full max-w-2xl shadow-2xl animate-in zoom-in duration-300">
+            <div className="p-8 border-b border-slate-50">
+              <div className="flex justify-between items-start">
+                <div>
+                  <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-widest">{selectedReq.type}</span>
+                  <h2 className="text-2xl font-black text-gray-800 mt-2">{selectedReq.title}</h2>
+                  <p className="text-sm text-gray-400 font-medium mt-1">Gửi bởi: {selectedReq.requesterName}</p>
+                </div>
+                <button onClick={() => setSelectedReq(null)} className="p-2 hover:bg-slate-50 rounded-full transition-colors text-gray-400">
+                  <XCircle size={24} />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-8 space-y-6">
+              <div>
+                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 block">Nội dung yêu cầu</label>
+                <div className="bg-slate-50 p-6 rounded-2xl text-gray-700 leading-relaxed min-h-[100px]">
+                  {selectedReq.content}
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 block flex items-center gap-2">
+                  <MessageSquare size={14} />
+                  Ghi chú phê duyệt
+                </label>
+                <textarea
+                  className="w-full bg-white border border-slate-200 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-400 outline-none min-h-[100px]"
+                  placeholder="Nhập ý kiến chỉ đạo hoặc lý do từ chối nếu có..."
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                />
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <button
+                  onClick={() => handleReject(selectedReq.id)}
+                  disabled={actionLoading}
+                  className="flex-1 flex items-center justify-center gap-2 border-2 border-rose-500 text-rose-500 hover:bg-rose-50 py-4 rounded-2xl font-bold transition-all disabled:opacity-50"
+                >
+                  <XCircle size={20} />
+                  Từ chối yêu cầu
+                </button>
+                <button
+                  onClick={() => handleApprove(selectedReq.id)}
+                  disabled={actionLoading}
+                  className="flex-1 flex items-center justify-center gap-2 bg-[#009FE3] hover:bg-[#0087c2] text-white py-4 rounded-2xl font-bold shadow-xl shadow-blue-100 transition-all disabled:opacity-50"
+                >
+                  {actionLoading ? <Loader2 className="animate-spin w-5 h-5" /> : <CheckCircle2 size={20} />}
+                  Duyệt & Chuyển lên Hiệu trưởng
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -5,6 +5,8 @@ import haukientruc.hr.dto.DepartmentTreeResponse;
 import haukientruc.hr.entity.Department;
 import haukientruc.hr.repository.DepartmentRepository;
 import haukientruc.hr.service.DepartmentService;
+import haukientruc.hr.service.LuceneService;
+import haukientruc.hr.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;
     private final haukientruc.hr.repository.UserRepository userRepository;
+    private final LuceneService luceneService;
+    private final UserService userService;
 
     // =========================
     // 🌳 GET TREE
@@ -38,10 +42,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     // =========================
     @Override
     public List<DepartmentTreeResponse> getAllDepartments() {
-        // Lấy tất cả, sắp xếp theo orderIndex (hoặc id)
-        List<Department> all = departmentRepository.findAll();
+        return getAllDepartments(null);
+    }
 
-        // Map sang DTO
+    public List<DepartmentTreeResponse> getAllDepartments(String search) {
+        List<Department> all;
+        if (search != null && !search.trim().isEmpty()) {
+            List<Long> ids = luceneService.searchEntities("department", search, new String[] { "code", "name" });
+            all = departmentRepository.findAllById(ids);
+        } else {
+            all = departmentRepository.findAll();
+        }
+
         List<DepartmentTreeResponse> result = new ArrayList<>();
         for (Department d : all) {
             result.add(mapToDTO(d));
@@ -118,7 +130,9 @@ public class DepartmentServiceImpl implements DepartmentService {
             department.setParent(parent);
         }
 
-        return mapToDTO(departmentRepository.save(department));
+        Department saved = departmentRepository.save(department);
+        luceneService.indexDepartment(saved);
+        return mapToDTO(saved);
     }
 
     // =========================
@@ -150,7 +164,8 @@ public class DepartmentServiceImpl implements DepartmentService {
             department.setParent(null);
         }
 
-        departmentRepository.save(department);
+        Department saved = departmentRepository.save(department);
+        luceneService.indexDepartment(saved);
     }
 
     // =========================
@@ -159,17 +174,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public void deleteDepartment(Long departmentId) {
         departmentRepository.deleteById(departmentId);
+        luceneService.deleteEntityIndex("department", String.valueOf(departmentId));
     }
 
     public List<haukientruc.hr.dto.UserDTO> getStaffByDepartmentId(Long departmentId) {
         return userRepository.findByDepartment_Id(departmentId).stream()
-                .map(u -> {
-                    haukientruc.hr.dto.UserDTO dto = new haukientruc.hr.dto.UserDTO();
-                    dto.setUserId(u.getUserId());
-                    dto.setUsername(u.getUsername());
-                    dto.setRoleId(u.getRole() != null ? u.getRole().getRoleId() : null);
-                    dto.setStatus(u.getStatus());
-                    return dto;
-                }).toList();
+                .map(userService::convertToDto)
+                .collect(java.util.stream.Collectors.toList());
     }
 }

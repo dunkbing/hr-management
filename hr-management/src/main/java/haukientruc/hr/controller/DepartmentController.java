@@ -22,8 +22,8 @@ public class DepartmentController {
     }
 
     @GetMapping
-    public List<DepartmentTreeResponse> getAll() {
-        return departmentService.getAllDepartments();
+    public List<DepartmentTreeResponse> getAll(@RequestParam(required = false) String search) {
+        return departmentService.getAllDepartments(search);
     }
 
     @PostMapping
