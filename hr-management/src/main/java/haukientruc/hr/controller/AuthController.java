@@ -48,4 +48,22 @@ public class AuthController {
                                                         "message", e.getMessage()));
                 }
         }
+
+        @PostMapping("/change-password")
+        public ResponseEntity<?> changePassword(@RequestBody Map<String, String> req) {
+                try {
+                        String username = req.get("username");
+                        String oldPassword = req.get("oldPassword");
+                        String newPassword = req.get("newPassword");
+
+                        if (username == null || oldPassword == null || newPassword == null) {
+                                return ResponseEntity.badRequest().body("Thiếu thông tin");
+                        }
+
+                        authService.changePassword(username, oldPassword, newPassword);
+                        return ResponseEntity.ok("Đổi mật khẩu thành công");
+                } catch (Exception e) {
+                        return ResponseEntity.badRequest().body(e.getMessage());
+                }
+        }
 }

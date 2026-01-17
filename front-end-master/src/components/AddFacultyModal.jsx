@@ -177,7 +177,7 @@ const AddFacultyModal = ({
                         </button>
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-[#009FE3] text-white rounded-md hover:bg-[#0086c2]"
+                            className="px-4 py-2 bg-[#009FE3] text-white rounded-md hover:bg-[#009FE3]"
                         >
                             {initialData ? "Lưu thay đổi" : "Thêm mới"}
                         </button>

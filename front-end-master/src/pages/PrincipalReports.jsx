@@ -86,7 +86,7 @@ const PrincipalReports = () => {
         </div>
         <button
           onClick={handleExport}
-          className="flex items-center gap-2 bg-[#009FE3] hover:bg-[#0087c2] text-white px-5 py-2.5 rounded-xl shadow-md transition-all font-semibold"
+          className="flex items-center gap-2 bg-[#009FE3] hover:bg-[#009FE3] text-white px-5 py-2.5 rounded-xl shadow-md transition-all font-semibold"
         >
           <Download className="w-5 h-5" />
           Tải báo cáo Excel

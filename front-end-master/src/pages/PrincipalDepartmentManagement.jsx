@@ -1,46 +1,72 @@
-import { useState } from "react";
-import { Search, Eye, Users, FileSpreadsheet } from "lucide-react";
-
-const mockDepartments = [
-  {
-    id: 1,
-    name: "Phòng Tổ chức Hành chính",
-    type: "Phòng ban",
-    manager: "Nguyễn Văn A",
-    employees: 32,
-    status: "Đang hoạt động",
-  },
-  {
-    id: 2,
-    name: "Khoa Công nghệ Thông tin",
-    type: "Khoa",
-    manager: "Trần Thị B",
-    employees: 54,
-    status: "Đang hoạt động",
-  },
-  {
-    id: 3,
-    name: "Phòng Đào tạo",
-    type: "Phòng ban",
-    manager: "Lê Văn C",
-    employees: 14,
-    status: "Tạm dừng",
-  },
-];
+import { useState, useEffect } from "react";
+import { Search, Eye, Users, FileSpreadsheet, Loader2 } from "lucide-react";
+import axios from "axios";
 
 const PrincipalDepartmentManagement = () => {
+  const [departments, setDepartments] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   const [quickViewData, setQuickViewData] = useState(null);
+
+  // Staff Popup State
   const [staffPopup, setStaffPopup] = useState(null);
+  const [staffList, setStaffList] = useState([]);
+  const [loadingStaff, setLoadingStaff] = useState(false);
 
   // Phân trang
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
 
-  const filteredDepartments = mockDepartments.filter((d) =>
-    d.name.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+    fetchDepartments();
+  }, []);
+
+  const fetchDepartments = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      // Use the flat list endpoint if available, or tree. 
+      // Based on controller, getAll accepts search param and returns list
+      const res = await axios.get("http://localhost:8080/api/departments", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      // Flatten the tree or use the list directly depending on backend response.
+      // Assuming 'getAll' returns a list of DepartmentTreeResponse which might suffice.
+      // If the backend returns a tree structure, we might need to flatten it or just show top levels.
+      // Let's assume for now it returns a list or we can just display what we get.
+      // Reviewing logic: the backend 'getAll' with search param seems to return a flat list or filtered list.
+      setDepartments(res.data);
+    } catch (err) {
+      console.error("Failed to fetch departments", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpenStaffPopup = async (dept) => {
+    setStaffPopup(dept);
+    setStaffList([]);
+    setLoadingStaff(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`http://localhost:8080/api/departments/${dept.id}/staff`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setStaffList(res.data);
+    } catch (err) {
+      console.error("Failed to fetch staff", err);
+      alert("Không thể tải danh sách nhân sự.");
+    } finally {
+      setLoadingStaff(false);
+    }
+  };
+
+  const filteredDepartments = departments.filter((d) => {
+    // Map backend fields: departmentName vs name
+    const name = d.departmentName || d.name || "";
+    return name.toLowerCase().includes(search.toLowerCase());
+  });
 
   const totalPages = Math.ceil(filteredDepartments.length / pageSize);
 
@@ -49,13 +75,19 @@ const PrincipalDepartmentManagement = () => {
     currentPage * pageSize
   );
 
+  if (loading) return (
+    <div className="flex h-screen items-center justify-center">
+      <Loader2 className="animate-spin text-blue-600" size={40} />
+    </div>
+  );
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">
         Quản lý phòng ban
       </h1>
 
-      {/* THANH TÌM KIẾM (chỉ giữ lại phần này) */}
+      {/* THANH TÌM KIẾM */}
       <div className="relative mb-6">
         <Search
           className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -67,7 +99,7 @@ const PrincipalDepartmentManagement = () => {
           className="w-full border border-gray-300 rounded-lg pl-10 pr-3 py-2 outline-none 
                      focus:ring-2 focus:ring-blue-400"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
         />
       </div>
 
@@ -75,10 +107,10 @@ const PrincipalDepartmentManagement = () => {
       <div className="bg-white shadow rounded-xl p-5">
         <div className="flex justify-between items-center mb-4">
           <h2 className="font-semibold text-lg text-gray-700">
-            Danh sách phòng ban
+            Danh sách phòng ban ({filteredDepartments.length})
           </h2>
 
-          <button className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+          <button className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 opacity-50 cursor-not-allowed">
             <FileSpreadsheet size={18} />
             Xuất báo cáo
           </button>
@@ -87,9 +119,9 @@ const PrincipalDepartmentManagement = () => {
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left bg-gray-100">
+              <th className="p-3">Mã PB</th>
               <th className="p-3">Tên phòng ban</th>
-              <th className="p-3">Loại</th>
-              <th className="p-3">Trưởng phòng</th>
+              <th className="p-3">Mô tả</th>
               <th className="p-3">Nhân sự</th>
               <th className="p-3">Trạng thái</th>
               <th className="p-3 text-center">Hành động</th>
@@ -97,149 +129,163 @@ const PrincipalDepartmentManagement = () => {
           </thead>
 
           <tbody>
-            {paginatedData.map((d) => (
+            {paginatedData.length > 0 ? paginatedData.map((d) => (
               <tr key={d.id} className="border-t hover:bg-gray-50">
-                <td className="p-3">{d.name}</td>
-                <td className="p-3">{d.type}</td>
-                <td className="p-3">{d.manager}</td>
-                <td className="p-3">{d.employees}</td>
+                <td className="p-3 font-medium text-blue-600">{d.departmentCode || "---"}</td>
+                <td className="p-3 font-semibold">{d.departmentName || d.name}</td>
+                <td className="p-3 text-gray-500 truncate max-w-xs">{d.description || "---"}</td>
+                <td className="p-3">{d.memberCount || 0}</td>
                 <td className="p-3">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      d.status === "Đang hoạt động"
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${d.active
                         ? "bg-green-100 text-green-700"
                         : "bg-red-100 text-red-600"
-                    }`}
+                      }`}
                   >
-                    {d.status}
+                    {d.active ? "Đang hoạt động" : "Đã khóa"}
                   </span>
                 </td>
                 <td className="p-3 flex justify-center gap-3">
                   <button
                     className="p-2 rounded-lg bg-blue-50 hover:bg-blue-100"
                     onClick={() => setQuickViewData(d)}
+                    title="Xem chi tiết"
                   >
                     <Eye size={18} className="text-blue-600" />
                   </button>
 
                   <button
                     className="p-2 rounded-lg bg-orange-50 hover:bg-orange-100"
-                    onClick={() => setStaffPopup(d)}
+                    onClick={() => handleOpenStaffPopup(d)}
+                    title="Xem danh sách nhân sự"
                   >
                     <Users size={18} className="text-orange-600" />
                   </button>
                 </td>
               </tr>
-            ))}
+            )) : (
+              <tr>
+                <td colSpan="6" className="p-6 text-center text-gray-500 italic">Không tìm thấy phòng ban nào</td>
+              </tr>
+            )}
           </tbody>
         </table>
 
         {/* PHÂN TRANG */}
-        <div className="flex justify-between items-center mt-4">
-          <p className="text-sm text-gray-600">
-            Trang {currentPage}/{totalPages} — Tổng{" "}
-            {filteredDepartments.length} phòng ban
-          </p>
+        {totalPages > 1 && (
+          <div className="flex justify-between items-center mt-4">
+            <p className="text-sm text-gray-600">
+              Trang {currentPage}/{totalPages}
+            </p>
 
-          <div className="flex items-center gap-2">
-            <button
-              className="px-3 py-1 border rounded-lg text-sm hover:bg-gray-100 disabled:opacity-40"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(currentPage - 1)}
-            >
-              Trước
-            </button>
-
-            {[...Array(totalPages)].map((_, i) => (
+            <div className="flex items-center gap-2">
               <button
-                key={i}
-                onClick={() => setCurrentPage(i + 1)}
-                className={`px-3 py-1 rounded-lg text-sm border ${
-                  currentPage === i + 1
-                    ? "bg-blue-600 text-white"
-                    : "hover:bg-gray-100"
-                }`}
+                className="px-3 py-1 border rounded-lg text-sm hover:bg-gray-100 disabled:opacity-40"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(currentPage - 1)}
               >
-                {i + 1}
+                Trước
               </button>
-            ))}
-
-            <button
-              className="px-3 py-1 border rounded-lg text-sm hover:bg-gray-100 disabled:opacity-40"
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(currentPage + 1)}
-            >
-              Sau
-            </button>
+              <button
+                className="px-3 py-1 border rounded-lg text-sm hover:bg-gray-100 disabled:opacity-40"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(currentPage + 1)}
+              >
+                Sau
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
-      {/* POPUP XEM NHANH */}
+      {/* POPUP XEM CHI TIẾT */}
       {quickViewData && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl w-[500px] p-6 space-y-4 shadow-xl">
-            <h3 className="text-xl font-bold text-gray-700">
+            <h3 className="text-xl font-bold text-gray-700 border-b pb-2">
               Thông tin phòng ban
             </h3>
 
-            <div className="space-y-2 text-gray-600">
+            <div className="space-y-3 text-gray-600">
+              <p><strong>Mã phòng ban:</strong> {quickViewData.departmentCode}</p>
+              <p><strong>Tên phòng ban:</strong> {quickViewData.departmentName || quickViewData.name}</p>
+              <p><strong>Mô tả:</strong> {quickViewData.description || "Không có"}</p>
+              <p><strong>Số lượng nhân sự:</strong> {quickViewData.memberCount || 0}</p>
               <p>
-                <strong>Tên:</strong> {quickViewData.name}
-              </p>
-              <p>
-                <strong>Loại:</strong> {quickViewData.type}
-              </p>
-              <p>
-                <strong>Trưởng phòng:</strong> {quickViewData.manager}
-              </p>
-              <p>
-                <strong>Nhân sự:</strong> {quickViewData.employees}
-              </p>
-              <p>
-                <strong>Trạng thái:</strong> {quickViewData.status}
+                <strong>Trạng thái:</strong>{" "}
+                <span className={quickViewData.active ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
+                  {quickViewData.active ? "Hoạt động" : "Đã khóa"}
+                </span>
               </p>
             </div>
 
-            <button
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-              onClick={() => setQuickViewData(null)}
-            >
-              Đóng
-            </button>
+            <div className="flex justify-end pt-4">
+              <button
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                onClick={() => setQuickViewData(null)}
+              >
+                Đóng
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* POPUP NHÂN SỰ */}
+      {/* POPUP DANH SÁCH NHÂN SỰ */}
       {staffPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-xl w-[700px] p-6">
-            <h3 className="text-xl font-bold mb-4">
-              Nhân sự của {staffPopup.name}
+          <div className="bg-white rounded-xl w-[800px] max-h-[80vh] flex flex-col p-6">
+            <h3 className="text-xl font-bold mb-4 text-blue-600 border-b pb-2">
+              Nhân sự thuộc: {staffPopup.departmentName || staffPopup.name}
             </h3>
 
-            <div className="flex justify-between mb-4">
-              <input
-                type="text"
-                placeholder="Tìm nhân sự..."
-                className="border px-3 py-2 rounded-lg w-1/2"
-              />
-
-              <button className="flex items-center gap-2 bg-green-600 text-white px-3 py-2 rounded-lg">
-                <FileSpreadsheet size={18} />
-                Xuất Excel
-              </button>
+            {/* Content Area */}
+            <div className="flex-1 overflow-y-auto min-h-[300px]">
+              {loadingStaff ? (
+                <div className="flex justify-center items-center h-full">
+                  <Loader2 className="animate-spin text-blue-500" />
+                </div>
+              ) : staffList.length > 0 ? (
+                <table className="w-full text-sm text-left">
+                  <thead className="bg-gray-50 sticky top-0">
+                    <tr>
+                      <th className="p-3 border-b">Họ tên</th>
+                      <th className="p-3 border-b">Chức vụ</th>
+                      <th className="p-3 border-b">Email</th>
+                      <th className="p-3 border-b text-center">Trạng thái</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {staffList.map((s) => (
+                      <tr key={s.userId} className="border-b hover:bg-blue-50">
+                        <td className="p-3 font-medium">
+                          <div className="flex items-center gap-2">
+                            <img src={s.avatar || `https://ui-avatars.com/api/?name=${s.fullName}&background=random`} className="w-8 h-8 rounded-full" alt="" />
+                            {s.fullName}
+                          </div>
+                        </td>
+                        <td className="p-3">{s.positionName || s.roleName || "Nhân viên"}</td>
+                        <td className="p-3 text-gray-500">{s.email}</td>
+                        <td className="p-3 text-center">
+                          <span className={`px-2 py-0.5 rounded text-xs ${s.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                            {s.isActive ? "Active" : "Inactive"}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="text-center text-gray-500 py-10">
+                  Chưa có nhân sự nào trong phòng ban này.
+                </div>
+              )}
             </div>
 
-            <p className="text-gray-600 italic text-sm">
-              (Danh sách nhân sự tạm thời – chưa có API)
-            </p>
-
-            <div className="mt-4 text-right">
+            <div className="mt-4 pt-4 border-t flex justify-end">
               <button
                 onClick={() => setStaffPopup(null)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow"
               >
                 Đóng
               </button>

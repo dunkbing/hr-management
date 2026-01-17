@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaPlus, FaFileExcel, FaCogs, FaColumns, FaLink, FaTimes } from "react-icons/fa";
+import { FaSearch, FaPlus, FaFileExcel, FaCogs, FaColumns, FaLink, FaTimes, FaTrash } from "react-icons/fa";
 import axios from "axios";
 
 function UserManagement() {
@@ -44,6 +44,19 @@ function UserManagement() {
       fetchUsers(); // Refresh list
     } catch (err) {
       alert("❌ Lỗi: " + (err.response?.data?.message || "Không thể thêm người dùng"));
+    }
+  };
+
+  const handleDeleteUser = async (userId) => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa người dùng này?")) return;
+    try {
+      await axios.delete(`http://localhost:8080/api/users/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      alert("✅ Xóa người dùng thành công!");
+      fetchUsers();
+    } catch (err) {
+      alert("❌ Lỗi: " + (err.response?.data?.message || "Không thể xóa người dùng"));
     }
   };
 
@@ -93,6 +106,7 @@ function UserManagement() {
               <th className="p-4 font-semibold border-b">Vai trò</th>
               <th className="p-4 font-semibold border-b">Trạng thái</th>
               <th className="p-4 font-semibold border-b">Ngày tạo</th>
+              <th className="p-4 font-semibold border-b text-center">Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -115,6 +129,32 @@ function UserManagement() {
                   </td>
                   <td className="p-4 text-gray-500 text-sm">
                     {u.createdAt ? new Date(u.createdAt).toLocaleString() : ""}
+                  </td>
+                  <td className="p-4 text-center">
+                    {(() => {
+                      const currentRole = localStorage.getItem("role");
+                      const currentUsername = localStorage.getItem("username");
+                      const targetRole = u.role ? u.role.roleCode : "";
+
+                      // 1. Không thể tự xóa chính mình
+                      if (u.username === currentUsername) return null;
+
+                      // 2. Admin không thể xóa SuperAdmin
+                      if (currentRole === "admin" && targetRole === "superadmin") return null;
+
+                      // 3. Admin không thể xóa Admin khác (chỉ SuperAdmin mới được xóa Admin)
+                      if (currentRole === "admin" && targetRole === "admin") return null;
+
+                      return (
+                        <button
+                          onClick={() => handleDeleteUser(u.userId)}
+                          className="text-red-500 hover:text-red-700 bg-red-100 p-2 rounded-full transition-colors"
+                          title="Xóa người dùng"
+                        >
+                          <FaTrash />
+                        </button>
+                      );
+                    })()}
                   </td>
                 </tr>
               ))

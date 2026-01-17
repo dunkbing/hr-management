@@ -18,7 +18,7 @@ const LecturerSidebar = () => {
             {/* Logo */}
             <Link
                 to="/lecturer/dashboard"
-                className="flex items-center gap-3 p-6 border-b hover:bg-[#e0f3fc] transition"
+                className="flex items-center gap-3 p-6 border-b transition"
             >
                 <img
                     src="https://upload.wikimedia.org/wikipedia/commons/0/03/Logo_HAU.png"
@@ -33,9 +33,9 @@ const LecturerSidebar = () => {
             <nav className="mt-4 flex-1 text-gray-600">
                 <Link
                     to="/lecturer/dashboard"
-                    className={`flex items-center gap-3 px-6 py-3 transition hover:bg-[#e0f3fc] ${isActive("/lecturer/dashboard")
-                            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
-                            : "text-gray-600"
+                    className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/lecturer/dashboard")
+                        ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+                        : "text-gray-600"
                         }`}
                 >
                     <LayoutDashboard size={18} />
@@ -44,9 +44,9 @@ const LecturerSidebar = () => {
 
                 <Link
                     to="/lecturer/profile"
-                    className={`flex items-center gap-3 px-6 py-3 transition hover:bg-[#e0f3fc] ${isActive("/lecturer/profile")
-                            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
-                            : "text-gray-600"
+                    className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/lecturer/profile")
+                        ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+                        : "text-gray-600"
                         }`}
                 >
                     <User size={18} />
@@ -55,9 +55,9 @@ const LecturerSidebar = () => {
 
                 <Link
                     to="/lecturer/submit-request"
-                    className={`flex items-center gap-3 px-6 py-3 transition hover:bg-[#e0f3fc] ${isActive("/lecturer/submit-request")
-                            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
-                            : "text-gray-600"
+                    className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/lecturer/submit-request")
+                        ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+                        : "text-gray-600"
                         }`}
                 >
                     <Send size={18} />
@@ -66,9 +66,9 @@ const LecturerSidebar = () => {
 
                 <Link
                     to="/lecturer/my-requests"
-                    className={`flex items-center gap-3 px-6 py-3 transition hover:bg-[#e0f3fc] ${isActive("/lecturer/my-requests")
-                            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
-                            : "text-gray-600"
+                    className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/lecturer/my-requests")
+                        ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+                        : "text-gray-600"
                         }`}
                 >
                     <ClipboardList size={18} />

@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,jsx,ts,tsx}", // đủ định dạng React và TypeScript
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['"Roboto"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }

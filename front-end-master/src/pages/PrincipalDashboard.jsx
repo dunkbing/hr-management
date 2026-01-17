@@ -129,7 +129,7 @@ const PrincipalDashboard = () => {
                 <p className="text-xs text-slate-500 mb-3">Khoa Kiến trúc - Tăng cường nhân lực HK2</p>
                 <div className="flex gap-2">
                   <button className="flex-1 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors">Chi tiết</button>
-                  <button className="flex-1 py-2 bg-[#009FE3] text-white rounded-xl text-xs font-bold hover:bg-[#008cc9] transition-colors">Duyệt nhanh</button>
+                  <button className="flex-1 py-2 bg-[#009FE3] text-white rounded-xl text-xs font-bold hover:bg-[#009FE3] transition-colors">Duyệt nhanh</button>
                 </div>
               </div>
             ))}

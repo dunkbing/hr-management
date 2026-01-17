@@ -29,7 +29,7 @@ const PrincipalSidebar = () => {
       {/* Logo trường */}
       <Link
         to="/principal/dashboard"
-        className="p-6 border-b flex items-center gap-3 hover:bg-[#e0f3fc] transition"
+        className="p-6 border-b flex items-center gap-3 transition"
         style={{ color: mainColor }}
       >
         <img
@@ -52,7 +52,7 @@ const PrincipalSidebar = () => {
               key={i}
               to={item.path}
               className={`flex items-center gap-3 px-6 py-3 text-gray-600 
-                hover:bg-[#e0f3fc] hover:text-[#009FE3] transition
+                transition
                 ${active ? "rounded-r-full mr-2" : ""}`}
               style={active ? { backgroundColor: mainColor, color: "#fff" } : {}}
             >

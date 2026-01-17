@@ -166,7 +166,7 @@ const Departments = () => {
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 bg-[#009FE3] text-white px-4 py-2 rounded-md hover:bg-[#0086c2]"
+          className="flex items-center gap-2 bg-[#009FE3] text-white px-4 py-2 rounded-md hover:bg-[#009FE3]"
         >
           <Plus size={18} />
           Thêm phòng ban
@@ -216,7 +216,7 @@ const Departments = () => {
               {filteredDepartments.map((d, index) => (
                 <tr
                   key={d.departmentId}
-                  className="border-t hover:bg-[#f1f9fd] cursor-pointer"
+                  className="border-t"
                   onClick={() => setSelectedDept(d)}
                 >
                   <td className="px-4 py-3">{index + 1}</td>
@@ -353,7 +353,7 @@ const Departments = () => {
                 </table>
               </div>
               <div className="pt-4 mt-4 border-t text-right">
-                <button onClick={() => setShowStaffModal(false)} className="bg-[#009FE3] text-white px-6 py-2 rounded-md hover:bg-[#0086c2] text-sm">Đóng</button>
+                <button onClick={() => setShowStaffModal(false)} className="bg-[#009FE3] text-white px-6 py-2 rounded-md hover:bg-[#009FE3] text-sm">Đóng</button>
               </div>
             </div>
           </div>

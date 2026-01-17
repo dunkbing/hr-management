@@ -264,7 +264,7 @@ function Profile() {
         <div className="flex justify-center pt-8">
           <button
             type="submit"
-            className="bg-[#009FE3] text-white px-12 py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-[#0077b3] hover:shadow-xl hover:shadow-blue-200 transition-all active:scale-95"
+            className="bg-[#009FE3] text-white px-12 py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-[#009FE3] hover:shadow-xl hover:shadow-blue-200 transition-all active:scale-95"
           >
             Cập nhật hồ sơ
           </button>

@@ -1,5 +1,8 @@
 package haukientruc.hr.service;
 
+import haukientruc.hr.entity.User;
+import haukientruc.hr.entity.Role;
+
 import haukientruc.hr.entity.*;
 import haukientruc.hr.repository.*;
 import haukientruc.hr.dto.UserDTO;
@@ -161,6 +164,7 @@ public class UserService {
         dto.setAvatar(user.getAvatar());
         dto.setStatus(user.getStatus());
         dto.setIsActive(user.getIsActive());
+        dto.setCreatedAt(user.getCreatedAt());
 
         if (user.getRole() != null) {
             dto.setRoleId(user.getRole().getRoleId());
@@ -200,6 +204,22 @@ public class UserService {
     public User getById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+    }
+
+    public List<UserDTO> getMyFacultyEmployees() {
+        String currentUsername = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        User currentUser = userRepository.findByUsername(currentUsername)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+
+        if (currentUser.getFaculty() == null) {
+            // Return empty list instead of throwing exception to avoid frontend error
+            return java.util.Collections.emptyList();
+        }
+
+        return userRepository.findByFaculty_Id(currentUser.getFaculty().getId()).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     public void delete(Long id) {
@@ -268,16 +288,87 @@ public class UserService {
             }
         }
 
-        // 2. Kiểm tra nếu có sự thay đổi vai trò hoặc gán vai trò mới
-        boolean isRoleChanging = existingUser == null
-                || (targetRoleCode != null && !targetRoleCode.equalsIgnoreCase(existingRoleCode));
+        // 2. Chặn việc gán vai trò không được phép
+        // String targetRoleCode = dto.getRoleCode(); // Already defined above
 
-        if (isRoleChanging) {
-            if ("admin".equalsIgnoreCase(targetRoleCode) || "superadmin".equalsIgnoreCase(targetRoleCode)) {
-                if (!isCurrentUserSuperAdmin) {
-                    throw new RuntimeException("Chỉ SUPER_ADMIN mới có quyền gán vai trò ADMIN hoặc SUPERADMIN");
+        // Fix logic: Nếu tạo mới user (existingUser == null) hoặc cập nhật
+        // (existingUser != null)
+        // Admin chỉ được tạo/gán các role: hieutruong, truongkhoa, giangvien
+        // SuperAdmin được tạo tất cả (bao gồm admin, superadmin)
+
+        if (targetRoleCode != null) {
+            String code = targetRoleCode.trim().toLowerCase().replace("role_", "");
+
+            if (!isCurrentUserSuperAdmin) {
+                // Nếu KHÔNG phải superadmin -> Chỉ được thao tác với nhóm role mức thấp
+                // Danh sách cho phép của admin
+                List<String> allowedForAdmin = java.util.Arrays.asList("hieutruong", "truongkhoa", "giangvien");
+
+                if (!allowedForAdmin.contains(code)) {
+                    throw new RuntimeException("Bạn không có quyền gán vai trò: " + targetRoleCode);
                 }
             }
+        }
+    }
+
+    // ===== FACULTY EXPORT =====
+    @Transactional(readOnly = true)
+    public byte[] exportFacultyEmployees(Long facultyId) throws java.io.IOException {
+        List<User> staff = userRepository.findByFaculty_Id(facultyId);
+
+        try (org.apache.poi.xssf.usermodel.XSSFWorkbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook()) {
+            org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Nhân sự khoa");
+
+            // Header
+            String[] headers = {
+                    "ID", "Họ tên", "Tên đăng nhập", "Email", "SĐT",
+                    "Chức vụ", "Bộ môn", "Trạng thái", "Ngày vào trường"
+            };
+
+            org.apache.poi.ss.usermodel.Row headerRow = sheet.createRow(0);
+            org.apache.poi.ss.usermodel.CellStyle headerStyle = workbook.createCellStyle();
+            org.apache.poi.ss.usermodel.Font font = workbook.createFont();
+            font.setBold(true);
+            headerStyle.setFont(font);
+
+            for (int i = 0; i < headers.length; i++) {
+                org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+                cell.setCellStyle(headerStyle);
+            }
+
+            // Data
+            int rowIdx = 1;
+            for (User u : staff) {
+                org.apache.poi.ss.usermodel.Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(u.getUserId());
+                row.createCell(1).setCellValue(u.getFullName());
+                row.createCell(2).setCellValue(u.getUsername());
+                row.createCell(3).setCellValue(u.getEmail() != null ? u.getEmail() : "");
+                row.createCell(4).setCellValue(u.getPhone() != null ? u.getPhone() : "");
+
+                String roleName = u.getPosition() != null ? u.getPosition().getName()
+                        : (u.getRole() != null ? u.getRole().getRoleName() : "");
+                row.createCell(5).setCellValue(roleName);
+
+                String deptName = u.getDepartment() != null ? u.getDepartment().getDepartmentName() : "";
+                row.createCell(6).setCellValue(deptName);
+
+                row.createCell(7).setCellValue(Boolean.TRUE.equals(u.getIsActive()) ? "Đang làm việc" : "Đã nghỉ");
+
+                String joinDate = u.getJoinDate() != null ? u.getJoinDate().toString() : "";
+                row.createCell(8).setCellValue(joinDate);
+            }
+
+            // Auto size columns
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+            workbook.write(out);
+            return out.toByteArray();
         }
     }
 

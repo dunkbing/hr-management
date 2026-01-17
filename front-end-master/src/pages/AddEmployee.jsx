@@ -59,7 +59,31 @@ const AddEmployee = () => {
       setFaculties(facResp.data);
       setDepartments(depResp.data);
       setPositions(posResp.data);
-      setRoles(rolesResp.data);
+
+      // --- FILTER ROLES ---
+      const fetchedRoles = rolesResp.data || [];
+      const currentUserRole = localStorage.getItem("role"); // "admin", "superadmin", etc.
+
+      // Define allowed role codes
+      let allowedCodes = [];
+      if (currentUserRole === "superadmin") {
+        // Superadmin: thêm Admin, Hiệu trưởng, Trưởng khoa, Giảng viên
+        allowedCodes = ["admin", "hieutruong", "truongkhoa", "giangvien"];
+      } else if (currentUserRole === "admin") {
+        // Admin: chỉ thêm Hiệu trưởng, Trưởng khoa, Giảng viên
+        allowedCodes = ["hieutruong", "truongkhoa", "giangvien"];
+      } else {
+        // Fallback for others (shouldn't happen on this page normally)
+        allowedCodes = ["giangvien"];
+      }
+
+      const filtered = fetchedRoles.filter((r) => {
+        // Normalize code
+        const code = (r.roleCode || "").toLowerCase().replace("role_", "");
+        return allowedCodes.includes(code);
+      });
+
+      setRoles(filtered);
 
       if (isEdit) {
         const userResp = await axios.get(`${API_BASE_URL}/users/${id}`, config);

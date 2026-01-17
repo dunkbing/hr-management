@@ -57,4 +57,16 @@ public class AuthService {
 
                 return user;
         }
+
+        public void changePassword(String username, String oldPassword, String newPassword) {
+                User user = userRepository.findByUsername(username)
+                                .orElseThrow(() -> new RuntimeException("Tài khoản không tồn tại"));
+
+                if (!passwordEncoder.matches(oldPassword, user.getPasswordHash())) {
+                        throw new RuntimeException("Mật khẩu cũ không chính xác");
+                }
+
+                user.setPasswordHash(passwordEncoder.encode(newPassword));
+                userRepository.save(user);
+        }
 }

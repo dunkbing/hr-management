@@ -11,9 +11,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #009FE3aa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #009FE3aa);
 }
@@ -22,6 +24,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -46,6 +49,7 @@ a {
   color: #009FE3;
   text-decoration: none;
 }
+
 a:hover {
   text-decoration: underline;
 }
@@ -59,14 +63,22 @@ button {
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
 button:hover {
-  background-color: #008ccc;
+  background-color: #009FE3;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: #009FE3;
 }
 
-p, span, li {
+p,
+span,
+li {
   color: #333;
 }

@@ -277,23 +277,57 @@ function EmployeeList() {
                         <FaEye size={14} />
                       </button>
 
-                      <button
-                        title="Chỉnh sửa"
-                        onClick={() => navigate(`/employees/edit/${emp.userId}`)}
-                        className="p-2 rounded-full text-blue-600 hover:text-blue-800 hover:bg-blue-50 transition"
-                      >
-                        <FaEdit size={14} />
-                      </button>
+                      {(() => {
+                        const currentRole = localStorage.getItem("role");
+                        const currentUsername = localStorage.getItem("username");
+                        const targetRole = emp.roleCode || (emp.role ? emp.role.roleCode : "");
 
-                      {emp.username !== localStorage.getItem("username") && (
-                        <button
-                          title="Xoá"
-                          onClick={() => handleDelete(emp.userId)}
-                          className="p-2 rounded-full text-red-500 hover:text-red-700 hover:bg-red-50 transition"
-                        >
-                          <FaTrash size={14} />
-                        </button>
-                      )}
+                        // Rule 1: No one usually edits/deletes SuperAdmin except SuperAdmin (if allowed)
+                        // But specifically: "tất cả các tài khoản khác thấp hơn superadmin đều không có quyền chỉnh sửa và xoá tài khoản superadmin"
+                        const isTargetSuperAdmin = targetRole === "superadmin";
+                        const isCurrentSuperAdmin = currentRole === "superadmin";
+
+                        if (isTargetSuperAdmin && !isCurrentSuperAdmin) {
+                          return null; // Hide both Edit and Delete
+                        }
+
+                        // Edit Button
+                        // If target is SuperAdmin, only SuperAdmin can see (already handled above)
+                        const canEdit = true;
+
+                        // Delete Button
+                        // 1. Cannot delete self
+                        // 2. Admin cannot delete Admin (only SuperAdmin can)
+                        // 3. Admin cannot delete SuperAdmin (handled above)
+                        let canDelete = true;
+
+                        if (emp.username === currentUsername) canDelete = false;
+                        if (targetRole === "admin" && currentRole === "admin") canDelete = false;
+
+                        return (
+                          <>
+                            {canEdit && (
+                              <button
+                                title="Chỉnh sửa"
+                                onClick={() => navigate(`/employees/edit/${emp.userId}`)}
+                                className="p-2 rounded-full text-blue-600 hover:text-blue-800 hover:bg-blue-50 transition"
+                              >
+                                <FaEdit size={14} />
+                              </button>
+                            )}
+
+                            {canDelete && (
+                              <button
+                                title="Xoá"
+                                onClick={() => handleDelete(emp.userId)}
+                                className="p-2 rounded-full text-red-500 hover:text-red-700 hover:bg-red-50 transition"
+                              >
+                                <FaTrash size={14} />
+                              </button>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
                   </td>
                 </tr>

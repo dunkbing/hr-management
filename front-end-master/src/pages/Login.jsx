@@ -140,7 +140,7 @@ function Login() {
           <div className="text-center mb-6">
             <a
               href="#"
-              className="text-[#009FE3] hover:text-[#0077b3] text-sm font-medium"
+              className="text-[#009FE3] text-sm font-medium"
             >
               Quên mật khẩu
             </a>
@@ -156,12 +156,6 @@ function Login() {
               padding: "0.5rem",
               borderRadius: "0.5rem",
             }}
-            onMouseOver={(e) =>
-              (e.currentTarget.style.backgroundColor = "#0077b3")
-            }
-            onMouseOut={(e) =>
-              (e.currentTarget.style.backgroundColor = mainColor)
-            }
           >
             Đăng nhập
           </button>

@@ -23,7 +23,7 @@ const Sidebar = () => {
       {/* Logo */}
       <Link
         to="/dashboard"
-        className="flex items-center gap-3 p-6 border-b hover:bg-[#e0f3fc] transition"
+        className="flex items-center gap-3 p-6 border-b transition"
       >
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/0/03/Logo_HAU.png"
@@ -39,11 +39,10 @@ const Sidebar = () => {
         {/* Dashboard */}
         <Link
           to="/dashboard"
-          className={`flex items-center gap-3 px-6 py-3 transition hover:bg-[#e0f3fc] ${
-            isActive("/dashboard")
+          className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/dashboard")
               ? "bg-[#009FE3] text-white rounded-r-full mr-2"
               : "text-gray-600"
-          }`}
+            }`}
         >
           <LayoutDashboard size={18} />
           <span className="text-sm font-medium">Dashboard thống kê</span>
@@ -52,11 +51,10 @@ const Sidebar = () => {
         {/* Nhân sự */}
         <Link
           to="/employees"
-          className={`flex items-center gap-3 px-6 py-3 transition hover:bg-[#e0f3fc] ${
-            isActive("/employees")
+          className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/employees")
               ? "bg-[#009FE3] text-white rounded-r-full mr-2"
               : "text-gray-600"
-          }`}
+            }`}
         >
           <Users size={18} />
           <span className="text-sm font-medium">Quản lý nhân sự</span>
@@ -65,11 +63,10 @@ const Sidebar = () => {
         {/* ===== QUẢN LÝ PHÒNG BAN ===== */}
         <Link
           to="/departments"
-          className={`flex items-center gap-3 px-6 py-3 transition hover:bg-[#e0f3fc] ${
-            isActive("/departments")
+          className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/departments")
               ? "bg-[#009FE3] text-white rounded-r-full mr-2"
               : "text-gray-600"
-          }`}
+            }`}
         >
           <Building2 size={18} />
           <span className="text-sm font-medium">Quản lý phòng ban</span>
@@ -78,11 +75,10 @@ const Sidebar = () => {
         {/* ===== QUẢN LÝ KHOA ===== */}
         <Link
           to="/faculties"
-          className={`flex items-center gap-3 px-6 py-3 transition hover:bg-[#e0f3fc] ${
-            isActive("/faculties")
+          className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/faculties")
               ? "bg-[#009FE3] text-white rounded-r-full mr-2"
               : "text-gray-600"
-          }`}
+            }`}
         >
           <BookOpen size={18} />
           <span className="text-sm font-medium">Quản lý khoa</span>
@@ -91,11 +87,10 @@ const Sidebar = () => {
         {/* Chức danh */}
         <Link
           to="/positions"
-          className={`flex items-center gap-3 px-6 py-3 transition hover:bg-[#e0f3fc] ${
-            isActive("/positions")
+          className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/positions")
               ? "bg-[#009FE3] text-white rounded-r-full mr-2"
               : "text-gray-600"
-          }`}
+            }`}
         >
           <Briefcase size={18} />
           <span className="text-sm font-medium">Quản lý chức danh</span>
@@ -104,11 +99,10 @@ const Sidebar = () => {
         {/* Trình phê duyệt */}
         <Link
           to="/approvals"
-          className={`flex items-center gap-3 px-6 py-3 transition hover:bg-[#e0f3fc] ${
-            isActive("/approvals")
+          className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/approvals")
               ? "bg-[#009FE3] text-white rounded-r-full mr-2"
               : "text-gray-600"
-          }`}
+            }`}
         >
           <ClipboardCheck size={18} />
           <span className="text-sm font-medium">Trình phê duyệt</span>
@@ -117,11 +111,10 @@ const Sidebar = () => {
         {/* Báo cáo */}
         <Link
           to="/reports"
-          className={`flex items-center gap-3 px-6 py-3 transition hover:bg-[#e0f3fc] ${
-            isActive("/reports")
+          className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/reports")
               ? "bg-[#009FE3] text-white rounded-r-full mr-2"
               : "text-gray-600"
-          }`}
+            }`}
         >
           <BarChart2 size={18} />
           <span className="text-sm font-medium">Báo cáo & Thống kê</span>
@@ -130,11 +123,10 @@ const Sidebar = () => {
         {/* Cài đặt */}
         <Link
           to="/settings"
-          className={`flex items-center gap-3 px-6 py-3 transition hover:bg-[#e0f3fc] ${
-            isActive("/settings")
+          className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/settings")
               ? "bg-[#009FE3] text-white rounded-r-full mr-2"
               : "text-gray-600"
-          }`}
+            }`}
         >
           <Settings size={18} />
           <span className="text-sm font-medium">Cài đặt hệ thống</span>

@@ -102,7 +102,7 @@ const Reports = () => {
         <button
           onClick={handleExport}
           disabled={exporting}
-          className="flex items-center gap-2 bg-[#009FE3] hover:bg-[#0087c2] text-white px-6 py-3 rounded-2xl shadow-lg shadow-blue-200 transition-all font-semibold disabled:opacity-50"
+          className="flex items-center gap-2 bg-[#009FE3] hover:bg-[#009FE3] text-white px-6 py-3 rounded-2xl shadow-lg shadow-blue-200 transition-all font-semibold disabled:opacity-50"
         >
           {exporting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
           Xuất báo cáo Excel

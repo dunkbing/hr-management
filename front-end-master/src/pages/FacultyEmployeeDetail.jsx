@@ -1,145 +1,187 @@
-import { ArrowLeft, Mail, Phone, Briefcase, User, BookOpen } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeft, Mail, Phone, Briefcase, User, BookOpen, Calendar, Award } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const FacultyEmployeeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [employee, setEmployee] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fake data (sau này gọi API bằng id)
-  const employee = {
-    id: 1,
-    name: "Nguyễn Văn A",
-    role: "Giảng viên chính",
-    department: "Bộ môn Kết cấu",
-    status: "Đang làm việc",
-    email: "nguyenvana@hau.edu.vn",
-    phone: "0987654321",
-    avatar: "https://ui-avatars.com/api/?name=Nguyen+Van+A&size=200",
-    gender: "Nam",
-    birthday: "1985-12-20",
-    education: "Tiến sĩ Kỹ thuật",
-    major: "Kỹ thuật xây dựng",
-    startDate: "2013-09-12",
-    contractType: "Hợp đồng dài hạn",
-    seniority: "12 năm",
-    manager: "PGS.TS Trần Minh Đức",
+  useEffect(() => {
+    fetchEmployeeDetail();
+  }, [id]);
+
+  const fetchEmployeeDetail = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`http://localhost:8080/api/users/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setEmployee(res.data);
+    } catch (err) {
+      console.error("Error details:", err);
+      setError("Không thể tải thông tin nhân sự. Vui lòng thử lại sau.");
+    } finally {
+      setLoading(false);
+    }
   };
 
+  if (loading) return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="p-6 text-center">
+      <div className="text-red-500 mb-4">{error}</div>
+      <button onClick={() => navigate(-1)} className="text-blue-600 hover:underline">
+        Quay lại
+      </button>
+    </div>
+  );
+
+  if (!employee) return null;
+
+  // Helpers for display
   const statusColor = {
-    "Đang làm việc": "bg-green-100 text-green-700",
-    "Nghỉ phép": "bg-yellow-100 text-yellow-700",
-    "Công tác": "bg-blue-100 text-blue-700",
+    true: "bg-green-100 text-green-700",
+    false: "bg-red-100 text-red-700"
   };
+
+  const statusLabel = {
+    true: "Đang làm việc",
+    false: "Đã nghỉ"
+  };
+
+  // Calculate seniority
+  const calculateSeniority = (joinDate) => {
+    if (!joinDate) return "---";
+    const start = new Date(joinDate);
+    const now = new Date();
+    const diffTime = Math.abs(now - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const years = Math.floor(diffDays / 365);
+    if (years < 1) return "Dưới 1 năm";
+    return `${years} năm`;
+  };
+
+  // Determine contract type (heuristic)
+  const getContractType = (start, end) => {
+    if (!start) return "Chưa có hợp đồng";
+    if (!end) return "Hợp đồng không xác định thời hạn";
+    return "Hợp đồng có thời hạn";
+  };
+
+  // Safe avatar
+  const avatarUrl = employee.avatar && employee.avatar.startsWith("data:")
+    ? employee.avatar
+    : `https://ui-avatars.com/api/?name=${employee.fullName || employee.username}&size=200&background=random`;
 
   return (
-    <div className="p-6">
+    <div className="p-6 max-w-5xl mx-auto">
 
       {/* Nút quay lại */}
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-gray-700 hover:text-black mb-4"
+        className="flex items-center gap-2 text-gray-600 hover:text-blue-600 mb-6 transition font-medium"
       >
-        <ArrowLeft size={18} /> Quay lại danh sách
+        <ArrowLeft size={20} /> Quay lại danh sách
       </button>
 
       {/* Header thông tin */}
-      <div className="bg-white shadow rounded-2xl p-6 flex items-center gap-6 mb-8">
-        <img
-          src={employee.avatar}
-          className="w-28 h-28 rounded-full border shadow"
-          alt={employee.name}
-        />
+      <div className="bg-white shadow-sm border border-gray-100 rounded-3xl p-8 flex flex-col md:flex-row items-center md:items-start gap-8 mb-8 relative overflow-hidden">
+        {/* Decorative background element */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl -z-0 opacity-50 translate-x-1/2 -translate-y-1/2"></div>
 
-        <div className="flex-1">
-          <h1 className="text-3xl font-bold">{employee.name}</h1>
+        <div className="relative z-10 shrink-0">
+          <img
+            src={avatarUrl}
+            className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover"
+            alt={employee.fullName}
+          />
+        </div>
 
-          <p className="text-gray-600 text-lg">{employee.role}</p>
+        <div className="flex-1 relative z-10 text-center md:text-left">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{employee.fullName}</h1>
 
-          <p className="text-gray-500 mt-1">{employee.department}</p>
+          <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
+            <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-lg text-sm font-semibold">
+              {employee.roleName || "Chưa có chức vụ"}
+            </span>
+            <span className={`px-3 py-1 rounded-lg text-sm font-semibold ${statusColor[employee.isActive]}`}>
+              {statusLabel[employee.isActive]}
+            </span>
+          </div>
 
-          <span
-            className={`inline-block mt-3 px-3 py-1 rounded-full text-sm ${statusColor[employee.status]}`}
-          >
-            {employee.status}
-          </span>
-
-          <div className="flex items-center gap-4 mt-4 text-gray-700">
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-gray-600 mt-2">
             <div className="flex items-center gap-2">
-              <Mail size={18} /> {employee.email}
+              <Mail size={16} className="text-gray-400" /> {employee.email || "---"}
             </div>
             <div className="flex items-center gap-2">
-              <Phone size={18} /> {employee.phone}
+              <Phone size={16} className="text-gray-400" /> {employee.phone || "---"}
+            </div>
+            <div className="flex items-center gap-2">
+              <Briefcase size={16} className="text-gray-400" /> {employee.departmentName || employee.facultyName || "---"}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Thông tin chi tiết */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Thông tin chi tiết grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-        {/* Cột trái */}
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold mb-4">Thông tin cá nhân</h2>
-          <DetailItem label="Họ tên" value={employee.name} />
-          <DetailItem label="Giới tính" value={employee.gender} />
-          <DetailItem label="Ngày sinh" value={employee.birthday} />
-          <DetailItem label="Trình độ học vấn" value={employee.education} />
-          <DetailItem label="Chuyên ngành" value={employee.major} />
-          <DetailItem label="Ngày vào trường" value={employee.startDate} />
-          <DetailItem label="Loại hợp đồng" value={employee.contractType} />
-        </div>
-
-        {/* Cột phải */}
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold mb-4">Thông tin công tác</h2>
-          <DetailItem label="Bộ môn" value={employee.department} />
-          <DetailItem label="Chức danh" value={employee.role} />
-          <DetailItem label="Thâm niên" value={employee.seniority} />
-          <DetailItem label="Trạng thái" value={employee.status} />
-          <DetailItem label="Quản lý trực tiếp" value={employee.manager} />
-        </div>
-      </div>
-
-      {/* Tabs nâng cao */}
-      <div className="mt-8 space-y-6">
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <Briefcase size={20} /> Hồ sơ công tác
+        {/* Cột trái: Thông tin cá nhân */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2 border-b pb-3">
+            <User size={20} className="text-blue-500" /> Thông tin cá nhân
           </h2>
-          <ul className="list-disc ml-6 text-gray-700 space-y-1">
-            <li>Giảng dạy môn Kết cấu thép 1,2</li>
-            <li>Tham gia nghiên cứu đề tài cấp bộ — 2023</li>
-            <li>Hướng dẫn 12 đồ án tốt nghiệp</li>
-          </ul>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <User size={20} /> Khen thưởng & Kỷ luật
-          </h2>
-
-          <div className="space-y-3">
-            <TimelineItem
-              year="2024"
-              content="Bằng khen giảng viên xuất sắc cấp trường"
-            />
-            <TimelineItem
-              year="2023"
-              content="Hoàn thành xuất sắc nhiệm vụ năm học"
-            />
+          <div className="space-y-4">
+            <DetailItem label="Họ và tên" value={employee.fullName} />
+            <DetailItem label="Giới tính" value={employee.gender || "---"} />
+            <DetailItem label="Ngày sinh" value={employee.dob || "---"} />
+            <DetailItem label="CCCD/CMND" value={employee.cccd || "---"} />
+            <DetailItem label="Dân tộc" value={employee.ethnicity || "---"} />
+            <DetailItem label="Quốc tịch" value={employee.nationality || "---"} />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <BookOpen size={20} /> Hoạt động gần đây
+        {/* Cột phải: Thông tin công việc */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+          <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2 border-b pb-3">
+            <Briefcase size={20} className="text-indigo-500" /> Thông tin công tác
           </h2>
+          <div className="space-y-4">
+            <DetailItem label="Đơn vị công tác" value={employee.departmentName || employee.facultyName || "---"} />
+            <DetailItem label="Chức vụ" value={employee.positionName || employee.roleName || "---"} />
+            <DetailItem label="Trình độ học vấn" value={employee.educationLevel || "---"} />
+            <DetailItem label="Ngày vào trường" value={employee.joinDate || "---"} />
+            <DetailItem label="Thâm niên" value={calculateSeniority(employee.joinDate)} />
+            <DetailItem label="Loại hợp đồng" value={getContractType(employee.contractStart, employee.contractEnd)} />
+            {employee.contractStart && (
+              <DetailItem label="Thời hạn hợp đồng" value={`${employee.contractStart} - ${employee.contractEnd || "Nay"}`} />
+            )}
+          </div>
+        </div>
+      </div>
 
-          <ul className="list-disc ml-6 text-gray-700 space-y-1">
-            <li>Tham gia hội thảo kỹ thuật xây dựng — 01/2025</li>
-            <li>Đi công tác tại Nhật Bản — 12/2024</li>
-            <li>Chấm đồ án tốt nghiệp — 11/2024</li>
-          </ul>
+      {/* Tabs nâng cao: Placeholder for future modules */}
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 opacity-60">
+          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-500">
+            <Award size={20} /> Khen thưởng & Kỷ luật
+          </h2>
+          <p className="text-sm text-gray-400 italic">Dữ liệu chưa được cập nhật...</p>
+        </div>
+
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 opacity-60">
+          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-500">
+            <Calendar size={20} /> Hoạt động gần đây
+          </h2>
+          <p className="text-sm text-gray-400 italic">Dữ liệu chưa được cập nhật...</p>
         </div>
       </div>
     </div>
@@ -147,16 +189,9 @@ const FacultyEmployeeDetail = () => {
 };
 
 const DetailItem = ({ label, value }) => (
-  <div className="mb-3">
-    <p className="text-gray-500 text-sm">{label}</p>
-    <p className="font-medium">{value}</p>
-  </div>
-);
-
-const TimelineItem = ({ year, content }) => (
-  <div className="flex gap-4 items-start">
-    <div className="font-bold text-blue-600 w-14">{year}</div>
-    <div className="text-gray-700">{content}</div>
+  <div className="flex justify-between items-center py-1 border-b border-gray-50 last:border-0 hover:bg-gray-50 transition px-2 rounded-lg">
+    <p className="text-gray-500 text-sm font-medium">{label}</p>
+    <p className="font-semibold text-gray-800 text-right text-sm">{value}</p>
   </div>
 );
 

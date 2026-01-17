@@ -127,8 +127,8 @@ const Settings = () => {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`w-full flex items-center gap-3 px-6 py-4 rounded-2xl transition-all duration-300 font-semibold ${activeTab === tab.id
-                  ? "bg-white text-[#009FE3] shadow-lg shadow-blue-100/50 ring-1 ring-blue-50"
-                  : "text-gray-500 hover:bg-white hover:text-[#009FE3]"
+                ? "bg-white text-[#009FE3] shadow-lg shadow-blue-100/50 ring-1 ring-blue-50"
+                : "text-gray-500 hover:bg-white hover:text-[#009FE3]"
                 }`}
             >
               <tab.icon className="w-5 h-5" />
@@ -251,8 +251,8 @@ const Settings = () => {
                     <div
                       onClick={() => handleChange("notify_new_user", config.notify_new_user === "true" ? "false" : "true")}
                       className={`p-8 rounded-[2rem] border-2 cursor-pointer transition-all duration-300 ${config.notify_new_user === "true"
-                          ? "bg-blue-50/50 border-blue-200"
-                          : "bg-white border-slate-100 hover:border-slate-200"
+                        ? "bg-blue-50/50 border-blue-200"
+                        : "bg-white border-slate-100 hover:border-slate-200"
                         }`}
                     >
                       <Activity className={`w-8 h-8 mb-4 ${config.notify_new_user === "true" ? "text-blue-600" : "text-slate-300"}`} />
@@ -263,8 +263,8 @@ const Settings = () => {
                     <div
                       onClick={() => handleChange("notify_approval", config.notify_approval === "true" ? "false" : "true")}
                       className={`p-8 rounded-[2rem] border-2 cursor-pointer transition-all duration-300 ${config.notify_approval === "true"
-                          ? "bg-purple-50/50 border-purple-200"
-                          : "bg-white border-slate-100 hover:border-slate-200"
+                        ? "bg-purple-50/50 border-purple-200"
+                        : "bg-white border-slate-100 hover:border-slate-200"
                         }`}
                     >
                       <RefreshCw className={`w-8 h-8 mb-4 ${config.notify_approval === "true" ? "text-purple-600" : "text-slate-300"}`} />
@@ -317,7 +317,7 @@ const Settings = () => {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="flex items-center gap-2 bg-[#009FE3] hover:bg-[#0087c2] text-white px-8 py-3 rounded-2xl shadow-xl shadow-blue-200 transition-all font-bold disabled:opacity-50"
+                className="flex items-center gap-2 bg-[#009FE3] hover:bg-[#009FE3] text-white px-8 py-3 rounded-2xl shadow-xl shadow-blue-200 transition-all font-bold disabled:opacity-50"
               >
                 {saving ? (
                   <Loader2 className="w-5 h-5 animate-spin" />

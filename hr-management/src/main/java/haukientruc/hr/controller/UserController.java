@@ -20,6 +20,27 @@ public class UserController {
         return userService.getAll();
     }
 
+    @GetMapping("/my-faculty")
+    public List<haukientruc.hr.dto.UserDTO> getMyFacultyEmployees() {
+        return userService.getMyFacultyEmployees();
+    }
+
+    @GetMapping("/my-faculty/export")
+    public org.springframework.http.ResponseEntity<byte[]> exportMyFacultyEmployees() throws java.io.IOException {
+        haukientruc.hr.dto.UserDTO currentUser = userService.getCurrentUser();
+        if (currentUser.getFacultyId() == null) {
+            throw new RuntimeException("Bạn không thuộc khoa nào");
+        }
+
+        byte[] data = userService.exportFacultyEmployees(currentUser.getFacultyId());
+
+        return org.springframework.http.ResponseEntity.ok()
+                .header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=ds_nhansu_khoa.xlsx")
+                .contentType(org.springframework.http.MediaType.APPLICATION_OCTET_STREAM)
+                .body(data);
+    }
+
     @GetMapping("/me")
     public haukientruc.hr.dto.UserDTO getCurrentUser() {
         return userService.getCurrentUser();

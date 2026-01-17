@@ -32,4 +32,5 @@ public class UserDTO {
     private String avatar;
     private Boolean status;
     private Boolean isActive;
+    private java.time.LocalDateTime createdAt;
 }

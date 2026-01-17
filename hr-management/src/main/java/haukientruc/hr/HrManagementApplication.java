@@ -40,7 +40,23 @@ public class HrManagementApplication {
 					}
 				}
 
-				// Seed default users (password: 123456)
+				// Seed Default Faculties
+				String[] faculties = { "CNTT", "KIENTRUC", "XAYDUNG" };
+				String[] facultyNames = { "Khoa Công nghệ thông tin", "Khoa Kiến trúc", "Khoa Xây dựng" };
+				for (int i = 0; i < faculties.length; i++) {
+					try {
+						jdbcTemplate.execute(String.format(
+								"INSERT INTO faculties (code, name, created_at, updated_at, status) " +
+										"SELECT '%s', '%s', NOW(), NOW(), 'Active' " +
+										"WHERE NOT EXISTS (SELECT 1 FROM faculties WHERE code = '%s')",
+								faculties[i], facultyNames[i], faculties[i]));
+						System.out.println("✅ Faculty seeded: " + faculties[i]);
+					} catch (Exception e) {
+						System.err.println("❌ Error seeding faculty " + faculties[i] + ": " + e.getMessage());
+					}
+				}
+
+				// Seed Default Users
 				String[][] users = {
 						{ "superadmin", "superadmin" },
 						{ "admin", "admin" },
@@ -51,29 +67,36 @@ public class HrManagementApplication {
 
 				for (String[] user : users) {
 					try {
-						// Ensure role exists before linking
 						Integer roleId = jdbcTemplate.queryForObject(
 								"SELECT role_id FROM roles WHERE role_code = ?", Integer.class, user[1]);
-
 						String defaultHash = passwordEncoder.encode("123456");
 
 						if (roleId != null) {
+							// Insert if not exists
 							jdbcTemplate.execute(String.format(
 									"INSERT INTO users (username, password_hash, role_id, is_active, status, created_at) "
 											+
-											"SELECT '%s', '%s', "
-											+
-											"%d, true, true, NOW() " +
+											"SELECT '%s', '%s', %d, true, true, NOW() " +
 											"WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = '%s')",
 									user[0], defaultHash, roleId, user[0]));
 
-							// CẬP NHẬT CƯỠNG CHẾ mật khẩu cho user mặc định để đảm bảo login được (dev
-							// mode)
+							// Force update password and role
 							jdbcTemplate.update(
-									"UPDATE users SET password_hash = ? WHERE username = ?",
-									defaultHash, user[0]);
+									"UPDATE users SET password_hash = ?, role_id = ? WHERE username = ?",
+									defaultHash, roleId, user[0]);
 
-							System.out.println("✅ User checked/seeded: " + user[0] + " with role " + user[1]);
+							// Assign Faculty for 'truongkhoa' and 'giangvien' to 'CNTT'
+							if (user[0].equals("truongkhoa") || user[0].equals("giangvien")) {
+								Integer facultyId = jdbcTemplate.queryForObject(
+										"SELECT id FROM faculties WHERE code = 'CNTT'", Integer.class);
+								if (facultyId != null) {
+									jdbcTemplate.update("UPDATE users SET faculty_id = ? WHERE username = ?", facultyId,
+											user[0]);
+									System.out.println("🔹 Assigned " + user[0] + " to Faculty CNTT");
+								}
+							}
+
+							System.out.println("✅ User checked/seeded: " + user[0]);
 						}
 					} catch (Exception e) {
 						System.err.println("❌ Error seeding user " + user[0] + ": " + e.getMessage());
