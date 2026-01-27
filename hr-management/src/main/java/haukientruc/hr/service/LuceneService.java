@@ -47,14 +47,26 @@ public class LuceneService {
         return new IndexWriter(directory, config);
     }
 
+    private String getDocId(String entityType, String id) {
+        return entityType + "_" + id;
+    }
+
     public void deleteEntityIndex(String entityType, String entityId) {
         if (directory == null || analyzer == null)
             return;
         try (IndexWriter writer = getIndexWriter()) {
-            BooleanQuery.Builder queryBuilder = new BooleanQuery.Builder();
-            queryBuilder.add(new TermQuery(new Term("entityType", entityType)), BooleanClause.Occur.MUST);
-            queryBuilder.add(new TermQuery(new Term("id", entityId)), BooleanClause.Occur.MUST);
-            writer.deleteDocuments(queryBuilder.build());
+            // Delete by unique docId is safer and faster
+            Term term = new Term("docId", getDocId(entityType, entityId));
+            writer.deleteDocuments(term);
+
+            // Fallback: cleaning up old indices that might not have docId yet (using broad
+            // query)
+            // ensuring we don't leave ghosts if migration happens
+            BooleanQuery.Builder fallbackQuery = new BooleanQuery.Builder();
+            fallbackQuery.add(new TermQuery(new Term("entityType", entityType)), BooleanClause.Occur.MUST);
+            fallbackQuery.add(new TermQuery(new Term("id", entityId)), BooleanClause.Occur.MUST);
+            writer.deleteDocuments(fallbackQuery.build());
+
             writer.commit();
             log.info("Deleted {} index for ID: {}", entityType, entityId);
         } catch (IOException e) {
@@ -75,7 +87,7 @@ public class LuceneService {
             mainQuery.add(new TermQuery(new Term("entityType", entityType)), BooleanClause.Occur.MUST);
 
             MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, analyzer);
-            parser.setAllowLeadingWildcard(true);
+            parser.setAllowLeadingWildcard(true); // Expensive but needed for infix search
             Query textQuery = parser.parse("*" + queryString.toLowerCase() + "*");
 
             mainQuery.add(textQuery, BooleanClause.Occur.MUST);
@@ -83,7 +95,10 @@ public class LuceneService {
             TopDocs results = searcher.search(mainQuery.build(), 100);
             for (ScoreDoc scoreDoc : results.scoreDocs) {
                 Document doc = searcher.doc(scoreDoc.doc);
-                ids.add(Long.valueOf(doc.get("id")));
+                String idStr = doc.get("id");
+                if (idStr != null) {
+                    ids.add(Long.valueOf(idStr));
+                }
             }
         } catch (Exception e) {
             log.warn("Search failed for type {}: {}", entityType, e.getMessage());
@@ -97,8 +112,12 @@ public class LuceneService {
             return;
         try (IndexWriter writer = getIndexWriter()) {
             Document doc = new Document();
+            String docId = getDocId("user", String.valueOf(user.getUserId()));
+
+            doc.add(new StringField("docId", docId, Field.Store.YES));
             doc.add(new StringField("entityType", "user", Field.Store.YES));
             doc.add(new StringField("id", String.valueOf(user.getUserId()), Field.Store.YES));
+
             if (user.getUsername() != null)
                 doc.add(new TextField("username", user.getUsername().toLowerCase(), Field.Store.YES));
             if (user.getFullName() != null)
@@ -108,9 +127,7 @@ public class LuceneService {
             if (user.getPhone() != null)
                 doc.add(new TextField("phone", user.getPhone(), Field.Store.YES));
 
-            Term term = new Term("id", String.valueOf(user.getUserId()));
-            // Combine with type check for safer update
-            writer.updateDocument(term, doc);
+            writer.updateDocument(new Term("docId", docId), doc);
             writer.commit();
         } catch (IOException e) {
             log.error("Error indexing user", e);
@@ -125,14 +142,18 @@ public class LuceneService {
     public void indexFaculty(haukientruc.hr.entity.Faculty faculty) {
         try (IndexWriter writer = getIndexWriter()) {
             Document doc = new Document();
+            String docId = getDocId("faculty", String.valueOf(faculty.getId()));
+
+            doc.add(new StringField("docId", docId, Field.Store.YES));
             doc.add(new StringField("entityType", "faculty", Field.Store.YES));
             doc.add(new StringField("id", String.valueOf(faculty.getId()), Field.Store.YES));
+
             if (faculty.getCode() != null)
                 doc.add(new TextField("code", faculty.getCode().toLowerCase(), Field.Store.YES));
             if (faculty.getName() != null)
                 doc.add(new TextField("name", faculty.getName().toLowerCase(), Field.Store.YES));
 
-            writer.updateDocument(new Term("id", String.valueOf(faculty.getId())), doc);
+            writer.updateDocument(new Term("docId", docId), doc);
             writer.commit();
         } catch (IOException e) {
             log.error("Error indexing faculty", e);
@@ -143,14 +164,18 @@ public class LuceneService {
     public void indexDepartment(haukientruc.hr.entity.Department dept) {
         try (IndexWriter writer = getIndexWriter()) {
             Document doc = new Document();
+            String docId = getDocId("department", String.valueOf(dept.getId()));
+
+            doc.add(new StringField("docId", docId, Field.Store.YES));
             doc.add(new StringField("entityType", "department", Field.Store.YES));
             doc.add(new StringField("id", String.valueOf(dept.getId()), Field.Store.YES));
+
             if (dept.getDepartmentCode() != null)
                 doc.add(new TextField("code", dept.getDepartmentCode().toLowerCase(), Field.Store.YES));
             if (dept.getDepartmentName() != null)
                 doc.add(new TextField("name", dept.getDepartmentName().toLowerCase(), Field.Store.YES));
 
-            writer.updateDocument(new Term("id", String.valueOf(dept.getId())), doc);
+            writer.updateDocument(new Term("docId", docId), doc);
             writer.commit();
         } catch (IOException e) {
             log.error("Error indexing department", e);
@@ -161,14 +186,18 @@ public class LuceneService {
     public void indexPosition(haukientruc.hr.entity.Position pos) {
         try (IndexWriter writer = getIndexWriter()) {
             Document doc = new Document();
+            String docId = getDocId("position", String.valueOf(pos.getId()));
+
+            doc.add(new StringField("docId", docId, Field.Store.YES));
             doc.add(new StringField("entityType", "position", Field.Store.YES));
             doc.add(new StringField("id", String.valueOf(pos.getId()), Field.Store.YES));
+
             if (pos.getCode() != null)
                 doc.add(new TextField("code", pos.getCode().toLowerCase(), Field.Store.YES));
             if (pos.getName() != null)
                 doc.add(new TextField("name", pos.getName().toLowerCase(), Field.Store.YES));
 
-            writer.updateDocument(new Term("id", String.valueOf(pos.getId())), doc);
+            writer.updateDocument(new Term("docId", docId), doc);
             writer.commit();
         } catch (IOException e) {
             log.error("Error indexing position", e);
@@ -179,8 +208,12 @@ public class LuceneService {
     public void indexPersonnelRequest(haukientruc.hr.entity.PersonnelRequest req) {
         try (IndexWriter writer = getIndexWriter()) {
             Document doc = new Document();
+            String docId = getDocId("request", String.valueOf(req.getId()));
+
+            doc.add(new StringField("docId", docId, Field.Store.YES));
             doc.add(new StringField("entityType", "request", Field.Store.YES));
             doc.add(new StringField("id", String.valueOf(req.getId()), Field.Store.YES));
+
             if (req.getTitle() != null)
                 doc.add(new TextField("title", req.getTitle().toLowerCase(), Field.Store.YES));
             if (req.getContent() != null)
@@ -188,7 +221,7 @@ public class LuceneService {
             if (req.getRequester() != null && req.getRequester().getFullName() != null)
                 doc.add(new TextField("requester", req.getRequester().getFullName().toLowerCase(), Field.Store.YES));
 
-            writer.updateDocument(new Term("id", String.valueOf(req.getId())), doc);
+            writer.updateDocument(new Term("docId", docId), doc);
             writer.commit();
         } catch (IOException e) {
             log.error("Error indexing request", e);

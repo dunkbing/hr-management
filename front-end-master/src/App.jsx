@@ -17,7 +17,9 @@ import Settings from "./pages/Settings";
 import Faculties from "./pages/Faculties";
 import AddEmployee from "./pages/AddEmployee";
 import PositionManagement from "./pages/PositionManagement";
+import ContractManagement from "./pages/ContractManagement";
 import ApprovalPage from "./pages/ApprovalPage";
+import RewardDisciplineManagement from "./pages/RewardDisciplineManagement";
 
 import FacultyDashboard from "./pages/FacultyDashboard";
 import PrincipalDashboard from "./pages/PrincipalDashboard";
@@ -151,10 +153,26 @@ function App() {
           }
         />
         <Route
+          path="/contracts"
+          element={
+            <AdminLayout>
+              <ContractManagement />
+            </AdminLayout>
+          }
+        />
+        <Route
           path="/approvals"
           element={
             <AdminLayout>
               <ApprovalPage />
+            </AdminLayout>
+          }
+        />
+        <Route
+          path="/reward-discipline"
+          element={
+            <AdminLayout>
+              <RewardDisciplineManagement />
             </AdminLayout>
           }
         />

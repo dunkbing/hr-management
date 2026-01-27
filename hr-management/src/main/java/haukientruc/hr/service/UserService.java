@@ -446,6 +446,9 @@ public class UserService {
 
             // Header for Error Log
             org.apache.poi.ss.usermodel.Row headerRow = sheet.getRow(0);
+            if (headerRow == null) {
+                throw new RuntimeException("File excel không có tiêu đề");
+            }
             int logColumnIndex = headerRow.getLastCellNum();
             org.apache.poi.ss.usermodel.Cell logHeader = headerRow.createCell(logColumnIndex);
             logHeader.setCellValue("Log lỗi");
@@ -456,20 +459,23 @@ public class UserService {
             errorStyle.setFont(errorFont);
             logHeader.setCellStyle(errorStyle);
 
+            org.apache.poi.ss.usermodel.DataFormatter dataFormatter = new org.apache.poi.ss.usermodel.DataFormatter();
+
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 org.apache.poi.ss.usermodel.Row row = sheet.getRow(i);
                 if (row == null)
                     continue;
 
-                String fullName = getCellValue(row.getCell(0));
-                String username = getCellValue(row.getCell(1));
-                String password = getCellValue(row.getCell(2));
-                String email = getCellValue(row.getCell(3));
-                String phone = getCellValue(row.getCell(4));
-                String dobStr = getCellValue(row.getCell(5));
-                String roleCode = getCellValue(row.getCell(6));
-                String unitCode = getCellValue(row.getCell(7));
-                String posCode = getCellValue(row.getCell(8));
+                // Use DataFormatter for safe string conversion (preserves leading zeros, etc.)
+                String fullName = dataFormatter.formatCellValue(row.getCell(0)).trim();
+                String username = dataFormatter.formatCellValue(row.getCell(1)).trim();
+                String password = dataFormatter.formatCellValue(row.getCell(2)).trim();
+                String email = dataFormatter.formatCellValue(row.getCell(3)).trim();
+                String phone = dataFormatter.formatCellValue(row.getCell(4)).trim();
+                String dobStr = dataFormatter.formatCellValue(row.getCell(5)).trim();
+                String roleCode = dataFormatter.formatCellValue(row.getCell(6)).trim();
+                String unitCode = dataFormatter.formatCellValue(row.getCell(7)).trim();
+                String posCode = dataFormatter.formatCellValue(row.getCell(8)).trim();
 
                 // Skip truly empty rows
                 if (username.isEmpty() && fullName.isEmpty() && roleCode.isEmpty()) {
@@ -502,9 +508,16 @@ public class UserService {
 
                     if (!dobStr.isEmpty()) {
                         try {
+                            // Try standard ISO date first
                             dto.setDob(java.time.LocalDate.parse(dobStr));
                         } catch (java.time.format.DateTimeParseException e) {
-                            throw new RuntimeException("Ngày sinh sai định dạng (yyyy-MM-dd)");
+                            try {
+                                // Try Vietnamese format dd/MM/yyyy
+                                dto.setDob(java.time.LocalDate.parse(dobStr,
+                                        java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                            } catch (java.time.format.DateTimeParseException ex) {
+                                throw new RuntimeException("Ngày sinh sai định dạng (yyyy-MM-dd hoặc dd/MM/yyyy)");
+                            }
                         }
                     }
 
@@ -583,7 +596,12 @@ public class UserService {
             }
 
             if (hasError) {
-                // Return workbook bytes if there are errors
+                // Return workbook bytes if there are errors AND Rollback successful inserts
+                // This ensures "All or Nothing" behavior so user can fix and re-upload the
+                // whole file
+                org.springframework.transaction.interceptor.TransactionAspectSupport.currentTransactionStatus()
+                        .setRollbackOnly();
+
                 java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
                 workbook.write(out);
                 return out.toByteArray();
@@ -593,42 +611,9 @@ public class UserService {
         }
     }
 
-    private String getCellValue(org.apache.poi.ss.usermodel.Cell cell) {
-        if (cell == null)
-            return "";
-        switch (cell.getCellType()) {
-            case STRING:
-                return cell.getStringCellValue().trim();
-            case NUMERIC:
-                if (org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell)) {
-                    java.time.LocalDateTime ldt = cell.getLocalDateTimeCellValue();
-                    return ldt != null ? ldt.toLocalDate().toString() : "";
-                }
-                // Handle scientific notation for phone numbers etc.
-                double val = cell.getNumericCellValue();
-                if (val == (long) val) {
-                    return String.valueOf((long) val);
-                } else {
-                    return String.valueOf(val);
-                }
-            case BOOLEAN:
-                return String.valueOf(cell.getBooleanCellValue());
-            case FORMULA:
-                try {
-                    return cell.getStringCellValue();
-                } catch (Exception e) {
-                    return String.valueOf(cell.getNumericCellValue());
-                }
-            default:
-                return "";
-        }
-    }
-
     public List<User> searchUsers(String query) {
         List<Long> ids = luceneService.searchUsers(query);
         if (ids.isEmpty()) {
-            // Nếu query rỗng hoặc không có kết quả từ Lucene,
-            // có thể trả về list rỗng hoặc thực hiện tìm kiếm mờ khác
             return java.util.Collections.emptyList();
         }
         return userRepository.findAllById(ids);

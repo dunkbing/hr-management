@@ -38,22 +38,18 @@ body {
 }
 
 /* === Main Buttons (vd: Đăng nhập) === */
-button {
+/* button {
   @apply px-4 py-2 rounded-lg font-medium transition duration-200;
   background-color: transparent;
-  /* nền hoàn toàn trong suốt */
   color: #009FE3;
-  /* chữ màu logo blue */
   border: none;
-  /* bỏ viền */
 }
 
 button:hover {
   color: #009FE3;
-  /* Giữ nguyên màu, không đổi màu khi hover */
   background-color: transparent;
-  /* nền vẫn trong suốt */
-}
+} */
+
 
 /* === Icon Buttons (vd: nút con mắt hiển thị/ẩn mật khẩu) === */
 .icon-button {
