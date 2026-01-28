@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: '#009FE3',
+      },
       fontFamily: {
         sans: ['"Roboto"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Users,
@@ -11,6 +12,7 @@ import {
   Calendar,
   LayoutDashboard,
 } from "lucide-react";
+import Avatar from "../components/Avatar";
 import {
   BarChart,
   Bar,
@@ -32,9 +34,9 @@ const Dashboard = () => {
     recentUsers: [],
   });
   const [loading, setLoading] = useState(true);
-  const mainColor = "#009FE3";
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username") || "Quản trị viên";
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -55,7 +57,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#009FE3]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -66,32 +68,36 @@ const Dashboard = () => {
       value: stats.totalUsers,
       icon: Users,
       trend: "+12%",
-      color: "from-blue-500 to-blue-600",
+      color: "#3B82F6", // blue-500
       lightColor: "bg-blue-50",
+      path: "/employees"
     },
     {
       title: "Số lượng Khoa",
       value: stats.totalFaculties,
       icon: School,
       trend: "Ổn định",
-      color: "from-emerald-500 to-emerald-600",
+      color: "#10B981", // emerald-500
       lightColor: "bg-emerald-50",
+      path: "/faculties"
     },
     {
       title: "Phòng ban",
       value: stats.totalDepartments,
       icon: Network,
       trend: "+2 mới",
-      color: "from-orange-500 to-orange-600",
-      lightColor: "bg-orange-50",
+      color: "#F59E0B", // amber-500
+      lightColor: "bg-amber-50",
+      path: "/departments"
     },
     {
       title: "Chức vụ",
       value: stats.totalPositions,
       icon: UserCog,
       trend: "Cập nhật",
-      color: "from-purple-500 to-purple-600",
+      color: "#8B5CF6", // purple-500
       lightColor: "bg-purple-50",
+      path: "/positions"
     },
   ];
 
@@ -101,11 +107,11 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-gray-800 flex items-center gap-3">
-            <LayoutDashboard className="w-8 h-8 text-[#009FE3]" />
+            <LayoutDashboard className="w-8 h-8 text-primary" />
             Tổng quan Hệ thống
           </h1>
           <p className="text-gray-500 mt-1 font-medium">
-            👋 Chào mừng quay trở lại, <span className="text-[#009FE3] font-bold">{username}</span>.
+            👋 Chào mừng quay trở lại, <span className="text-primary font-bold">{username}</span>.
           </p>
         </div>
         <div className="flex items-center gap-3 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
@@ -125,18 +131,19 @@ const Dashboard = () => {
         {statCards.map((card, idx) => (
           <div
             key={idx}
-            className="group relative bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+            onClick={() => navigate(card.path)}
+            className="group relative bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
           >
             <div className="flex justify-between items-start">
               <div className={`${card.lightColor} p-4 rounded-2xl`}>
-                <card.icon className={`w-7 h-7 bg-gradient-to-br ${card.color} bg-clip-text text-transparent`} />
+                <card.icon className="w-7 h-7" color={card.color} />
               </div>
               <span className="flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
                 {card.trend}
               </span>
             </div>
             <div className="mt-5">
-              <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">{card.title}</p>
+              <p className="text-sm font-semibold text-slate-600 uppercase tracking-wider">{card.title}</p>
               <p className="text-2xl font-bold text-gray-800 mt-1">{card.value}</p>
             </div>
             <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-slate-50 to-transparent -z-0 opacity-50 rounded-bl-[100px]" />
@@ -191,7 +198,7 @@ const Dashboard = () => {
                     <Cell
                       key={`cell-${index}`}
                       fill={index === stats.monthlyGrowth.length - 1 ? "#009FE3" : "#CBD5E1"}
-                      className="transition-all duration-300 hover:fill-[#009FE3]"
+                      className="transition-all duration-300 hover:fill-primary"
                     />
                   ))}
                 </Bar>
@@ -204,22 +211,32 @@ const Dashboard = () => {
         <div className="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-lg font-semibold text-gray-800">Nhân sự mới gia nhập</h2>
-            <button className="text-[#009FE3] text-sm font-semibold hover:underline">Xem tất cả</button>
+            <button
+              onClick={() => navigate("/employees")}
+              className="text-primary text-sm font-semibold hover:underline"
+            >
+              Xem tất cả
+            </button>
           </div>
           <div className="space-y-6">
             {stats.recentUsers?.length > 0 ? (
               stats.recentUsers.map((user, idx) => (
-                <div key={idx} className="flex items-center gap-4 group cursor-pointer">
+                <div
+                  key={idx}
+                  onClick={() => navigate("/employees")}
+                  className="flex items-center gap-4 group cursor-pointer"
+                >
                   <div className="relative">
-                    <img
-                      src={user.avatar || "https://i.pravatar.cc/100?u=" + user.userId}
-                      alt={user.fullName}
-                      className="w-12 h-12 rounded-2xl object-cover ring-2 ring-slate-50 group-hover:ring-[#009FE3] transition-all"
+                    <Avatar
+                      src={user.avatar}
+                      name={user.fullName}
+                      size="lg"
+                      className="rounded-2xl ring-2 ring-slate-50 group-hover:ring-primary transition-all"
                     />
                     <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-slate-800 truncate group-hover:text-[#009FE3] transition-colors">
+                    <p className="text-sm font-bold text-slate-800 truncate group-hover:text-primary transition-colors">
                       {user.fullName}
                     </p>
                     <p className="text-xs font-medium text-slate-400 capitalize">{user.roleName || "Nhân viên"}</p>
@@ -238,7 +255,10 @@ const Dashboard = () => {
               </div>
             )}
 
-            <button className="w-full mt-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-slate-600 font-bold hover:bg-slate-100 transition-all flex items-center justify-center gap-2 group">
+            <button
+              onClick={() => navigate("/employees")}
+              className="w-full mt-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-slate-600 font-bold hover:bg-slate-100 transition-all flex items-center justify-center gap-2 group"
+            >
               Thêm nhân sự mới
               <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </button>

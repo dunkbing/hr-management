@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bell } from "lucide-react";
 import axios from "axios";
+import Avatar from "./Avatar";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -205,10 +206,11 @@ const Header = () => {
             <p className="text-sm font-semibold text-gray-800">{user?.fullName || "Người dùng"}</p>
             <p className="text-xs text-gray-500 uppercase">{user?.roleName || "N/A"}</p>
           </div>
-          <img
-            src={user?.avatar || "https://i.pravatar.cc/40"}
-            alt="User"
-            className="rounded-full w-10 h-10 border border-gray-200 cursor-pointer object-cover"
+          <Avatar
+            src={user?.avatar}
+            name={user?.fullName}
+            size="md"
+            className="cursor-pointer"
             onClick={() => setMenuOpen(!menuOpen)}
           />
 

@@ -3,7 +3,6 @@ import { FaUser, FaLock, FaHome, FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 
 function Login() {
-  const mainColor = "#009FE3"; // Màu chính
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -63,13 +62,12 @@ function Login() {
       {/* Ảnh nền */}
       <div className="absolute inset-0">
         <img
-          src="https://scontent.fhan5-2.fna.fbcdn.net/v/t39.30808-6/560813566_1256277349874348_785042294496922688_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=9C-u1zH5Op4Q7kNvwH-ZyCM&_nc_oc=Adnxsy09S41zNvPEbW-ypST3puJovoXmpX1FQ62zBLIqXW3sj2TvXLcfHaWwcTHO25Y&_nc_zt=23&_nc_ht=scontent.fhan5-2.fna&_nc_gid=4eSPh-08La-lauJFAljD2A&oh=00_AfeBqyZ6pwHdOJ0nJhRoUrbF23iL8p0iCxxqvaHM-qzTMg&oe=6907A828"
+          src="https://scontent.fhan14-5.fna.fbcdn.net/v/t39.30808-6/560813566_1256277349874348_785042294496922688_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=uXGcoO4OYKkQ7kNvwHlmxcu&_nc_oc=AdnAo-DhSObAusJrwf4sxtGeJh8vY3e0j5kX7nP4PP4N4rFi5bx921Lf_g77EtieOKI&_nc_zt=23&_nc_ht=scontent.fhan14-5.fna&_nc_gid=n3gbNMkVZD7VvU8UTjCfEA&oh=00_Afp2gmEou6K8td6mnZZa3oAK6PsjksE_4Lk8mkj7yYDvzw&oe=69801128"
           alt="Trường Đại học Kiến trúc Hà Nội"
           className="w-full h-full object-cover"
         />
         <div
-          className="absolute inset-0"
-          style={{ backgroundColor: `${mainColor}66`, backdropFilter: "blur(2px)" }}
+          className="absolute inset-0 bg-primary/40 backdrop-blur-sm"
         ></div>
       </div>
 
@@ -93,7 +91,7 @@ function Login() {
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#009FE3] focus:outline-none appearance-none"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none appearance-none"
             >
               <option value="superadmin">Siêu quản trị (Super Admin)</option>
               <option value="admin">Quản trị hệ thống (Admin)</option>
@@ -111,7 +109,7 @@ function Login() {
               placeholder="Tài khoản"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#009FE3] focus:outline-none"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
               required
             />
           </div>
@@ -124,7 +122,7 @@ function Login() {
               placeholder="Mật khẩu"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#009FE3] focus:outline-none"
+              className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
               required
             />
             <button
@@ -140,7 +138,7 @@ function Login() {
           <div className="text-center mb-6">
             <a
               href="#"
-              className="text-[#009FE3] text-sm font-medium"
+              className="text-primary text-sm font-medium"
             >
               Quên mật khẩu
             </a>
@@ -149,13 +147,7 @@ function Login() {
           {/* Nút đăng nhập */}
           <button
             type="submit"
-            className="w-full"
-            style={{
-              backgroundColor: mainColor,
-              color: "#fff",
-              padding: "0.5rem",
-              borderRadius: "0.5rem",
-            }}
+            className="w-full bg-primary text-white p-2 rounded-lg"
           >
             Đăng nhập
           </button>

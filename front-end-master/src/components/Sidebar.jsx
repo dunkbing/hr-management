@@ -32,7 +32,7 @@ const Sidebar = () => {
           alt="Logo Trường Đại học Kiến trúc Hà Nội"
           className="w-10 h-10 object-contain"
         />
-        <div className="font-bold leading-tight text-[15px] text-[#009FE3]">
+        <div className="font-bold leading-tight text-[15px] text-primary">
           TRƯỜNG ĐẠI HỌC <br /> KIẾN TRÚC HÀ NỘI
         </div>
       </Link>
@@ -42,11 +42,12 @@ const Sidebar = () => {
         <Link
           to="/dashboard"
           className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/dashboard")
-            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+            ? "text-white rounded-r-full mr-2"
             : "text-gray-600"
             }`}
+          style={isActive("/dashboard") ? { backgroundColor: '#009FE3' } : {}}
         >
-          <LayoutDashboard size={18} />
+          <LayoutDashboard size={18} color={isActive("/dashboard") ? "#fff" : "#3B82F6"} />
           <span className="text-sm font-medium">Dashboard thống kê</span>
         </Link>
 
@@ -54,11 +55,12 @@ const Sidebar = () => {
         <Link
           to="/employees"
           className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/employees")
-            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+            ? "text-white rounded-r-full mr-2"
             : "text-gray-600"
             }`}
+          style={isActive("/employees") ? { backgroundColor: '#009FE3' } : {}}
         >
-          <Users size={18} />
+          <Users size={18} color={isActive("/employees") ? "#fff" : "#10B981"} />
           <span className="text-sm font-medium">Quản lý nhân sự</span>
         </Link>
 
@@ -66,11 +68,12 @@ const Sidebar = () => {
         <Link
           to="/departments"
           className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/departments")
-            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+            ? "text-white rounded-r-full mr-2"
             : "text-gray-600"
             }`}
+          style={isActive("/departments") ? { backgroundColor: '#009FE3' } : {}}
         >
-          <Building2 size={18} />
+          <Building2 size={18} color={isActive("/departments") ? "#fff" : "#F59E0B"} />
           <span className="text-sm font-medium">Quản lý phòng ban</span>
         </Link>
 
@@ -78,11 +81,12 @@ const Sidebar = () => {
         <Link
           to="/faculties"
           className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/faculties")
-            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+            ? "text-white rounded-r-full mr-2"
             : "text-gray-600"
             }`}
+          style={isActive("/faculties") ? { backgroundColor: '#009FE3' } : {}}
         >
-          <BookOpen size={18} />
+          <BookOpen size={18} color={isActive("/faculties") ? "#fff" : "#8B5CF6"} />
           <span className="text-sm font-medium">Quản lý khoa</span>
         </Link>
 
@@ -90,11 +94,12 @@ const Sidebar = () => {
         <Link
           to="/positions"
           className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/positions")
-            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+            ? "text-white rounded-r-full mr-2"
             : "text-gray-600"
             }`}
+          style={isActive("/positions") ? { backgroundColor: '#009FE3' } : {}}
         >
-          <Briefcase size={18} />
+          <Briefcase size={18} color={isActive("/positions") ? "#fff" : "#06B6D4"} />
           <span className="text-sm font-medium">Quản lý chức danh</span>
         </Link>
 
@@ -102,11 +107,12 @@ const Sidebar = () => {
         <Link
           to="/contracts"
           className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/contracts")
-            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+            ? "text-white rounded-r-full mr-2"
             : "text-gray-600"
             }`}
+          style={isActive("/contracts") ? { backgroundColor: '#009FE3' } : {}}
         >
-          <FileText size={18} />
+          <FileText size={18} color={isActive("/contracts") ? "#fff" : "#EC4899"} />
           <span className="text-sm font-medium">Quản lý hợp đồng</span>
         </Link>
 
@@ -114,11 +120,12 @@ const Sidebar = () => {
         <Link
           to="/reward-discipline"
           className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/reward-discipline")
-            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+            ? "text-white rounded-r-full mr-2"
             : "text-gray-600"
             }`}
+          style={isActive("/reward-discipline") ? { backgroundColor: '#009FE3' } : {}}
         >
-          <Award size={18} />
+          <Award size={18} color={isActive("/reward-discipline") ? "#fff" : "#EF4444"} />
           <span className="text-sm font-medium">Khen thưởng & Kỷ luật</span>
         </Link>
 
@@ -126,11 +133,12 @@ const Sidebar = () => {
         <Link
           to="/approvals"
           className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/approvals")
-            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+            ? "text-white rounded-r-full mr-2"
             : "text-gray-600"
             }`}
+          style={isActive("/approvals") ? { backgroundColor: '#009FE3' } : {}}
         >
-          <ClipboardCheck size={18} />
+          <ClipboardCheck size={18} color={isActive("/approvals") ? "#fff" : "#6366F1"} />
           <span className="text-sm font-medium">Trình phê duyệt</span>
         </Link>
 
@@ -138,11 +146,12 @@ const Sidebar = () => {
         <Link
           to="/reports"
           className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/reports")
-            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+            ? "text-white rounded-r-full mr-2"
             : "text-gray-600"
             }`}
+          style={isActive("/reports") ? { backgroundColor: '#009FE3' } : {}}
         >
-          <BarChart2 size={18} />
+          <BarChart2 size={18} color={isActive("/reports") ? "#fff" : "#64748B"} />
           <span className="text-sm font-medium">Báo cáo & Thống kê</span>
         </Link>
 
@@ -150,11 +159,12 @@ const Sidebar = () => {
         <Link
           to="/settings"
           className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/settings")
-            ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+            ? "text-white rounded-r-full mr-2"
             : "text-gray-600"
             }`}
+          style={isActive("/settings") ? { backgroundColor: '#009FE3' } : {}}
         >
-          <Settings size={18} />
+          <Settings size={18} color={isActive("/settings") ? "#fff" : "#4B5563"} />
           <span className="text-sm font-medium">Cài đặt hệ thống</span>
         </Link>
       </nav>

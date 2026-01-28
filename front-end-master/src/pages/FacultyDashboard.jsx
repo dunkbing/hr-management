@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Users,
@@ -9,6 +10,7 @@ import {
   School,
   Clock,
 } from "lucide-react";
+import Avatar from "../components/Avatar";
 import {
   BarChart,
   Bar,
@@ -33,6 +35,7 @@ const FacultyDashboard = () => {
   const mainColor = "#009FE3";
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username") || "Trưởng khoa";
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -63,29 +66,33 @@ const FacultyDashboard = () => {
       title: "Nhân sự của Khoa",
       value: stats.totalUsers,
       icon: Users,
-      color: "from-blue-500 to-blue-600",
+      color: "#3B82F6", // blue-500
       lightColor: "bg-blue-50",
+      path: "/faculty/employees"
     },
     {
       title: "Đề xuất đã gửi",
       value: 0, // Mock pending real data
       icon: FilePlus2,
-      color: "from-emerald-500 to-emerald-600",
+      color: "#10B981", // emerald-500
       lightColor: "bg-emerald-50",
+      path: "/faculty/proposals"
     },
     {
       title: "Đang chờ duyệt",
       value: 0, // Mock pending real data
       icon: ClipboardList,
-      color: "from-orange-500 to-orange-600",
-      lightColor: "bg-orange-50",
+      color: "#F59E0B", // amber-500
+      lightColor: "bg-amber-50",
+      path: "/faculty/proposals"
     },
     {
       title: "Đã phê duyệt",
       value: 0, // Mock pending real data
       icon: CheckCircle2,
-      color: "from-purple-500 to-purple-600",
+      color: "#8B5CF6", // purple-500
       lightColor: "bg-purple-50",
+      path: "/faculty/proposals"
     },
   ];
 
@@ -119,12 +126,13 @@ const FacultyDashboard = () => {
         {statCards.map((card, idx) => (
           <div
             key={idx}
-            className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all"
+            onClick={() => navigate(card.path)}
+            className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all cursor-pointer"
           >
             <div className={`${card.lightColor} w-12 h-12 flex items-center justify-center rounded-2xl mb-4`}>
-              <card.icon className={`w-6 h-6 bg-gradient-to-br ${card.color} bg-clip-text text-transparent`} />
+              <card.icon className="w-6 h-6" color={card.color} />
             </div>
-            <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider">{card.title}</p>
+            <p className="text-sm font-semibold text-slate-600 uppercase tracking-wider">{card.title}</p>
             <p className="text-2xl font-bold text-gray-800 mt-1">{card.value}</p>
           </div>
         ))}
@@ -154,11 +162,12 @@ const FacultyDashboard = () => {
           <h2 className="text-lg font-semibold text-gray-800 mb-6">Nhân sự mới trong Khoa</h2>
           <div className="space-y-5">
             {stats.recentUsers?.map((user, idx) => (
-              <div key={idx} className="flex items-center gap-4">
-                <img
-                  src={user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=random`}
-                  className="w-10 h-10 rounded-xl object-cover"
-                  alt={user.fullName}
+              <div key={idx} onClick={() => navigate("/faculty/employees")} className="flex items-center gap-4 cursor-pointer hover:bg-slate-50 p-2 rounded-xl transition-colors">
+                <Avatar
+                  src={user.avatar}
+                  name={user.fullName}
+                  size="md"
+                  className="rounded-xl"
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold text-slate-800 truncate">{user.fullName}</p>

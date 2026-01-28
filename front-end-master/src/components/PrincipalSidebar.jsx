@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -11,26 +12,24 @@ import {
 
 // ⭐ Menu theo đúng thứ tự yêu cầu
 const principalMenu = [
-  { label: "Dashboard thống kê", path: "/principal/dashboard", icon: <LayoutDashboard size={18} /> },
-  { label: "Quản lý nhân sự", path: "/principal/employees", icon: <Users size={18} /> },
-  { label: "Quản lý phòng ban", path: "/principal/departments", icon: <Building2 size={18} /> },
-  { label: "Quản lý khoa", path: "/principal/faculties", icon: <School size={18} /> },
-  { label: "Phê duyệt", path: "/principal/approvals", icon: <CheckCircle size={18} /> },
-  { label: "Báo cáo - Thống kê", path: "/principal/reports", icon: <BarChart2 size={18} /> },
-  { label: "Cài đặt", path: "/principal/settings", icon: <Settings size={18} /> },
+  { label: "Dashboard thống kê", path: "/principal/dashboard", icon: <LayoutDashboard size={18} />, iconColor: "#3B82F6" },
+  { label: "Quản lý nhân sự", path: "/principal/employees", icon: <Users size={18} />, iconColor: "#10B981" },
+  { label: "Quản lý phòng ban", path: "/principal/departments", icon: <Building2 size={18} />, iconColor: "#F59E0B" },
+  { label: "Quản lý khoa", path: "/principal/faculties", icon: <School size={18} />, iconColor: "#8B5CF6" },
+  { label: "Phê duyệt", path: "/principal/approvals", icon: <CheckCircle size={18} />, iconColor: "#6366F1" },
+  { label: "Báo cáo - Thống kê", path: "/principal/reports", icon: <BarChart2 size={18} />, iconColor: "#64748B" },
+  { label: "Cài đặt", path: "/principal/settings", icon: <Settings size={18} />, iconColor: "#4B5563" },
 ];
 
 const PrincipalSidebar = () => {
   const location = useLocation();
-  const mainColor = "#009FE3";
 
   return (
     <aside className="w-64 bg-white shadow-md flex flex-col">
       {/* Logo trường */}
       <Link
         to="/principal/dashboard"
-        className="p-6 border-b flex items-center gap-3 transition"
-        style={{ color: mainColor }}
+        className="p-6 border-b flex items-center gap-3 transition text-primary"
       >
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/0/03/Logo_HAU.png"
@@ -54,10 +53,14 @@ const PrincipalSidebar = () => {
               className={`flex items-center gap-3 px-6 py-3 text-gray-600 
                 transition
                 ${active ? "rounded-r-full mr-2" : ""}`}
-              style={active ? { backgroundColor: mainColor, color: "#fff" } : {}}
+              style={active ? { backgroundColor: '#009FE3', color: '#fff' } : {}}
             >
               {/* ICON */}
-              <span>{item.icon}</span>
+              <span>
+                {React.cloneElement(item.icon, {
+                  color: active ? "#fff" : item.iconColor
+                })}
+              </span>
 
               {/* LABEL */}
               <span className="text-sm font-medium">{item.label}</span>

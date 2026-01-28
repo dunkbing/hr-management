@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Users,
@@ -30,8 +31,8 @@ const PrincipalDashboard = () => {
     monthlyGrowth: [],
   });
   const [loading, setLoading] = useState(true);
-  const mainColor = "#009FE3";
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -52,16 +53,16 @@ const PrincipalDashboard = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#009FE3]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   const statCards = [
-    { title: "Tổng nhân sự toàn trường", value: stats.totalUsers, icon: Users, color: "text-blue-600", bg: "bg-blue-50" },
-    { title: "Số lượng Khoa", value: stats.totalFaculties, icon: School, color: "text-emerald-600", bg: "bg-emerald-50" },
-    { title: "Phòng ban / Đơn vị", value: stats.totalDepartments, icon: Network, color: "text-orange-600", bg: "bg-orange-50" },
-    { title: "Đề xuất chờ duyệt", value: 5, icon: Bell, color: "text-purple-600", bg: "bg-purple-50" },
+    { title: "Tổng nhân sự toàn trường", value: stats.totalUsers, icon: Users, color: "#3B82F6", bg: "bg-blue-50", path: "/principal/employees" },
+    { title: "Số lượng Khoa", value: stats.totalFaculties, icon: School, color: "#10B981", bg: "bg-emerald-50", path: "/principal/faculties" },
+    { title: "Phòng ban / Đơn vị", value: stats.totalDepartments, icon: Network, color: "#F59E0B", bg: "bg-orange-50", path: "/principal/departments" },
+    { title: "Đề xuất chờ duyệt", value: 5, icon: Bell, color: "#8B5CF6", bg: "bg-purple-50", path: "/principal/approvals" },
   ];
 
   return (
@@ -70,7 +71,7 @@ const PrincipalDashboard = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-gray-800 flex items-center gap-3">
-            <LayoutDashboard className="w-8 h-8 text-[#009FE3]" />
+            <LayoutDashboard className="w-8 h-8 text-primary" />
             Bảng Điều Khiển Ban Giám Hiệu
           </h1>
           <p className="text-gray-500 mt-1 font-medium">Hệ thống quản lý nhân sự - Đại học Kiến trúc Hà Nội</p>
@@ -86,11 +87,15 @@ const PrincipalDashboard = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((card, idx) => (
-          <div key={idx} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all">
-            <div className={`${card.bg} ${card.color} w-12 h-12 flex items-center justify-center rounded-2xl mb-4`}>
-              <card.icon className="w-6 h-6" />
+          <div
+            key={idx}
+            onClick={() => navigate(card.path)}
+            className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all cursor-pointer"
+          >
+            <div className={`${card.bg} w-12 h-12 flex items-center justify-center rounded-2xl mb-4`}>
+              <card.icon className="w-6 h-6" color={card.color} />
             </div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">{card.title}</p>
+            <p className="text-xs font-semibold text-slate-600 uppercase tracking-widest">{card.title}</p>
             <p className="text-2xl font-bold text-gray-800 mt-1">{card.value}</p>
           </div>
         ))}
@@ -121,15 +126,29 @@ const PrincipalDashboard = () => {
           </div>
           <div className="space-y-4">
             {[1, 2, 3].map((_, i) => (
-              <div key={i} className="p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-[#009FE3] transition-colors cursor-pointer">
+              <div
+                key={i}
+                onClick={() => navigate("/principal/approvals")}
+                className="p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-primary transition-colors cursor-pointer"
+              >
                 <div className="flex justify-between items-start mb-2">
                   <p className="font-bold text-slate-800 text-sm">Đề xuất bổ sung giảng viên</p>
                   <span className="text-[10px] font-bold text-slate-400">Hôm nay</span>
                 </div>
                 <p className="text-xs text-slate-500 mb-3">Khoa Kiến trúc - Tăng cường nhân lực HK2</p>
                 <div className="flex gap-2">
-                  <button className="flex-1 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors">Chi tiết</button>
-                  <button className="flex-1 py-2 bg-[#009FE3] text-white rounded-xl text-xs font-bold hover:bg-[#009FE3] transition-colors">Duyệt nhanh</button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); navigate("/principal/approvals"); }}
+                    className="flex-1 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors"
+                  >
+                    Chi tiết
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); navigate("/principal/approvals"); }}
+                    className="flex-1 py-2 bg-primary text-white rounded-xl text-xs font-bold hover:bg-primary transition-colors"
+                  >
+                    Duyệt nhanh
+                  </button>
                 </div>
               </div>
             ))}

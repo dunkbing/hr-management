@@ -23,20 +23,32 @@ const LecturerDashboard = () => {
     {
       title: "Chào mừng bạn đến với HAU HRMS",
       desc: "Hệ thống quản lý nhân sự hiện đại, minh bạch và hiệu quả dành cho cán bộ giảng viên Trường Đại học Kiến trúc Hà Nội.",
-      image: "https://images.unsplash.com/photo-1541339907198-e08759df9a13?q=80&w=2070&auto=format&fit=crop",
-      tag: "Thông báo"
+      image: "/slides/campus.png",
+      tag: "Trang chủ"
     },
     {
-      title: "Luồng phê duyệt 2 cấp mới",
-      desc: "Từ nay, các yêu cầu của giảng viên sẽ được thẩm định bởi Admin phòng Tổ chức Hành chính trước khi trình Hiệu trưởng phê duyệt.",
-      image: "https://images.unsplash.com/photo-1454165833767-13300a7c582d?q=80&w=2070&auto=format&fit=crop",
-      tag: "Cập nhật"
+      title: "Đẩy mạnh Chuyển đổi số",
+      desc: "Ứng dụng công nghệ hiện đại vào quản lý và giảng dạy, hướng tới xây dựng đại học thông minh.",
+      image: "/slides/digital.png",
+      tag: "Công nghệ"
     },
     {
-      title: "Số hóa hồ sơ cán bộ",
-      desc: "Hãy cập nhật đầy đủ thông tin cá nhân và các văn bằng chứng chỉ để đảm bảo quyền lợi trong việc nâng lương và thăng hạng.",
-      image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2070&auto=format&fit=crop",
-      tag: "Hướng dẫn"
+      title: "Nghiên cứu & Sáng tạo",
+      desc: "Phòng thí nghiệm hiện đại và môi trường học thuật chuyên sâu thúc đẩy những sáng kiến kiến trúc đột phá.",
+      image: "/slides/research.png",
+      tag: "Nghiên cứu"
+    },
+    {
+      title: "Kết nối Cộng đồng Giảng viên",
+      desc: "Xây dựng môi trường làm việc đoàn kết, năng động với nhiều hoạt động văn hóa, nghệ thuật đặc sắc.",
+      image: "/slides/events.png",
+      tag: "Hoạt động"
+    },
+    {
+      title: "Vinh danh Giảng viên Tiêu biểu",
+      desc: "Sự ghi nhận xứng đáng cho những đóng góp xuất sắc trong sự nghiệp giáo dục và phát triển nhà trường.",
+      image: "/slides/award.png",
+      tag: "Vinh danh"
     }
   ];
 
@@ -75,10 +87,12 @@ const LecturerDashboard = () => {
         {/* Welcome Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-black text-gray-800 tracking-tight">
+            <h1 className="text-3xl font-black text-slate-800 tracking-tight">
               Chào buổi sáng, {user?.fullName?.split(' ').pop()}! 👋
             </h1>
-            <p className="text-gray-500 mt-1 font-medium italic">Hôm nay bạn có {stats.pending} yêu cầu đang chờ phê duyệt.</p>
+            <p onClick={() => navigate("/lecturer/my-requests")} className="text-slate-500 mt-1 font-medium italic cursor-pointer hover:underline decoration-blue-400">
+              Hôm nay bạn có {stats.pending} yêu cầu đang chờ phê duyệt.
+            </p>
           </div>
           <button
             onClick={() => navigate("/lecturer/submit-request")}
@@ -100,7 +114,7 @@ const LecturerDashboard = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent flex flex-col justify-center p-12 md:p-20">
                 <span className="bg-blue-500 text-white text-[10px] font-black px-3 py-1 rounded-full w-fit mb-4 uppercase tracking-widest">{slide.tag}</span>
                 <h2 className="text-3xl md:text-5xl font-black text-white max-w-2xl leading-tight mb-4">{slide.title}</h2>
-                <p className="text-blue-50 text-base md:text-lg max-w-xl opacity-90 leading-relaxed font-medium">{slide.desc}</p>
+                <p className="text-white/90 text-base md:text-lg max-w-xl leading-relaxed font-medium">{slide.desc}</p>
               </div>
             </div>
           ))}
@@ -155,13 +169,18 @@ const LecturerDashboard = () => {
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white rounded-[2.5rem] p-10 shadow-sm border border-slate-100">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-xl font-bold text-gray-800 flex items-center gap-3">
+                <h2 className="text-xl font-bold text-slate-800 flex items-center gap-3">
                   <div className="p-2 bg-blue-50 text-[#009FE3] rounded-xl">
                     <Bell size={20} />
                   </div>
                   Thông báo từ Nhà trường
                 </h2>
-                <button className="text-xs font-black text-[#009FE3] hover:underline uppercase tracking-widest">Xem tất cả</button>
+                <button
+                  onClick={() => navigate("/lecturer/dashboard")}
+                  className="text-xs font-black text-[#009FE3] hover:underline uppercase tracking-widest"
+                >
+                  Xem tất cả
+                </button>
               </div>
 
               <div className="space-y-4">
@@ -186,7 +205,7 @@ const LecturerDashboard = () => {
 
           <div className="space-y-6">
             <div className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100">
-              <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+              <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
                 <Info size={20} className="text-blue-500" />
                 Lối tắt nhanh
               </h2>
@@ -213,7 +232,10 @@ const LecturerDashboard = () => {
               <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all duration-700"></div>
               <h3 className="font-bold text-lg mb-2 z-10 relative">Hỗ trợ kỹ thuật</h3>
               <p className="text-blue-50 text-sm mb-8 leading-relaxed z-10 relative">Gặp khó khăn khi sử dụng hệ thống? Liên hệ ngay với phòng CNTT.</p>
-              <button className="w-full bg-white/20 hover:bg-white text-white hover:text-[#009FE3] backdrop-blur-md py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all border border-white/30 z-10 relative">
+              <button
+                onClick={() => navigate("/lecturer/submit-request")}
+                className="w-full bg-white/20 hover:bg-white text-white hover:text-[#009FE3] backdrop-blur-md py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all border border-white/30 z-10 relative"
+              >
                 Gửi yêu cầu hỗ trợ
               </button>
             </div>
@@ -225,24 +247,26 @@ const LecturerDashboard = () => {
 };
 
 const StatCard = ({ title, value, icon: Icon, color, onClick }) => {
-  const colors = {
-    blue: "bg-blue-500 shadow-blue-100 text-blue-500 bg-opacity-10",
-    emerald: "bg-emerald-500 shadow-emerald-100 text-emerald-500 bg-opacity-10",
-    slate: "bg-slate-500 shadow-slate-100 text-slate-500 bg-opacity-10"
+  const themedColors = {
+    blue: { icon: "#3B82F6", bg: "bg-blue-500 shadow-blue-100 bg-opacity-10" },
+    emerald: { icon: "#10B981", bg: "bg-emerald-500 shadow-emerald-100 bg-opacity-10" },
+    slate: { icon: "#F59E0B", bg: "bg-amber-500 shadow-amber-100 bg-opacity-10" }
   };
+
+  const currentTheme = themedColors[color] || themedColors.blue;
 
   return (
     <div
       onClick={onClick}
       className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all cursor-pointer group"
     >
-      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-8 ${colors[color]}`}>
-        <Icon size={32} />
+      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-8 ${currentTheme.bg}`}>
+        <Icon size={32} color={currentTheme.icon} />
       </div>
       <div>
-        <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">{title}</p>
+        <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">{title}</p>
         <div className="flex items-end justify-between mt-2">
-          <h3 className="text-4xl font-black text-gray-800">{value}</h3>
+          <h3 className="text-4xl font-black text-slate-800">{value}</h3>
           <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-[#009FE3] group-hover:text-white transition-all shadow-inner">
             <ArrowUpRight size={20} />
           </div>
@@ -277,8 +301,8 @@ const QuickLink = ({ icon: Icon, label, onClick }) => (
     className="w-full flex items-center justify-between p-5 bg-slate-50/50 border border-slate-50 hover:bg-[#009FE3] hover:border-[#009FE3] rounded-[1.5rem] transition-all group"
   >
     <div className="flex items-center gap-4">
-      <div className="p-2 bg-white rounded-lg shadow-sm text-gray-400 group-hover:text-[#009FE3] transition-colors">
-        <Icon size={18} />
+      <div className="p-2 bg-white rounded-lg shadow-sm text-[#009FE3] group-hover:text-[#009FE3] transition-colors">
+        <Icon size={18} color="#009FE3" />
       </div>
       <span className="text-sm font-bold text-gray-600 group-hover:text-white transition-colors">{label}</span>
     </div>

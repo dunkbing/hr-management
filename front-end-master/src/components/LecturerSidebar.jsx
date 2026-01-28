@@ -25,7 +25,7 @@ const LecturerSidebar = () => {
                     alt="Logo HAU"
                     className="w-10 h-10 object-contain"
                 />
-                <div className="font-bold leading-tight text-[15px] text-[#009FE3]">
+                <div className="font-bold leading-tight text-[15px] text-primary">
                     TRƯỜNG ĐẠI HỌC <br /> KIẾN TRÚC HÀ NỘI
                 </div>
             </Link>
@@ -34,44 +34,48 @@ const LecturerSidebar = () => {
                 <Link
                     to="/lecturer/dashboard"
                     className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/lecturer/dashboard")
-                        ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+                        ? "text-white rounded-r-full mr-2"
                         : "text-gray-600"
                         }`}
+                    style={isActive("/lecturer/dashboard") ? { backgroundColor: '#009FE3' } : {}}
                 >
-                    <LayoutDashboard size={18} />
+                    <LayoutDashboard size={18} color={isActive("/lecturer/dashboard") ? "#fff" : "#3B82F6"} />
                     <span className="text-sm font-medium">Bảng điều khiển</span>
                 </Link>
 
                 <Link
                     to="/lecturer/profile"
                     className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/lecturer/profile")
-                        ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+                        ? "text-white rounded-r-full mr-2"
                         : "text-gray-600"
                         }`}
+                    style={isActive("/lecturer/profile") ? { backgroundColor: '#009FE3' } : {}}
                 >
-                    <User size={18} />
+                    <User size={18} color={isActive("/lecturer/profile") ? "#fff" : "#8B5CF6"} />
                     <span className="text-sm font-medium">Thông tin cá nhân</span>
                 </Link>
 
                 <Link
                     to="/lecturer/submit-request"
                     className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/lecturer/submit-request")
-                        ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+                        ? "text-white rounded-r-full mr-2"
                         : "text-gray-600"
                         }`}
+                    style={isActive("/lecturer/submit-request") ? { backgroundColor: '#009FE3' } : {}}
                 >
-                    <Send size={18} />
+                    <Send size={18} color={isActive("/lecturer/submit-request") ? "#fff" : "#10B981"} />
                     <span className="text-sm font-medium">Gửi yêu cầu</span>
                 </Link>
 
                 <Link
                     to="/lecturer/my-requests"
                     className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/lecturer/my-requests")
-                        ? "bg-[#009FE3] text-white rounded-r-full mr-2"
+                        ? "text-white rounded-r-full mr-2"
                         : "text-gray-600"
                         }`}
+                    style={isActive("/lecturer/my-requests") ? { backgroundColor: '#009FE3' } : {}}
                 >
-                    <ClipboardList size={18} />
+                    <ClipboardList size={18} color={isActive("/lecturer/my-requests") ? "#fff" : "#64748B"} />
                     <span className="text-sm font-medium">Lịch sử yêu cầu</span>
                 </Link>
             </nav>

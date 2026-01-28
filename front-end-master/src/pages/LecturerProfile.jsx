@@ -91,7 +91,7 @@ const LecturerProfile = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <h1 className="text-4xl font-black text-gray-800 tracking-tight">{user?.fullName}</h1>
+                            <h1 className="text-4xl font-black text-slate-800 tracking-tight">{user?.fullName}</h1>
                             <div className="flex flex-wrap justify-center gap-3">
                                 <span className="bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-blue-100">
                                     {user?.roleName || "Giảng viên"}
@@ -112,13 +112,13 @@ const LecturerProfile = () => {
 
                     <div className="px-12 pb-12 grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="space-y-8">
-                            <h3 className="text-lg font-black text-gray-800 border-b-2 border-blue-50 pb-2 mb-6">Thông tin cá nhân</h3>
+                            <h3 className="text-lg font-black text-slate-800 border-b-2 border-blue-50 pb-2 mb-6">Thông tin cá nhân</h3>
                             <ProfileItem icon={Mail} label="Địa chỉ Email" value={user?.email} />
                             <ProfileItem icon={Calendar} label="Ngày sinh" value={user?.dob} />
                             <ProfileItem icon={IdCard} label="Số CCCD" value={user?.cccd} />
                         </div>
                         <div className="space-y-8">
-                            <h3 className="text-lg font-black text-gray-800 border-b-2 border-emerald-50 pb-2 mb-6">Thông tin công tác</h3>
+                            <h3 className="text-lg font-black text-slate-800 border-b-2 border-emerald-50 pb-2 mb-6">Thông tin công tác</h3>
                             <ProfileItem icon={Building} label="Khoa trực thuộc" value={user?.facultyName} />
                             <ProfileItem icon={Briefcase} label="Phòng ban" value={user?.departmentName || "N/A"} />
                             <ProfileItem icon={GraduationCap} label="Trình độ học vấn" value={user?.educationLevel} />
@@ -136,8 +136,8 @@ const ProfileItem = ({ icon: Icon, label, value }) => (
             <Icon size={20} />
         </div>
         <div>
-            <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">{label}</p>
-            <p className="text-base font-bold text-gray-700">{value || "Chưa cập nhật"}</p>
+            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">{label}</p>
+            <p className="text-base font-bold text-slate-700">{value || "Chưa cập nhật"}</p>
         </div>
     </div>
 );
