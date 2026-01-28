@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaPlus, FaFileExcel, FaCogs, FaColumns, FaLink, FaTimes, FaTrash } from "react-icons/fa";
 import axios from "axios";
+import Pagination from "../components/Pagination";
 
 function UserManagement() {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Form State
   const [newUser, setNewUser] = useState({
@@ -65,6 +70,17 @@ function UserManagement() {
     u.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Calculate pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+  const handleItemsPerPageChange = (size) => {
+    setItemsPerPage(size);
+    setCurrentPage(1);
+  };
+
   return (
     <div className="p-6 relative">
       <h1 className="text-2xl font-semibold text-gray-800 mb-6">
@@ -82,7 +98,7 @@ function UserManagement() {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="px-3 py-2 outline-none text-sm w-64"
             />
-            <button className="bg-blue-600 text-white px-3 py-2">
+            <button className="bg-[#009FE3] text-white px-3 py-2">
               <FaSearch />
             </button>
           </div>
@@ -90,7 +106,7 @@ function UserManagement() {
 
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium shadow"
+          className="flex items-center gap-2 bg-[#009FE3] text-white px-4 py-2 rounded-lg hover:bg-[#008bc7] font-medium shadow"
         >
           <FaPlus /> Thêm mới
         </button>
@@ -100,7 +116,7 @@ function UserManagement() {
       <div className="overflow-x-auto border rounded-xl bg-white shadow">
         <table className="min-w-full border-collapse">
           <thead>
-            <tr className="bg-blue-50 text-sm text-gray-700 text-left">
+            <tr className="bg-gray-100 text-sm text-gray-700 text-left">
               <th className="p-4 font-semibold border-b">ID</th>
               <th className="p-4 font-semibold border-b">Tài khoản</th>
               <th className="p-4 font-semibold border-b">Vai trò</th>
@@ -110,11 +126,11 @@ function UserManagement() {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.length > 0 ? (
-              filteredUsers.map((u) => (
+            {currentUsers.length > 0 ? (
+              currentUsers.map((u, index) => (
                 <tr key={u.userId} className="hover:bg-gray-50 border-b">
-                  <td className="p-4">{u.userId}</td>
-                  <td className="p-4 font-medium text-blue-600">{u.username}</td>
+                  <td className="p-4">{indexOfFirstItem + index + 1}</td>
+                  <td className="p-4 font-medium text-[#009FE3]">{u.username}</td>
                   <td className="p-4">
                     <span className="px-2 py-1 rounded bg-gray-100 text-gray-700 text-xs font-bold uppercase">
                       {u.role ? u.role.roleCode : "N/A"}
@@ -169,6 +185,14 @@ function UserManagement() {
         </table>
       </div>
 
+      <Pagination
+        totalItems={filteredUsers.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        onItemsPerPageChange={handleItemsPerPageChange}
+      />
+
       {/* MODAL */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
@@ -188,7 +212,7 @@ function UserManagement() {
                   required
                   value={newUser.username}
                   onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
-                  className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#009FE3] outline-none"
                   placeholder="Nhập tên đăng nhập..."
                 />
               </div>
@@ -200,7 +224,7 @@ function UserManagement() {
                   required
                   value={newUser.password}
                   onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-                  className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#009FE3] outline-none"
                   placeholder="Nhập mật khẩu..."
                 />
               </div>
@@ -210,7 +234,7 @@ function UserManagement() {
                 <select
                   value={newUser.roleCode}
                   onChange={(e) => setNewUser({ ...newUser, roleCode: e.target.value })}
-                  className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                  className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#009FE3] outline-none bg-white"
                 >
                   {localStorage.getItem("role") === "superadmin" && (
                     <>
@@ -234,7 +258,7 @@ function UserManagement() {
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-medium shadow-md"
+                  className="px-6 py-2 rounded-lg bg-[#009FE3] text-white hover:bg-[#008bc7] font-medium shadow-md"
                 >
                   Tạo tài khoản
                 </button>

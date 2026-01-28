@@ -3,9 +3,10 @@ import { FaPlus, FaSearch, FaEdit, FaTrash, FaTimes, FaSave } from "react-icons/
 import positionApi from "../api/positionApi";
 import facultyApi from "../api/facultyApi";
 import departmentApi from "../api/departmentApi";
+import Pagination from "../components/Pagination";
 
 const Positions = () => {
-  const primary = "#0ea5e9";
+  const primary = "#009FE3";
 
   const [positions, setPositions] = useState([]);
   const [faculties, setFaculties] = useState([]);
@@ -13,7 +14,12 @@ const Positions = () => {
   const [loading, setLoading] = useState(false);
 
   const [search, setSearch] = useState("");
+
   const [unitFilter, setUnitFilter] = useState("");
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Modal state
   const [showModal, setShowModal] = useState(false);
@@ -126,6 +132,17 @@ const Positions = () => {
     return matchSearch && matchUnit;
   });
 
+  // Calculate pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filtered.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+  const handleItemsPerPageChange = (size) => {
+    setItemsPerPage(size);
+    setCurrentPage(1); // Reset to first page when changing size
+  };
+
   /** ================= STATISTIC ================= */
   const total = positions.length;
   const totalFaculty = positions.filter(p => p.unitType === "Khoa").length;
@@ -154,7 +171,7 @@ const Positions = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Tìm theo tên chức danh"
-              className="pl-10 pr-3 py-2 border rounded-lg w-full bg-white focus:outline-none focus:ring-1 focus:ring-sky-400"
+              className="pl-10 pr-3 py-2 border rounded-lg w-full bg-white focus:outline-none focus:ring-1 focus:ring-[#009FE3]"
             />
           </div>
 
@@ -180,7 +197,7 @@ const Positions = () => {
 
       {/* ================= STATISTIC ================= */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatCard title="Tổng chức danh" value={total} color="text-sky-600" />
+        <StatCard title="Tổng chức danh" value={total} color="text-[#009FE3]" />
         <StatCard title="Theo khoa" value={totalFaculty} color="text-green-600" />
         <StatCard title="Theo phòng ban" value={totalDepartment} color="text-orange-500" />
       </div>
@@ -203,17 +220,17 @@ const Positions = () => {
             </thead>
 
             <tbody className="divide-y divide-gray-100">
-              {filtered.map((p, index) => (
+              {currentItems.map((p, index) => (
                 <tr
                   key={p.id}
                   className="hover:bg-gray-50 transition"
                 >
                   <td className="px-6 py-4 text-gray-500 w-16">
-                    {index + 1}
+                    {indexOfFirstItem + index + 1}
                   </td>
 
                   <td className="px-6 py-4">
-                    <div className="font-semibold text-sky-600">{p.code}</div>
+                    <div className="font-semibold text-[#009FE3]">{p.code}</div>
                   </td>
 
                   <td className="px-6 py-4">
@@ -236,7 +253,7 @@ const Positions = () => {
                     <div className="flex justify-center gap-3">
                       <button
                         onClick={() => handleOpenModal(p)}
-                        className="p-2 rounded-full bg-sky-50 text-sky-600 hover:bg-sky-100"
+                        className="p-2 rounded-full bg-sky-50 text-[#009FE3] hover:bg-sky-100"
                         title="Chỉnh sửa"
                       >
                         <FaEdit size={14} />
@@ -265,6 +282,14 @@ const Positions = () => {
         )}
       </div>
 
+      <Pagination
+        totalItems={filtered.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        onItemsPerPageChange={handleItemsPerPageChange}
+      />
+
       {/* ================= MODAL ================= */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
@@ -288,7 +313,7 @@ const Positions = () => {
                   <select
                     value={formData.unitType}
                     onChange={(e) => setFormData({ ...formData, unitType: e.target.value, facultyId: "", departmentId: "" })}
-                    className="w-full border rounded-lg px-3 py-2 focus:ring-1 focus:ring-sky-500 outline-none bg-white font-medium shadow-sm"
+                    className="w-full border rounded-lg px-3 py-2 focus:ring-1 focus:ring-[#009FE3] outline-none bg-white font-medium shadow-sm"
                   >
                     <option value="Khoa">Khoa</option>
                     <option value="Phòng ban">Phòng ban</option>
@@ -302,7 +327,7 @@ const Positions = () => {
                       <select
                         value={formData.facultyId}
                         onChange={(e) => setFormData({ ...formData, facultyId: e.target.value })}
-                        className="w-full border rounded-lg px-3 py-2 focus:ring-1 focus:ring-sky-500 outline-none bg-white font-medium shadow-sm"
+                        className="w-full border rounded-lg px-3 py-2 focus:ring-1 focus:ring-[#009FE3] outline-none bg-white font-medium shadow-sm"
                       >
                         <option value="">-- Chọn Khoa --</option>
                         {faculties.map(f => (
@@ -316,7 +341,7 @@ const Positions = () => {
                       <select
                         value={formData.departmentId}
                         onChange={(e) => setFormData({ ...formData, departmentId: e.target.value })}
-                        className="w-full border rounded-lg px-3 py-2 focus:ring-1 focus:ring-sky-500 outline-none bg-white font-medium shadow-sm"
+                        className="w-full border rounded-lg px-3 py-2 focus:ring-1 focus:ring-[#009FE3] outline-none bg-white font-medium shadow-sm"
                       >
                         <option value="">-- Chọn Phòng ban --</option>
                         {departments.map(d => (
@@ -334,7 +359,7 @@ const Positions = () => {
                   <input
                     value={formData.code}
                     onChange={(e) => setFormData({ ...formData, code: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2 focus:ring-1 focus:ring-sky-500 outline-none shadow-sm"
+                    className="w-full border rounded-lg px-3 py-2 focus:ring-1 focus:ring-[#009FE3] outline-none shadow-sm"
                     placeholder="Ví dụ: GV, TP..."
                   />
                 </div>
@@ -343,7 +368,7 @@ const Positions = () => {
                   <input
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2 focus:ring-1 focus:ring-sky-500 outline-none shadow-sm"
+                    className="w-full border rounded-lg px-3 py-2 focus:ring-1 focus:ring-[#009FE3] outline-none shadow-sm"
                     placeholder="Ví dụ: Giảng viên, Trưởng phòng..."
                   />
                 </div>
@@ -354,7 +379,7 @@ const Positions = () => {
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full border rounded-lg px-3 py-2 focus:ring-1 focus:ring-sky-500 outline-none shadow-sm"
+                  className="w-full border rounded-lg px-3 py-2 focus:ring-1 focus:ring-[#009FE3] outline-none shadow-sm"
                   rows="2"
                   placeholder="Nhập mô tả chức danh..."
                 />

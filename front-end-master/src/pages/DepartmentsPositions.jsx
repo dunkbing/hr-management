@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Plus, Search, Eye, Edit, Users } from "lucide-react";
 import AddDepartmentModal from "../components/AddDepartmentModal";
+import Pagination from "../components/Pagination";
 
 const Departments = () => {
   const mainColor = "#009FE3";
@@ -14,7 +15,12 @@ const Departments = () => {
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [initialData, setInitialData] = useState(null);
   const [staffList, setStaffList] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // =========================
   // FETCH DEPARTMENTS
@@ -54,7 +60,19 @@ const Departments = () => {
       d.departmentCode?.toLowerCase().includes(search.toLowerCase());
     const matchStatus = statusFilter ? d.status === statusFilter : true;
     return matchSearch && matchStatus;
+    return matchSearch && matchStatus;
   });
+
+  // Calculate pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentDepartments = filteredDepartments.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+  const handleItemsPerPageChange = (size) => {
+    setItemsPerPage(size);
+    setCurrentPage(1);
+  };
 
   // =========================
   // ADD DEPARTMENT
@@ -213,13 +231,13 @@ const Departments = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredDepartments.map((d, index) => (
+              {currentDepartments.map((d, index) => (
                 <tr
                   key={d.departmentId}
                   className="border-t"
                   onClick={() => setSelectedDept(d)}
                 >
-                  <td className="px-4 py-3">{index + 1}</td>
+                  <td className="px-4 py-3">{indexOfFirstItem + index + 1}</td>
                   <td className="px-4 py-3 font-medium">{d.departmentCode}</td>
                   <td className="px-4 py-3">{d.departmentName}</td>
                   <td className="px-4 py-3">{d.managerName || ""}</td>
@@ -275,6 +293,14 @@ const Departments = () => {
           </table>
         )}
       </div>
+
+      <Pagination
+        totalItems={filteredDepartments.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        onItemsPerPageChange={handleItemsPerPageChange}
+      />
 
       {/* ADD DEPARTMENT MODAL */}
       <AddDepartmentModal

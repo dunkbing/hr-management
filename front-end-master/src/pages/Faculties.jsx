@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Plus, Search, Eye, Edit, Users } from "lucide-react";
 import AddFacultyModal from "../components/AddFacultyModal";
+import Pagination from "../components/Pagination";
 
 const Faculties = () => {
   const mainColor = "#009FE3";
@@ -8,7 +9,12 @@ const Faculties = () => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [faculties, setFaculties] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const [selectedFaculty, setSelectedFaculty] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -56,7 +62,19 @@ const Faculties = () => {
       f.code?.toLowerCase().includes(search.toLowerCase());
     const matchStatus = statusFilter ? f.status === statusFilter : true;
     return matchSearch && matchStatus;
+    return matchSearch && matchStatus;
   });
+
+  // Calculate pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentFaculties = filteredFaculties.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+  const handleItemsPerPageChange = (size) => {
+    setItemsPerPage(size);
+    setCurrentPage(1);
+  };
 
   // =========================
   // CRUD ACTIONS
@@ -211,13 +229,13 @@ const Faculties = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredFaculties.map((f, index) => (
+              {currentFaculties.map((f, index) => (
                 <tr
                   key={f.id}
                   className="border-t"
                   onClick={() => setSelectedFaculty(f)}
                 >
-                  <td className="px-4 py-3">{index + 1}</td>
+                  <td className="px-4 py-3">{indexOfFirstItem + index + 1}</td>
                   <td className="px-4 py-3 font-medium">{f.code}</td>
                   <td className="px-4 py-3">{f.name}</td>
                   <td className="px-4 py-3">{f.deanName || "—"}</td>
@@ -269,6 +287,14 @@ const Faculties = () => {
           </table>
         )}
       </div>
+
+      <Pagination
+        totalItems={filteredFaculties.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        onItemsPerPageChange={handleItemsPerPageChange}
+      />
 
       {/* ADD FACULTY MODAL */}
       <AddFacultyModal

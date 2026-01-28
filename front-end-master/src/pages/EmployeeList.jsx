@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Pagination from "../components/Pagination";
 import { useNavigate } from "react-router-dom";
 import {
   FaSearch,
@@ -25,9 +26,10 @@ function EmployeeList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [unitType, setUnitType] = useState("");
   const [unitName, setUnitName] = useState("");
+
   const [filtered, setFiltered] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Modal States
   const [showImportModal, setShowImportModal] = useState(false);
@@ -144,6 +146,11 @@ function EmployeeList() {
     setCurrentPage(pageNumber);
   };
 
+  const handleItemsPerPageChange = (size) => {
+    setItemsPerPage(size);
+    setCurrentPage(1);
+  };
+
   return (
     <div className="p-6 space-y-6">
       {/* ===== HEADER ===== */}
@@ -160,7 +167,7 @@ function EmployeeList() {
         <div className="flex gap-3">
           <button
             onClick={() => navigate("/employees/add")}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-white bg-[#009FE3] hover:bg-[#008bc7]"
           >
             <FaPlus /> Thêm mới
           </button>
@@ -177,7 +184,7 @@ function EmployeeList() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white rounded-xl shadow p-4">
           <p className="text-sm text-gray-500">Tổng nhân viên</p>
-          <p className="text-2xl font-semibold text-blue-600">
+          <p className="text-2xl font-semibold text-[#009FE3]">
             {totalEmployees}
           </p>
         </div>
@@ -310,7 +317,7 @@ function EmployeeList() {
                               <button
                                 title="Chỉnh sửa"
                                 onClick={() => navigate(`/employees/edit/${emp.userId}`)}
-                                className="p-2 rounded-full text-blue-600 hover:text-blue-800 hover:bg-blue-50 transition"
+                                className="p-2 rounded-full text-[#009FE3] hover:text-[#008bc7] hover:bg-[#009FE3]/10 transition"
                               >
                                 <FaEdit size={14} />
                               </button>
@@ -346,37 +353,13 @@ function EmployeeList() {
         </table>
       </div>
 
-      {/* ===== PAGINATION CONTROLS ===== */}
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-2 mt-4">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-3 py-1 rounded border bg-white disabled:opacity-50 hover:bg-gray-50 transition"
-          >
-            Trước
-          </button>
-          {[...Array(totalPages)].map((_, i) => (
-            <button
-              key={i}
-              onClick={() => handlePageChange(i + 1)}
-              className={`px-3 py-1 rounded border transition ${currentPage === i + 1
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white hover:bg-gray-50"
-                }`}
-            >
-              {i + 1}
-            </button>
-          ))}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="px-3 py-1 rounded border bg-white disabled:opacity-50 hover:bg-gray-50 transition"
-          >
-            Sau
-          </button>
-        </div>
-      )}
+      <Pagination
+        totalItems={filtered.length}
+        itemsPerPage={itemsPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+        onItemsPerPageChange={handleItemsPerPageChange}
+      />
       {/* ===== MODALS ===== */}
 
       {showImportModal && (
@@ -473,11 +456,11 @@ function ImportExcelModal({ onClose, onSuccess }) {
         </div>
 
         <div className="p-6 space-y-6">
-          <div className="bg-blue-50 p-4 rounded-lg flex flex-col items-center gap-3">
-            <p className="text-sm text-blue-700 text-center">Tải file mẫu về để nhập dữ liệu đúng định dạng hệ thống</p>
+          <div className="bg-[#009FE3]/5 p-4 rounded-lg flex flex-col items-center gap-3">
+            <p className="text-sm text-[#009FE3] text-center">Tải file mẫu về để nhập dữ liệu đúng định dạng hệ thống</p>
             <button
               onClick={handleDownloadTemplate}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50"
+              className="flex items-center gap-2 px-4 py-2 bg-white border border-[#009FE3] text-[#009FE3] rounded-lg hover:bg-[#009FE3]/10"
             >
               <FaFileExcel /> Tải file mẫu
             </button>
