@@ -9,10 +9,12 @@ import {
   ClipboardCheck,
   FileText,
   Award,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({ collapsed }) => {
   const location = useLocation();
 
   const isActive = (path) => {
@@ -21,34 +23,19 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-64 bg-white shadow-md flex flex-col">
-      {/* Logo */}
-      <Link
-        to="/dashboard"
-        className="flex items-center gap-3 p-6 border-b transition"
-      >
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/0/03/Logo_HAU.png"
-          alt="Logo Trường Đại học Kiến trúc Hà Nội"
-          className="w-10 h-10 object-contain"
-        />
-        <div className="font-bold leading-tight text-[15px] text-primary">
-          TRƯỜNG ĐẠI HỌC <br /> KIẾN TRÚC HÀ NỘI
-        </div>
-      </Link>
-
-      <nav className="mt-4 flex-1 text-gray-600">
+    <aside className={`${collapsed ? "w-20" : "w-64"} bg-white shadow-md flex flex-col transition-all duration-300 overflow-hidden`}>
+      <nav className="mt-8 flex-1 text-slate-700">
         {/* Dashboard */}
         <Link
           to="/dashboard"
           className={`flex items-center gap-3 px-6 py-3 transition ${isActive("/dashboard")
             ? "text-white rounded-r-full mr-2"
-            : "text-gray-600"
+            : "text-slate-600 hover:text-primary"
             }`}
           style={isActive("/dashboard") ? { backgroundColor: '#009FE3' } : {}}
         >
           <LayoutDashboard size={18} color={isActive("/dashboard") ? "#fff" : "#3B82F6"} />
-          <span className="text-sm font-medium">Dashboard thống kê</span>
+          {!collapsed && <span className="text-sm font-semibold truncate">Dashboard thống kê</span>}
         </Link>
 
         {/* Nhân sự */}
@@ -61,7 +48,7 @@ const Sidebar = () => {
           style={isActive("/employees") ? { backgroundColor: '#009FE3' } : {}}
         >
           <Users size={18} color={isActive("/employees") ? "#fff" : "#10B981"} />
-          <span className="text-sm font-medium">Quản lý nhân sự</span>
+          {!collapsed && <span className="text-sm font-medium truncate">Quản lý nhân sự</span>}
         </Link>
 
         {/* ===== QUẢN LÝ PHÒNG BAN ===== */}
@@ -74,7 +61,7 @@ const Sidebar = () => {
           style={isActive("/departments") ? { backgroundColor: '#009FE3' } : {}}
         >
           <Building2 size={18} color={isActive("/departments") ? "#fff" : "#F59E0B"} />
-          <span className="text-sm font-medium">Quản lý phòng ban</span>
+          {!collapsed && <span className="text-sm font-medium truncate">Quản lý phòng ban</span>}
         </Link>
 
         {/* ===== QUẢN LÝ KHOA ===== */}
@@ -87,7 +74,7 @@ const Sidebar = () => {
           style={isActive("/faculties") ? { backgroundColor: '#009FE3' } : {}}
         >
           <BookOpen size={18} color={isActive("/faculties") ? "#fff" : "#8B5CF6"} />
-          <span className="text-sm font-medium">Quản lý khoa</span>
+          {!collapsed && <span className="text-sm font-medium truncate">Quản lý khoa</span>}
         </Link>
 
         {/* Chức danh */}
@@ -100,7 +87,7 @@ const Sidebar = () => {
           style={isActive("/positions") ? { backgroundColor: '#009FE3' } : {}}
         >
           <Briefcase size={18} color={isActive("/positions") ? "#fff" : "#06B6D4"} />
-          <span className="text-sm font-medium">Quản lý chức danh</span>
+          {!collapsed && <span className="text-sm font-medium truncate">Quản lý chức danh</span>}
         </Link>
 
         {/* Hợp đồng */}
@@ -113,7 +100,7 @@ const Sidebar = () => {
           style={isActive("/contracts") ? { backgroundColor: '#009FE3' } : {}}
         >
           <FileText size={18} color={isActive("/contracts") ? "#fff" : "#EC4899"} />
-          <span className="text-sm font-medium">Quản lý hợp đồng</span>
+          {!collapsed && <span className="text-sm font-medium truncate">Quản lý hợp đồng</span>}
         </Link>
 
         {/* Khen thưởng & Kỷ luật */}
@@ -126,7 +113,7 @@ const Sidebar = () => {
           style={isActive("/reward-discipline") ? { backgroundColor: '#009FE3' } : {}}
         >
           <Award size={18} color={isActive("/reward-discipline") ? "#fff" : "#EF4444"} />
-          <span className="text-sm font-medium">Khen thưởng & Kỷ luật</span>
+          {!collapsed && <span className="text-sm font-medium truncate">Khen thưởng & Kỷ luật</span>}
         </Link>
 
         {/* Trình phê duyệt */}
@@ -139,7 +126,7 @@ const Sidebar = () => {
           style={isActive("/approvals") ? { backgroundColor: '#009FE3' } : {}}
         >
           <ClipboardCheck size={18} color={isActive("/approvals") ? "#fff" : "#6366F1"} />
-          <span className="text-sm font-medium">Trình phê duyệt</span>
+          {!collapsed && <span className="text-sm font-medium truncate">Trình phê duyệt</span>}
         </Link>
 
         {/* Báo cáo */}
@@ -152,7 +139,7 @@ const Sidebar = () => {
           style={isActive("/reports") ? { backgroundColor: '#009FE3' } : {}}
         >
           <BarChart2 size={18} color={isActive("/reports") ? "#fff" : "#64748B"} />
-          <span className="text-sm font-medium">Báo cáo & Thống kê</span>
+          {!collapsed && <span className="text-sm font-medium truncate">Báo cáo & Thống kê</span>}
         </Link>
 
         {/* Cài đặt */}
@@ -165,7 +152,7 @@ const Sidebar = () => {
           style={isActive("/settings") ? { backgroundColor: '#009FE3' } : {}}
         >
           <Settings size={18} color={isActive("/settings") ? "#fff" : "#4B5563"} />
-          <span className="text-sm font-medium">Cài đặt hệ thống</span>
+          {!collapsed && <span className="text-sm font-medium truncate">Cài đặt hệ thống</span>}
         </Link>
       </nav>
     </aside>

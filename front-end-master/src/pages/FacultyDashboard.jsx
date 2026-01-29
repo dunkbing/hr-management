@@ -101,12 +101,12 @@ const FacultyDashboard = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800 flex items-center gap-3">
+          <h1 className="text-2xl font-black text-slate-950 flex items-center gap-3">
             <School className="w-8 h-8 text-[#009FE3]" />
             Dashboard Khoa
           </h1>
-          <p className="text-gray-500 mt-1 font-medium">
-            👋 Xin chào, <span className="text-[#009FE3] font-semibold">{username}</span>. Chúc một ngày làm việc hiệu quả!
+          <p className="text-slate-500 mt-1 font-bold text-sm">
+            👋 Xin chào, <span className="text-[#009FE3] font-black">{username}</span>. Chúc một ngày làm việc hiệu quả!
           </p>
         </div>
         <div className="flex items-center gap-3 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
@@ -132,8 +132,8 @@ const FacultyDashboard = () => {
             <div className={`${card.lightColor} w-12 h-12 flex items-center justify-center rounded-2xl mb-4`}>
               <card.icon className="w-6 h-6" color={card.color} />
             </div>
-            <p className="text-sm font-semibold text-slate-600 uppercase tracking-wider">{card.title}</p>
-            <p className="text-2xl font-bold text-gray-800 mt-1">{card.value}</p>
+            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{card.title}</p>
+            <p className="text-2xl font-black text-slate-950 mt-1">{card.value}</p>
           </div>
         ))}
       </div>
@@ -141,7 +141,7 @@ const FacultyDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Growth Chart */}
         <div className="lg:col-span-2 bg-white p-8 rounded-[32px] shadow-sm border border-slate-100">
-          <h2 className="text-lg font-semibold text-gray-800 mb-6 tracking-tight">Biến động nhân sự khoa (6 tháng)</h2>
+          <h2 className="text-lg font-black text-slate-800 mb-6 uppercase tracking-wider">Biến động nhân sự khoa (6 tháng)</h2>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={stats.monthlyGrowth}>
@@ -159,7 +159,7 @@ const FacultyDashboard = () => {
 
         {/* Recent Staff */}
         <div className="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100">
-          <h2 className="text-lg font-semibold text-gray-800 mb-6">Nhân sự mới trong Khoa</h2>
+          <h2 className="text-lg font-black text-slate-800 mb-6 uppercase tracking-wider">Nhân sự mới trong Khoa</h2>
           <div className="space-y-5">
             {stats.recentUsers?.map((user, idx) => (
               <div key={idx} onClick={() => navigate("/faculty/employees")} className="flex items-center gap-4 cursor-pointer hover:bg-slate-50 p-2 rounded-xl transition-colors">
@@ -170,10 +170,10 @@ const FacultyDashboard = () => {
                   className="rounded-xl"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-slate-800 truncate">{user.fullName}</p>
-                  <p className="text-xs text-slate-400 font-medium">{user.roleName || "Giảng viên"}</p>
+                  <p className="text-sm font-black text-slate-950 truncate">{user.fullName}</p>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{user.roleName || "Giảng viên"}</p>
                 </div>
-                <div className="flex items-center gap-1 text-[10px] font-bold text-emerald-500">
+                <div className="flex items-center gap-1 text-[10px] font-black text-emerald-500 uppercase tracking-widest">
                   <Clock className="w-3 h-3" /> Mới
                 </div>
               </div>

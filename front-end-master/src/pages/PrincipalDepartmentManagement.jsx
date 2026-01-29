@@ -83,7 +83,7 @@ const PrincipalDepartmentManagement = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">
+      <h1 className="text-2xl font-black text-slate-900 mb-6 uppercase tracking-tight">
         Quản lý phòng ban
       </h1>
 
@@ -105,8 +105,8 @@ const PrincipalDepartmentManagement = () => {
 
       {/* BẢNG DANH SÁCH */}
       <div className="bg-white shadow rounded-xl p-5">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="font-semibold text-lg text-gray-700">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="font-black text-lg text-slate-800 uppercase tracking-wider">
             Danh sách phòng ban ({filteredDepartments.length})
           </h2>
 
@@ -118,28 +118,28 @@ const PrincipalDepartmentManagement = () => {
 
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left bg-gray-100">
-              <th className="p-3">Mã PB</th>
-              <th className="p-3">Tên phòng ban</th>
-              <th className="p-3">Mô tả</th>
-              <th className="p-3">Nhân sự</th>
-              <th className="p-3">Trạng thái</th>
-              <th className="p-3 text-center">Hành động</th>
+            <tr className="bg-slate-50/80 text-[10px] font-black text-slate-500 text-left uppercase tracking-widest border-b border-slate-50">
+              <th className="p-4">Mã PB</th>
+              <th className="p-4">Tên phòng ban</th>
+              <th className="p-4">Mô tả</th>
+              <th className="p-4">Nhân sự</th>
+              <th className="p-4">Trạng thái</th>
+              <th className="p-4 text-center">Hành động</th>
             </tr>
           </thead>
 
           <tbody>
             {paginatedData.length > 0 ? paginatedData.map((d) => (
-              <tr key={d.id} className="border-t hover:bg-gray-50">
-                <td className="p-3 font-medium text-blue-600">{d.departmentCode || "---"}</td>
-                <td className="p-3 font-semibold">{d.departmentName || d.name}</td>
-                <td className="p-3 text-gray-500 truncate max-w-xs">{d.description || "---"}</td>
-                <td className="p-3">{d.memberCount || 0}</td>
-                <td className="p-3">
+              <tr key={d.id} className="hover:bg-slate-50/50 border-b border-slate-50 transition">
+                <td className="p-4 font-black text-[#009FE3] uppercase tracking-wider">{d.departmentCode || "---"}</td>
+                <td className="p-4 font-black text-slate-900">{d.departmentName || d.name}</td>
+                <td className="p-4 text-slate-500 font-medium truncate max-w-xs">{d.description || "---"}</td>
+                <td className="p-4 font-black text-slate-800">{d.memberCount || 0}</td>
+                <td className="p-4">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${d.active
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-600"
+                    className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${d.active
+                      ? "bg-emerald-100 text-emerald-700"
+                      : "bg-rose-100 text-rose-700"
                       }`}
                   >
                     {d.active ? "Đang hoạt động" : "Đã khóa"}

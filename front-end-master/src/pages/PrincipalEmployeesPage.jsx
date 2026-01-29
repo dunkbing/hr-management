@@ -170,8 +170,8 @@ const PrincipalEmployeeList = () => {
       {/* TIÊU ĐỀ + XUẤT EXCEL */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#009FE3]">Quản lý nhân sự toàn trường</h1>
-          <p className="text-gray-500 text-sm">Xem và quản lý tất cả cán bộ, giảng viên, nhân viên</p>
+          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">Quản lý nhân sự toàn trường</h1>
+          <p className="text-slate-500 mt-1 font-bold text-sm">Xem và quản lý tất cả cán bộ, giảng viên, nhân viên</p>
         </div>
 
         <button
@@ -190,8 +190,8 @@ const PrincipalEmployeeList = () => {
 
           {/* TÌM KIẾM */}
           <div className="md:col-span-5">
-            <label className="text-sm font-semibold text-gray-700 mb-1 block">Tìm kiếm</label>
-            <div className="flex items-center bg-gray-50 border border-gray-200 px-3 rounded-lg focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-400 transition">
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Tìm kiếm</label>
+            <div className="flex items-center bg-slate-50 border-none px-3 rounded-xl focus-within:ring-2 focus-within:ring-[#009FE3]/20 transition">
               <Search size={18} className="text-gray-400" />
               <input
                 className="w-full px-2 py-2.5 outline-none bg-transparent text-sm"
@@ -204,11 +204,11 @@ const PrincipalEmployeeList = () => {
 
           {/* ĐƠN VỊ */}
           <div className="md:col-span-3">
-            <label className="text-sm font-semibold text-gray-700 mb-1 block">Đơn vị / Khoa</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Đơn vị / Khoa</label>
             <div className="relative">
-              <Filter className="absolute left-3 top-3 text-gray-400" size={16} />
+              <Filter className="absolute left-3 top-3.5 text-slate-400" size={16} />
               <select
-                className="w-full border border-gray-200 rounded-lg pl-9 pr-3 py-2.5 bg-gray-50 text-sm focus:ring-2 focus:ring-blue-100 outline-none cursor-pointer"
+                className="w-full border-none rounded-xl pl-9 pr-3 py-2.5 bg-slate-50 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-[#009FE3]/20 outline-none cursor-pointer"
                 value={filterDepartment}
                 onChange={(e) => { setFilterDepartment(e.target.value); setPage(1); }}
               >
@@ -221,11 +221,11 @@ const PrincipalEmployeeList = () => {
 
           {/* CHỨC DANH */}
           <div className="md:col-span-3">
-            <label className="text-sm font-semibold text-gray-700 mb-1 block">Chức vụ / Vai trò</label>
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Chức vụ / Vai trò</label>
             <div className="relative">
-              <Filter className="absolute left-3 top-3 text-gray-400" size={16} />
+              <Filter className="absolute left-3 top-3.5 text-slate-400" size={16} />
               <select
-                className="w-full border border-gray-200 rounded-lg pl-9 pr-3 py-2.5 bg-gray-50 text-sm focus:ring-2 focus:ring-blue-100 outline-none cursor-pointer"
+                className="w-full border-none rounded-xl pl-9 pr-3 py-2.5 bg-slate-50 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-[#009FE3]/20 outline-none cursor-pointer"
                 value={filterRole}
                 onChange={(e) => { setFilterRole(e.target.value); setPage(1); }}
               >
@@ -253,11 +253,11 @@ const PrincipalEmployeeList = () => {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
 
         {/* HEADER TABLE + TOTAL COUNT */}
-        <div className="flex justify-between items-center px-6 py-4 border-b bg-gray-50/50">
-          <p className="font-semibold text-gray-700">Danh sách nhân sự</p>
-          <div className="flex items-center gap-2 text-blue-600 bg-blue-50 px-3 py-1 rounded-full text-sm">
+        <div className="flex justify-between items-center px-8 py-5 border-b border-slate-50 bg-slate-50/20">
+          <p className="font-black text-slate-800 uppercase tracking-wider text-sm">Danh sách nhân sự</p>
+          <div className="flex items-center gap-2 text-[#009FE3] bg-blue-50 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest">
             <Users size={16} />
-            <span className="font-bold">{filteredEmployees.length}</span> nhân sự
+            <span className="">{filteredEmployees.length}</span> nhân sự
           </div>
         </div>
 
@@ -265,13 +265,13 @@ const PrincipalEmployeeList = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 border-b text-gray-600 text-sm uppercase tracking-wider">
-                <th className="p-4 font-semibold">Họ và tên</th>
-                <th className="p-4 font-semibold">Đơn vị</th>
-                <th className="p-4 font-semibold">Chức vụ</th>
-                <th className="p-4 font-semibold">Email</th>
-                <th className="p-4 font-semibold text-center">Trạng thái</th>
-                <th className="p-4 font-semibold text-center">Hành động</th>
+              <tr className="bg-slate-50/80 text-[10px] font-black text-slate-500 text-left uppercase tracking-widest border-b border-slate-50">
+                <th className="p-4">Họ và tên</th>
+                <th className="p-4">Đơn vị</th>
+                <th className="p-4">Chức vụ</th>
+                <th className="p-4">Email</th>
+                <th className="p-4 text-center">Trạng thái</th>
+                <th className="p-4 text-center">Hành động</th>
               </tr>
             </thead>
 
@@ -284,22 +284,22 @@ const PrincipalEmployeeList = () => {
                         <img
                           src={emp.avatar || `https://ui-avatars.com/api/?name=${emp.name}&background=random`}
                           alt="ava"
-                          className="w-9 h-9 rounded-full object-cover border border-gray-200"
+                          className="w-9 h-9 rounded-full object-cover border border-slate-100"
                         />
-                        <span className="font-medium text-gray-900">{emp.name}</span>
+                        <span className="font-black text-slate-900">{emp.name}</span>
                       </div>
                     </td>
-                    <td className="p-4 text-gray-600 text-sm">{emp.department}</td>
+                    <td className="p-4 text-slate-700 font-bold text-sm">{emp.department}</td>
                     <td className="p-4">
-                      <span className="px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-600">
+                      <span className="px-2 py-1 rounded-lg text-[10px] font-black bg-slate-100 text-slate-600 uppercase tracking-widest">
                         {emp.role}
                       </span>
                     </td>
-                    <td className="p-4 text-gray-500 text-sm">{emp.email}</td>
+                    <td className="p-4 text-slate-500 font-medium text-sm">{emp.email}</td>
                     <td className="p-4 text-center">
-                      <span className={`px-2 py-1 rounded-full text-xs font-bold ${emp.status === "Đang làm việc"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
+                      <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${emp.status === "Đang làm việc"
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "bg-rose-100 text-rose-700"
                         }`}>
                         {emp.status}
                       </span>

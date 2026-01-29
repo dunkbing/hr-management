@@ -156,10 +156,10 @@ function EmployeeList() {
       {/* ===== HEADER ===== */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800">
+          <h1 className="text-2xl font-bold text-slate-900">
             Quản lý nhân viên
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-slate-500 font-medium">
             Danh sách cán bộ, giảng viên, nhân sự
           </p>
         </div>
@@ -182,23 +182,23 @@ function EmployeeList() {
 
       {/* ===== STATISTICS (ĐÃ THÊM LẠI) ===== */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white rounded-xl shadow p-4">
-          <p className="text-sm text-gray-500">Tổng nhân viên</p>
-          <p className="text-2xl font-semibold text-[#009FE3]">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Tổng nhân viên</p>
+          <p className="text-3xl font-black text-[#009FE3]">
             {totalEmployees}
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow p-4">
-          <p className="text-sm text-gray-500">Nhân viên theo khoa</p>
-          <p className="text-2xl font-semibold text-purple-600">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Nhân viên theo khoa</p>
+          <p className="text-3xl font-black text-purple-600">
             {totalFaculty}
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow p-4">
-          <p className="text-sm text-gray-500">Nhân viên theo phòng ban</p>
-          <p className="text-2xl font-semibold text-green-600">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Nhân viên theo phòng ban</p>
+          <p className="text-3xl font-black text-emerald-600">
             {totalDepartment}
           </p>
         </div>
@@ -207,11 +207,11 @@ function EmployeeList() {
       {/* ===== FILTER + SEARCH ===== */}
       <div className="flex flex-wrap gap-4 items-center">
         <div className="relative w-72">
-          <FaSearch className="absolute left-3 top-3 text-gray-400" />
+          <FaSearch className="absolute left-3 top-3 text-slate-400" />
           <input
             type="text"
             placeholder="Tìm theo tên..."
-            className="pl-10 pr-4 py-2 w-full border rounded-lg"
+            className="pl-10 pr-4 py-2 w-full bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-medium text-slate-700"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -223,7 +223,7 @@ function EmployeeList() {
             setUnitType(e.target.value);
             setUnitName("");
           }}
-          className="border rounded-lg px-3 py-2"
+          className="bg-white border border-slate-200 rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-semibold text-slate-600"
         >
           <option value="">Tất cả đơn vị</option>
           <option value="Khoa">Khoa</option>
@@ -234,7 +234,7 @@ function EmployeeList() {
           value={unitName}
           onChange={(e) => setUnitName(e.target.value)}
           disabled={!unitType}
-          className="border rounded-lg px-3 py-2"
+          className="bg-white border border-slate-200 rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-semibold text-slate-600 disabled:bg-slate-50 disabled:text-slate-400"
         >
           <option value="">-- Chọn đơn vị --</option>
           {(unitType === "Khoa" ? faculties : departments).map((u, i) => (
@@ -246,17 +246,17 @@ function EmployeeList() {
       </div>
 
       {/* ===== TABLE ===== */}
-      <div className="bg-white rounded-xl shadow overflow-x-auto">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
         <table className="min-w-full text-sm">
-          <thead className="bg-gray-100 text-gray-700">
+          <thead className="bg-slate-50/80 text-slate-800 font-black uppercase tracking-widest text-[10px] border-b border-slate-100">
             <tr>
-              <th className="px-6 py-3">STT</th>
-              <th className="px-6 py-3">Họ và tên</th>
-              <th className="px-6 py-3">Email</th>
-              <th className="px-6 py-3">Chức vụ</th>
-              <th className="px-6 py-3">Đơn vị</th>
-              <th className="px-6 py-3">Ngày sinh</th>
-              <th className="px-6 py-3 text-center">Hành động</th>
+              <th className="px-6 py-4 text-left">STT</th>
+              <th className="px-6 py-4 text-left">Họ và tên</th>
+              <th className="px-6 py-4 text-left">Email</th>
+              <th className="px-6 py-4 text-left">Chức vụ</th>
+              <th className="px-6 py-4 text-left">Đơn vị</th>
+              <th className="px-6 py-4 text-left">Ngày sinh</th>
+              <th className="px-6 py-4 text-center">Hành động</th>
             </tr>
           </thead>
 
@@ -265,14 +265,14 @@ function EmployeeList() {
               currentItems.map((emp, index) => (
                 <tr
                   key={emp.userId}
-                  className="border-b hover:bg-gray-50 transition"
+                  className="border-b border-slate-50 hover:bg-slate-50/50 transition"
                 >
-                  <td className="px-6 py-3">{indexOfFirstItem + index + 1}</td>
-                  <td className="px-6 py-3 font-medium">{emp.fullName || emp.username}</td>
-                  <td className="px-6 py-3">{emp.email || "---"}</td>
-                  <td className="px-6 py-3">{emp.positionName || "Chưa cập nhật"}</td>
-                  <td className="px-6 py-3">{emp.facultyName || emp.departmentName || "Hệ thống"}</td>
-                  <td className="px-6 py-3">{emp.dob || "---"}</td>
+                  <td className="px-6 py-4 text-slate-500 font-bold">{indexOfFirstItem + index + 1}</td>
+                  <td className="px-6 py-4 font-bold text-slate-900">{emp.fullName || emp.username}</td>
+                  <td className="px-6 py-4 text-slate-600 font-medium">{emp.email || "---"}</td>
+                  <td className="px-6 py-4 text-slate-600 font-medium">{emp.positionName || "Chưa cập nhật"}</td>
+                  <td className="px-6 py-4 text-slate-600 font-medium">{emp.facultyName || emp.departmentName || "Hệ thống"}</td>
+                  <td className="px-6 py-4 text-slate-600 font-medium">{emp.dob || "---"}</td>
 
                   <td className="px-6 py-3">
                     <div className="flex justify-center items-center gap-1">

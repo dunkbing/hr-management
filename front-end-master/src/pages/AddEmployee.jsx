@@ -178,22 +178,25 @@ const AddEmployee = () => {
   };
 
   if (loading) return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-blue-500 font-medium italic animate-pulse">Đang tải dữ liệu...</div>
+    <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-10 h-10 border-4 border-[#009FE3] border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">Đang tải biểu mẫu...</p>
+      </div>
     </div>
   );
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="max-w-4xl mx-auto flex items-center gap-3 mb-8">
-        <div className="p-3 bg-white rounded-2xl shadow-sm text-blue-500">
+        <div className="p-3 bg-white rounded-2xl shadow-sm border border-slate-100 text-[#009FE3]">
           {isEdit ? <FaUserEdit size={24} /> : <FaUserPlus size={24} />}
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">
+          <h1 className="text-2xl font-black text-slate-900">
             {isEdit ? "Chỉnh sửa hồ sơ nhân viên" : "Thêm nhân viên mới"}
           </h1>
-          <p className="text-gray-500 text-sm">Vui lòng điền đầy đủ các thông tin cần thiết</p>
+          <p className="text-slate-500 text-sm font-bold">Vui lòng điền đầy đủ các thông tin cần thiết</p>
         </div>
       </div>
 
@@ -203,13 +206,13 @@ const AddEmployee = () => {
       >
         {/* --- Phần 1: Đơn vị & Chức trách --- */}
         <div>
-          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-blue-500 rounded-full"></span>
+          <h3 className="text-lg font-black text-slate-900 mb-6 flex items-center gap-2 uppercase tracking-wide">
+            <span className="w-1.5 h-6 bg-[#009FE3] rounded-full"></span>
             Đơn vị & Tổ chức
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block mb-2 text-sm font-semibold text-gray-700">Loại đơn vị</label>
+              <label className="block mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Loại đơn vị</label>
               <select
                 value={unitType}
                 onChange={(e) => {
@@ -226,14 +229,14 @@ const AddEmployee = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-semibold text-gray-700">
+              <label className="block mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
                 {unitType === "khoa" ? "Chọn khoa" : unitType === "phongban" ? "Chọn phòng ban" : "Đơn vị cụ thể"}
               </label>
               <select
                 value={unitId}
                 onChange={(e) => setUnitId(e.target.value)}
                 disabled={!unitType}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none transition disabled:bg-gray-50 bg-white"
+                className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-bold text-slate-800 outline-none disabled:bg-slate-100/50"
                 required
               >
                 <option value="">
@@ -248,11 +251,11 @@ const AddEmployee = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-semibold text-gray-700">Chức danh</label>
+              <label className="block mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Chức danh</label>
               <select
                 value={positionId}
                 onChange={(e) => setPositionId(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none transition"
+                className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-bold text-slate-800 outline-none"
                 required
               >
                 <option value="">-- Chọn chức danh --</option>
@@ -263,11 +266,11 @@ const AddEmployee = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-semibold text-gray-700">Vai trò hệ thống</label>
+              <label className="block mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Vai trò hệ thống</label>
               <select
                 value={roleId}
                 onChange={(e) => setRoleId(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none transition"
+                className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-bold text-slate-800 outline-none"
                 required
               >
                 <option value="">-- Chọn vai trò --</option>
@@ -281,13 +284,13 @@ const AddEmployee = () => {
 
         {/* --- Phần 2: Tài khoản & Bảo mật --- */}
         <div>
-          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-blue-500 rounded-full"></span>
+          <h3 className="text-lg font-black text-slate-900 mb-6 flex items-center gap-2 uppercase tracking-wide">
+            <span className="w-1.5 h-6 bg-[#009FE3] rounded-full"></span>
             Tài khoản đăng nhập
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block mb-2 text-sm font-semibold text-gray-700">Tên tài khoản</label>
+              <label className="block mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Tên tài khoản</label>
               <input
                 type="text"
                 name="username"
@@ -318,30 +321,30 @@ const AddEmployee = () => {
 
         {/* --- Phần 3: Thông tin cá nhân --- */}
         <div>
-          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-blue-500 rounded-full"></span>
+          <h3 className="text-lg font-black text-slate-900 mb-6 flex items-center gap-2 uppercase tracking-wide">
+            <span className="w-1.5 h-6 bg-[#009FE3] rounded-full"></span>
             Thông tin nhân thân
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
-              <label className="block mb-2 text-sm font-semibold text-gray-700">Họ và tên</label>
+              <label className="block mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Họ và tên</label>
               <input
                 type="text"
                 name="fullName"
                 value={form.fullName}
                 onChange={handleChange}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none transition"
+                className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-bold text-slate-800 outline-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-semibold text-gray-700">Giới tính</label>
+              <label className="block mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Giới tính</label>
               <select
                 name="gender"
                 value={form.gender}
                 onChange={handleChange}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none transition"
+                className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-bold text-slate-800 outline-none"
                 required
               >
                 <option value="">-- Chọn --</option>
@@ -388,37 +391,37 @@ const AddEmployee = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-semibold text-gray-700">Số CCCD</label>
+              <label className="block mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Số CCCD</label>
               <input
                 type="text"
                 name="cccd"
                 value={form.cccd}
                 onChange={handleChange}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 outline-none transition focus:ring-2 focus:ring-blue-100"
+                className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-bold text-slate-800 outline-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-semibold text-gray-700">Dân tộc</label>
+              <label className="block mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Dân tộc</label>
               <input
                 type="text"
                 name="ethnicity"
                 value={form.ethnicity}
                 onChange={handleChange}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 outline-none transition focus:ring-2 focus:ring-blue-100"
+                className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-bold text-slate-800 outline-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-semibold text-gray-700">Quốc tịch</label>
+              <label className="block mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Quốc tịch</label>
               <input
                 type="text"
                 name="nationality"
                 value={form.nationality}
                 onChange={handleChange}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 outline-none transition focus:ring-2 focus:ring-blue-100"
+                className="w-full bg-slate-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-bold text-slate-800 outline-none"
                 required
               />
             </div>
@@ -427,8 +430,8 @@ const AddEmployee = () => {
 
         {/* --- Phần 4: Trình độ & Hợp đồng --- */}
         <div>
-          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-blue-500 rounded-full"></span>
+          <h3 className="text-lg font-black text-slate-900 mb-6 flex items-center gap-2 uppercase tracking-wide">
+            <span className="w-1.5 h-6 bg-[#009FE3] rounded-full"></span>
             Học vấn & Công tác
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

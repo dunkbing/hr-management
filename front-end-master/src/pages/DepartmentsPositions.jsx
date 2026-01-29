@@ -153,28 +153,28 @@ const Departments = () => {
     <div className="p-6 bg-[#f9fafb] min-h-screen">
       {/* HEADER */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Danh sách phòng ban</h1>
-        <p className="text-sm text-gray-500">Quản lý hoạt động & nhân sự phòng ban</p>
+        <h1 className="text-2xl font-bold text-slate-900">Danh sách phòng ban</h1>
+        <p className="text-sm text-slate-500 font-medium">Quản lý hoạt động & nhân sự phòng ban</p>
       </div>
 
       {/* FILTER BAR */}
       <div className="flex justify-between items-center mb-6">
         <div className="flex gap-3 items-center w-2/3">
           <div className="relative w-1/2">
-            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               placeholder="Tìm theo tên / mã phòng ban"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border rounded-md text-sm focus:ring-2 focus:ring-[#009FE3]"
+              className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-medium text-slate-700 shadow-sm"
             />
           </div>
 
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="border rounded-md px-3 py-2 text-sm"
+            className="bg-white border border-slate-200 rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-semibold text-slate-600 shadow-sm"
           >
             <option value="">Tất cả trạng thái</option>
             <option value="ACTIVE">Hoạt động</option>
@@ -184,7 +184,7 @@ const Departments = () => {
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 bg-[#009FE3] text-white px-4 py-2 rounded-md hover:bg-[#009FE3]"
+          className="flex items-center gap-2 bg-[#009FE3] text-white px-6 py-2 rounded-xl font-bold hover:shadow-lg hover:shadow-blue-200 transition-all"
         >
           <Plus size={18} />
           Thêm phòng ban
@@ -193,60 +193,60 @@ const Departments = () => {
 
       {/* STATS */}
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-white rounded shadow p-4">
-          <p className="text-sm text-gray-500">Phòng ban</p>
-          <p className="text-2xl font-bold">{departments.length}</p>
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Phòng ban</p>
+          <p className="text-3xl font-black text-slate-900">{departments.length}</p>
         </div>
-        <div className="bg-white rounded shadow p-4">
-          <p className="text-sm text-gray-500">Hoạt động</p>
-          <p className="text-2xl font-bold text-green-600">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Hoạt động</p>
+          <p className="text-3xl font-black text-emerald-600">
             {departments.filter((d) => d.status === "ACTIVE").length}
           </p>
         </div>
-        <div className="bg-white rounded shadow p-4">
-          <p className="text-sm text-gray-500">Ngưng</p>
-          <p className="text-2xl font-bold text-red-600">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Ngưng</p>
+          <p className="text-3xl font-black text-rose-500">
             {departments.filter((d) => d.status === "INACTIVE").length}
           </p>
         </div>
       </div>
 
       {/* TABLE */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
         {isLoading ? (
-          <div className="text-center py-10 text-gray-500">Đang tải dữ liệu...</div>
+          <div className="text-center py-10 text-slate-500 font-medium">Đang tải dữ liệu...</div>
         ) : filteredDepartments.length === 0 ? (
-          <div className="text-center py-10 text-gray-500">Chưa có phòng ban nào</div>
+          <div className="text-center py-10 text-slate-500 font-medium">Chưa có phòng ban nào</div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-gray-100 text-gray-600">
+            <thead className="bg-slate-50/80 text-[10px] font-black text-slate-500 text-left uppercase tracking-widest border-b border-slate-50">
               <tr>
-                <th className="px-4 py-3 text-left">STT</th>
-                <th className="px-4 py-3 text-left">Mã</th>
-                <th className="px-4 py-3 text-left">Tên phòng ban</th>
-                <th className="px-4 py-3 text-left">Trưởng phòng</th>
-                <th className="px-4 py-3 text-center">Nhân sự</th>
-                <th className="px-4 py-3 text-center">Trạng thái</th>
-                <th className="px-4 py-3 text-center">Hành động</th>
+                <th className="px-6 py-4">STT</th>
+                <th className="px-6 py-4">Mã</th>
+                <th className="px-6 py-4">Tên phòng ban</th>
+                <th className="px-6 py-4">Trưởng phòng</th>
+                <th className="px-6 py-4 text-center">Nhân sự</th>
+                <th className="px-6 py-4 text-center">Trạng thái</th>
+                <th className="px-6 py-4 text-center">Hành động</th>
               </tr>
             </thead>
             <tbody>
               {currentDepartments.map((d, index) => (
                 <tr
                   key={d.departmentId}
-                  className="border-t"
+                  className="border-b border-slate-50 hover:bg-slate-50/50 transition cursor-pointer"
                   onClick={() => setSelectedDept(d)}
                 >
-                  <td className="px-4 py-3">{indexOfFirstItem + index + 1}</td>
-                  <td className="px-4 py-3 font-medium">{d.departmentCode}</td>
-                  <td className="px-4 py-3">{d.departmentName}</td>
-                  <td className="px-4 py-3">{d.managerName || ""}</td>
-                  <td className="px-4 py-3 text-center">{d.totalStaff || 0}</td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-6 py-4 text-slate-400 font-bold">{indexOfFirstItem + index + 1}</td>
+                  <td className="px-6 py-4 font-bold text-slate-900">{d.departmentCode}</td>
+                  <td className="px-6 py-4 font-bold text-slate-800">{d.departmentName}</td>
+                  <td className="px-6 py-4 text-slate-600 font-medium">{d.managerName || ""}</td>
+                  <td className="px-6 py-4 text-center text-slate-600 font-bold">{d.totalStaff || 0}</td>
+                  <td className="px-6 py-4 text-center">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${d.status === "ACTIVE"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
+                      className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${d.status === "ACTIVE"
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "bg-rose-100 text-rose-700"
                         }`}
                     >
                       {d.status === "ACTIVE" ? "Hoạt động" : "Ngưng hoạt động"}

@@ -63,8 +63,8 @@ const ApprovalPage = () => {
           <ClipboardCheck size={28} />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Phê duyệt yêu cầu (Cấp 1 - Admin)</h1>
-          <p className="text-sm text-gray-500 font-medium">Bạn đang xem danh sách các yêu cầu chờ Admin thẩm định trước khi chuyển lên Hiệu trưởng.</p>
+          <h1 className="text-2xl font-bold text-slate-900">Phê duyệt yêu cầu (Cấp 1 - Admin)</h1>
+          <p className="text-sm text-slate-500 font-medium">Bạn đang xem danh sách các yêu cầu chờ Admin thẩm định trước khi chuyển lên Hiệu trưởng.</p>
         </div>
       </div>
 
@@ -82,11 +82,11 @@ const ApprovalPage = () => {
                 </div>
                 <div>
                   <div className="flex items-center gap-3 mb-1">
-                    <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-md uppercase tracking-wider">{req.type}</span>
-                    <span className="text-xs text-gray-400 font-medium">{new Date(req.createdAt).toLocaleDateString()}</span>
+                    <span className="text-[10px] font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md uppercase tracking-widest">{req.type}</span>
+                    <span className="text-xs text-slate-400 font-bold">{new Date(req.createdAt).toLocaleDateString("vi-VN")}</span>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-800">{req.title}</h3>
-                  <p className="text-sm text-gray-400 font-medium">Người gửi: <span className="text-gray-700">{req.requesterName}</span></p>
+                  <h3 className="text-lg font-black text-slate-900">{req.title}</h3>
+                  <p className="text-sm text-slate-500 font-bold">Người gửi: <span className="text-[#009FE3]">{req.requesterName}</span></p>
                 </div>
               </div>
               <button
@@ -108,9 +108,9 @@ const ApprovalPage = () => {
             <div className="p-8 border-b border-slate-50">
               <div className="flex justify-between items-start">
                 <div>
-                  <span className="text-[10px] font-bold text-blue-500 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-widest">{selectedReq.type}</span>
-                  <h2 className="text-2xl font-black text-gray-800 mt-2">{selectedReq.title}</h2>
-                  <p className="text-sm text-gray-400 font-medium mt-1">Gửi bởi: {selectedReq.requesterName}</p>
+                  <span className="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-widest">{selectedReq.type}</span>
+                  <h2 className="text-2xl font-black text-slate-900 mt-2">{selectedReq.title}</h2>
+                  <p className="text-sm text-slate-500 font-bold mt-1">Gửi bởi: <span className="text-[#009FE3]">{selectedReq.requesterName}</span></p>
                 </div>
                 <button onClick={() => setSelectedReq(null)} className="p-2 hover:bg-slate-50 rounded-full transition-colors text-gray-400">
                   <XCircle size={24} />
@@ -127,12 +127,12 @@ const ApprovalPage = () => {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 block flex items-center gap-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block flex items-center gap-2">
                   <MessageSquare size={14} />
                   Ghi chú phê duyệt
                 </label>
                 <textarea
-                  className="w-full bg-white border border-slate-200 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-400 outline-none min-h-[100px]"
+                  className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm font-medium text-slate-700 focus:ring-2 focus:ring-[#009FE3]/20 transition-all outline-none min-h-[100px]"
                   placeholder="Nhập ý kiến chỉ đạo hoặc lý do từ chối nếu có..."
                   value={note}
                   onChange={(e) => setNote(e.target.value)}

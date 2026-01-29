@@ -124,10 +124,10 @@ const FacultyEmployees = () => {
       {/* Tiêu đề & Stats */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-black text-slate-950 uppercase tracking-tight">
             Nhân sự khoa tôi
           </h1>
-          <p className="text-gray-500 mt-1">Quản lý toàn bộ hồ sơ nhân sự trong khoa của bạn</p>
+          <p className="text-slate-500 mt-1 font-bold text-sm">Quản lý toàn bộ hồ sơ nhân sự trong khoa của bạn</p>
         </div>
 
         <div className="flex gap-3">
@@ -136,8 +136,8 @@ const FacultyEmployees = () => {
               <User size={20} />
             </div>
             <div>
-              <p className="text-xs text-gray-500 font-medium">Tổng nhân sự</p>
-              <p className="font-bold text-gray-800">{totalEmployees}</p>
+              <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Tổng nhân sự</p>
+              <p className="text-lg font-black text-slate-900">{totalEmployees}</p>
             </div>
           </div>
           <div className="bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-100 flex items-center gap-3">
@@ -145,8 +145,8 @@ const FacultyEmployees = () => {
               <Briefcase size={20} />
             </div>
             <div>
-              <p className="text-xs text-gray-500 font-medium">Giảng viên</p>
-              <p className="font-bold text-gray-800">{totalLecturers}</p>
+              <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Giảng viên</p>
+              <p className="text-lg font-black text-slate-900">{totalLecturers}</p>
             </div>
           </div>
           <button
@@ -163,12 +163,12 @@ const FacultyEmployees = () => {
       <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
 
         {/* Tìm kiếm */}
-        <div className="flex items-center gap-2 bg-gray-50 px-4 py-2.5 rounded-xl w-full md:w-96 border border-gray-200 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition">
-          <Search size={18} className="text-gray-400" />
+        <div className="flex items-center gap-3 bg-slate-50 px-4 py-3 rounded-2xl w-full md:w-96 border border-transparent focus-within:bg-white focus-within:border-[#009FE3]/30 focus-within:ring-4 focus-within:ring-[#009FE3]/5 transition-all">
+          <Search size={18} className="text-slate-400" />
           <input
             type="text"
             placeholder="Tìm theo tên hoặc email..."
-            className="bg-transparent outline-none w-full text-sm"
+            className="bg-transparent outline-none w-full text-sm font-bold text-slate-700 placeholder:text-slate-400"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -257,18 +257,18 @@ const FacultyEmployees = () => {
                         className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-sm group-hover:scale-105 transition duration-300"
                       />
                     </div>
-                    <h3 className="font-bold text-lg text-gray-800 mb-1">{emp.name}</h3>
-                    <p className="text-blue-600 font-medium text-sm mb-2">{emp.role}</p>
-                    <p className="text-gray-500 text-xs flex items-center gap-1 mb-4 bg-gray-50 px-3 py-1 rounded-full">
-                      <Building2 size={12} /> {emp.department}
+                    <h3 className="font-black text-lg text-slate-900 mb-1">{emp.name}</h3>
+                    <p className="text-[#009FE3] font-black text-[10px] uppercase tracking-widest mb-3">{emp.role}</p>
+                    <p className="text-slate-500 text-[10px] font-black flex items-center gap-2 mb-6 bg-slate-50 px-4 py-1.5 rounded-full uppercase tracking-wider">
+                      <Building2 size={12} className="text-[#009FE3]" /> {emp.department}
                     </p>
 
-                    <div className="w-full border-t border-gray-100 pt-4 flex flex-col gap-2">
-                      <div className="flex items-center gap-2 text-sm text-gray-500 truncate w-full justify-center">
-                        <Mail size={14} className="shrink-0" /> <span className="truncate">{emp.email}</span>
+                    <div className="w-full border-t border-slate-50 pt-4 flex flex-col gap-3">
+                      <div className="flex items-center gap-3 text-xs text-slate-500 truncate w-full justify-center font-bold">
+                        <Mail size={14} className="shrink-0 text-slate-300" /> <span className="truncate">{emp.email}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-500 w-full justify-center">
-                        <Phone size={14} className="shrink-0" /> <span>{emp.phone}</span>
+                      <div className="flex items-center gap-3 text-xs text-slate-500 w-full justify-center font-bold">
+                        <Phone size={14} className="shrink-0 text-slate-300" /> <span>{emp.phone}</span>
                       </div>
                     </div>
 
@@ -286,14 +286,14 @@ const FacultyEmployees = () => {
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50 border-b border-gray-200">
-                    <tr>
-                      <th className="text-left p-4 text-sm font-semibold text-gray-600">Nhân sự</th>
-                      <th className="text-left p-4 text-sm font-semibold text-gray-600">Chức danh</th>
-                      <th className="text-left p-4 text-sm font-semibold text-gray-600">Bộ môn</th>
-                      <th className="text-left p-4 text-sm font-semibold text-gray-600">Trạng thái</th>
-                      <th className="text-left p-4 text-sm font-semibold text-gray-600">Liên hệ</th>
-                      <th className="text-center p-4 text-sm font-semibold text-gray-600">Hành động</th>
+                  <thead>
+                    <tr className="bg-slate-50/80 text-[10px] font-black text-slate-500 text-left uppercase tracking-widest border-b border-slate-50">
+                      <th className="p-4">Nhân sự</th>
+                      <th className="p-4">Chức danh</th>
+                      <th className="p-4">Bộ môn</th>
+                      <th className="p-4">Trạng thái</th>
+                      <th className="p-4">Liên hệ</th>
+                      <th className="p-4 text-center">Hành động</th>
                     </tr>
                   </thead>
 

@@ -76,7 +76,7 @@ const LecturerSubmitRequest = () => {
             <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in zoom-in duration-500">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h1 className="text-3xl font-black text-gray-800 flex items-center gap-4 tracking-tight">
+                        <h1 className="text-3xl font-black text-slate-950 flex items-center gap-4 tracking-tight">
                             <div className="p-3 bg-blue-50 text-[#009FE3] rounded-2xl shadow-sm">
                                 <Send className="w-8 h-8" />
                             </div>
@@ -109,7 +109,7 @@ const LecturerSubmitRequest = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="space-y-3">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Loại yêu cầu</label>
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Loại yêu cầu</label>
                                 <select
                                     value={formData.type}
                                     onChange={(e) => setFormData({ ...formData, type: e.target.value })}
@@ -123,7 +123,7 @@ const LecturerSubmitRequest = () => {
                             </div>
 
                             <div className="space-y-3">
-                                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Tiêu đề yêu cầu</label>
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Tiêu đề yêu cầu</label>
                                 <div className="relative group">
                                     <FileText className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-[#009FE3] transition-colors" />
                                     <input
@@ -139,7 +139,7 @@ const LecturerSubmitRequest = () => {
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Nội dung chi tiết</label>
+                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nội dung chi tiết</label>
                             <textarea
                                 value={formData.content}
                                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}

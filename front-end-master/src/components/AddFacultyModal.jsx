@@ -76,7 +76,7 @@ const AddFacultyModal = ({
             <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+                    className="absolute top-4 right-4 text-slate-400 hover:text-[#009FE3] transition-colors"
                 >
                     <X size={20} />
                 </button>
@@ -88,7 +88,7 @@ const AddFacultyModal = ({
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">
                             Mã khoa <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -97,13 +97,13 @@ const AddFacultyModal = ({
                             value={formData.code}
                             onChange={handleChange}
                             required
-                            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-[#009FE3] focus:border-[#009FE3]"
+                            className="w-full px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-[#009FE3] transition-all font-medium text-slate-900"
                             placeholder="VD: K_CNTT"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">
                             Tên khoa <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -112,20 +112,20 @@ const AddFacultyModal = ({
                             value={formData.name}
                             onChange={handleChange}
                             required
-                            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-[#009FE3] focus:border-[#009FE3]"
+                            className="w-full px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-[#009FE3] transition-all font-medium text-slate-900"
                             placeholder="VD: Khoa Công nghệ Thông tin"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">
                             Trưởng khoa
                         </label>
                         <select
                             name="managerId"
                             value={formData.managerId}
                             onChange={handleChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-[#009FE3] focus:border-[#009FE3]"
+                            className="w-full px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-[#009FE3] transition-all font-medium text-slate-900 appearance-none"
                         >
                             <option value="">-- Chưa phân công --</option>
                             {users
@@ -139,28 +139,28 @@ const AddFacultyModal = ({
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">
                             Mô tả
                         </label>
                         <textarea
                             name="description"
                             value={formData.description}
                             onChange={handleChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-[#009FE3] focus:border-[#009FE3]"
+                            className="w-full px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-[#009FE3] transition-all font-medium text-slate-900"
                             placeholder="Mô tả về khoa..."
                             rows="2"
                         ></textarea>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">
                             Trạng thái
                         </label>
                         <select
                             name="status"
                             value={formData.status}
                             onChange={handleChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-[#009FE3] focus:border-[#009FE3]"
+                            className="w-full px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-[#009FE3] transition-all font-medium text-slate-900 appearance-none"
                         >
                             <option value="ACTIVE">Hoạt động</option>
                             <option value="INACTIVE">Ngưng</option>
@@ -171,13 +171,13 @@ const AddFacultyModal = ({
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                            className="px-6 py-2 rounded-xl text-slate-600 font-bold hover:bg-slate-50 transition-all"
                         >
                             Hủy
                         </button>
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-[#009FE3] text-white rounded-md hover:bg-[#009FE3]"
+                            className="px-8 py-2 bg-[#009FE3] text-white rounded-xl font-bold hover:shadow-lg hover:shadow-blue-200 transition-all active:scale-95"
                         >
                             {initialData ? "Lưu thay đổi" : "Thêm mới"}
                         </button>

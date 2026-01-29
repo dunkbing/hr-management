@@ -77,12 +77,12 @@ const Pagination = ({
 
     return (
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-4 px-2">
-            <div className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
                 <span>Hiển thị</span>
                 <select
                     value={itemsPerPage}
                     onChange={(e) => onItemsPerPageChange(Number(e.target.value))}
-                    className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[#009FE3]"
+                    className="border border-slate-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-[#009FE3]/20 transition-all bg-white font-bold text-slate-700"
                 >
                     <option value={10}>10</option>
                     <option value={20}>20</option>
@@ -92,7 +92,7 @@ const Pagination = ({
             </div>
 
             <div className="flex items-center gap-4">
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-slate-500 font-bold">
                     {startItem}-{endItem} trong tổng số {totalItems}
                 </span>
 
@@ -100,9 +100,9 @@ const Pagination = ({
                     <button
                         onClick={handlePrevious}
                         disabled={currentPage === 1}
-                        className={`p-2 rounded border ${currentPage === 1
-                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            : 'bg-white text-gray-600 hover:bg-gray-50'
+                        className={`p-2 rounded-xl transition-all border ${currentPage === 1
+                            ? 'bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed'
+                            : 'bg-white text-slate-600 border-slate-200 hover:border-[#009FE3] hover:text-[#009FE3] shadow-sm'
                             }`}
                     >
                         <FaChevronLeft size={14} />
@@ -113,11 +113,11 @@ const Pagination = ({
                             key={index}
                             onClick={() => typeof page === 'number' && onPageChange(page)}
                             disabled={page === '...'}
-                            className={`min-w-[32px] h-8 px-2 rounded border font-medium text-sm transition-colors ${page === currentPage
-                                ? 'bg-[#009FE3] text-white border-[#009FE3]'
+                            className={`min-w-[36px] h-9 px-2 rounded-xl font-black text-sm transition-all border ${page === currentPage
+                                ? 'bg-[#009FE3] text-white border-[#009FE3] shadow-lg shadow-blue-200'
                                 : page === '...'
-                                    ? 'bg-transparent border-transparent cursor-default'
-                                    : 'bg-white text-gray-600 hover:bg-gray-50'
+                                    ? 'bg-transparent border-transparent cursor-default text-slate-300'
+                                    : 'bg-white text-slate-600 border-slate-200 hover:border-[#009FE3] hover:text-[#009FE3] shadow-sm'
                                 }`}
                         >
                             {page}
@@ -127,9 +127,9 @@ const Pagination = ({
                     <button
                         onClick={handleNext}
                         disabled={currentPage === totalPages}
-                        className={`p-2 rounded border ${currentPage === totalPages
-                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            : 'bg-white text-gray-600 hover:bg-gray-50'
+                        className={`p-2 rounded-xl transition-all border ${currentPage === totalPages
+                            ? 'bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed'
+                            : 'bg-white text-slate-600 border-slate-200 hover:border-[#009FE3] hover:text-[#009FE3] shadow-sm'
                             }`}
                     >
                         <FaChevronRight size={14} />

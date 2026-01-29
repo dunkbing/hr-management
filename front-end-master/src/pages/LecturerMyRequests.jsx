@@ -60,7 +60,7 @@ const LecturerMyRequests = () => {
                 {/* Header & Stats */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div className="space-y-2">
-                        <h1 className="text-3xl font-black text-gray-800 flex items-center gap-4 tracking-tight">
+                        <h1 className="text-3xl font-black text-slate-950 flex items-center gap-4 tracking-tight">
                             <div className="p-3 bg-blue-50 text-[#009FE3] rounded-2xl">
                                 <ClipboardList size={28} />
                             </div>
@@ -119,8 +119,8 @@ const LecturerMyRequests = () => {
                                                 <span className="text-[10px] font-black text-blue-500 bg-blue-50 px-2.5 py-1 rounded-lg uppercase tracking-wider">{req.type}</span>
                                                 <span className="text-[10px] font-bold text-gray-300 uppercase tracking-widest">{new Date(req.createdAt).toLocaleDateString()}</span>
                                             </div>
-                                            <h3 className="text-xl font-bold text-gray-800 group-hover:text-[#009FE3] transition-colors">{req.title}</h3>
-                                            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mt-2 ${status.color}`}>
+                                            <h3 className="text-xl font-black text-slate-900 group-hover:text-[#009FE3] transition-colors">{req.title}</h3>
+                                            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest mt-3 ${status.color}`}>
                                                 <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${status.color.split(' ')[0] === 'text-blue-600' ? 'bg-blue-600' : status.color.split(' ')[0] === 'text-amber-600' ? 'bg-amber-600' : status.color.split(' ')[0] === 'text-emerald-600' ? 'bg-emerald-600' : 'bg-rose-600'}`}></div>
                                                 {status.label}
                                             </div>

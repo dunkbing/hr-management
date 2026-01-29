@@ -202,8 +202,8 @@ const FacultySettings = () => {
       {/* HEADER SECTION */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Cài đặt tài khoản</h1>
-          <p className="text-gray-500 mt-1">Quản lý thông tin cá nhân và cấu hình hệ thống</p>
+          <h1 className="text-3xl font-black text-slate-950 uppercase tracking-tight">Cài đặt tài khoản</h1>
+          <p className="text-slate-500 mt-1 font-bold text-sm">Quản lý thông tin cá nhân và cấu hình hệ thống</p>
         </div>
 
         {message && (
@@ -238,8 +238,8 @@ const FacultySettings = () => {
               </label>
             </div>
 
-            <h2 className="text-xl font-bold text-gray-900">{profile.fullName}</h2>
-            <span className="text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full mt-1">
+            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">{profile.fullName}</h2>
+            <span className="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-lg mt-2 uppercase tracking-widest">
               {profile.roleName || "Trưởng khoa"}
             </span>
             <p className="text-gray-500 text-sm mt-2">{profile.facultyName || "Chưa cập nhật khoa"}</p>
@@ -267,17 +267,17 @@ const FacultySettings = () => {
         <div className="lg:col-span-2 space-y-8">
 
           {/* 1. PERSONAL INFO */}
-          <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-            <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2 mb-5 pb-2 border-b">
-              <User className="text-blue-500" size={20} />
+          <section className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-8">
+            <h3 className="text-lg font-black text-slate-900 flex items-center gap-3 mb-8 pb-5 border-b border-slate-50 uppercase tracking-wider">
+              <User className="text-[#009FE3]" size={24} />
               Thông tin cá nhân
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div className="space-y-1">
-                <label className="text-sm font-medium text-gray-700">Họ và tên</label>
-                <div className="relative">
-                  <User className="absolute left-3 top-2.5 text-gray-400" size={18} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Họ và tên</label>
+                <div className="relative group">
+                  <User className="absolute left-4 top-3 text-slate-400 group-focus-within:text-[#009FE3] transition-colors" size={18} />
                   <input
                     type="text"
                     name="fullName"
@@ -324,7 +324,7 @@ const FacultySettings = () => {
                     name="phone"
                     value={profile.phone}
                     onChange={handleProfileChange}
-                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition outline-none"
+                    className="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-4 focus:ring-[#009FE3]/5 focus:bg-white transition-all outline-none font-bold text-slate-700"
                   />
                 </div>
               </div>

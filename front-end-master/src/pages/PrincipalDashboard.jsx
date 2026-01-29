@@ -70,11 +70,11 @@ const PrincipalDashboard = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800 flex items-center gap-3">
-            <LayoutDashboard className="w-8 h-8 text-primary" />
+          <h1 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+            <LayoutDashboard className="w-8 h-8 text-[#009FE3]" />
             Bảng Điều Khiển Ban Giám Hiệu
           </h1>
-          <p className="text-gray-500 mt-1 font-medium">Hệ thống quản lý nhân sự - Đại học Kiến trúc Hà Nội</p>
+          <p className="text-slate-500 mt-1 font-bold text-sm">Hệ thống quản lý nhân sự - Đại học Kiến trúc Hà Nội</p>
         </div>
         <div className="flex items-center gap-3 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
           <Calendar className="w-5 h-5 text-slate-400" />
@@ -95,8 +95,8 @@ const PrincipalDashboard = () => {
             <div className={`${card.bg} w-12 h-12 flex items-center justify-center rounded-2xl mb-4`}>
               <card.icon className="w-6 h-6" color={card.color} />
             </div>
-            <p className="text-xs font-semibold text-slate-600 uppercase tracking-widest">{card.title}</p>
-            <p className="text-2xl font-bold text-gray-800 mt-1">{card.value}</p>
+            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{card.title}</p>
+            <p className="text-2xl font-black text-slate-950 mt-1">{card.value}</p>
           </div>
         ))}
       </div>
@@ -104,7 +104,7 @@ const PrincipalDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Chart */}
         <div className="lg:col-span-2 bg-white p-8 rounded-[32px] shadow-sm border border-slate-100">
-          <h2 className="text-lg font-semibold text-gray-800 mb-6">Tình hình nhân sự (6 tháng gần đây)</h2>
+          <h2 className="text-lg font-black text-slate-800 mb-6 uppercase tracking-wider">Tình hình nhân sự (6 tháng gần đây)</h2>
           <div className="h-[350px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={stats.monthlyGrowth}>
@@ -121,21 +121,21 @@ const PrincipalDashboard = () => {
         {/* Approvals (Simplified) */}
         <div className="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-gray-800 tracking-tight">Cần phê duyệt</h2>
-            <span className="bg-red-50 text-red-600 px-3 py-1 rounded-full text-xs font-bold">5 MỚI</span>
+            <h2 className="text-lg font-black text-slate-800 uppercase tracking-tight">Cần phê duyệt</h2>
+            <span className="bg-rose-50 text-rose-600 px-3 py-1 rounded-full text-[10px] font-black">5 MỚI</span>
           </div>
           <div className="space-y-4">
             {[1, 2, 3].map((_, i) => (
               <div
                 key={i}
                 onClick={() => navigate("/principal/approvals")}
-                className="p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-primary transition-colors cursor-pointer"
+                className="p-4 rounded-2xl bg-slate-50 border border-transparent hover:border-[#009FE3]/30 hover:bg-white hover:shadow-lg transition-all cursor-pointer group"
               >
                 <div className="flex justify-between items-start mb-2">
-                  <p className="font-bold text-slate-800 text-sm">Đề xuất bổ sung giảng viên</p>
-                  <span className="text-[10px] font-bold text-slate-400">Hôm nay</span>
+                  <p className="font-black text-slate-900 text-sm">{i === 0 ? "Bổ sung giảng viên" : i === 1 ? "Nghỉ phép dài hạn" : "Đề xuất thăng chức"}</p>
+                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Hôm nay</span>
                 </div>
-                <p className="text-xs text-slate-500 mb-3">Khoa Kiến trúc - Tăng cường nhân lực HK2</p>
+                <p className="text-[10px] font-bold text-slate-500 mb-3 uppercase tracking-wider">Khoa Kiến trúc • HK2</p>
                 <div className="flex gap-2">
                   <button
                     onClick={(e) => { e.stopPropagation(); navigate("/principal/approvals"); }}

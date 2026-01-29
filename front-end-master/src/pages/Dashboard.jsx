@@ -143,10 +143,10 @@ const Dashboard = () => {
               </span>
             </div>
             <div className="mt-5">
-              <p className="text-sm font-semibold text-slate-600 uppercase tracking-wider">{card.title}</p>
-              <p className="text-2xl font-bold text-gray-800 mt-1">{card.value}</p>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{card.title}</p>
+              <p className="text-2xl font-black text-slate-900 mt-1">{card.value}</p>
             </div>
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-slate-50 to-transparent -z-0 opacity-50 rounded-bl-[100px]" />
+            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-slate-100/50 to-transparent -z-0 opacity-50 rounded-bl-[100px]" />
           </div>
         ))}
       </div>

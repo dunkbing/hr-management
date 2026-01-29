@@ -1,29 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 const AdminLayout = ({ children }) => {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
-      <div className="flex flex-1">
-        {/* SIDEBAR ADMIN */}
-        <Sidebar />
+    <div className="flex flex-col h-screen bg-gray-100 overflow-hidden">
+      {/* HEADER - Top level, full width */}
+      <Header onToggleSidebar={() => setCollapsed(!collapsed)} collapsed={collapsed} />
+
+      <div className="flex flex-1 overflow-hidden">
+        {/* SIDEBAR - Starts below header */}
+        <Sidebar collapsed={collapsed} />
 
         {/* MAIN AREA */}
-        <div className="flex-1 flex flex-col">
-          {/* HEADER */}
-          <Header />
-
-          {/* MAIN CONTENT */}
-          <main className="flex-1 p-6">
-            {children}
-          </main>
-        </div>
+        <main className="flex-1 p-6 overflow-y-auto transition-all duration-300">
+          {children}
+        </main>
       </div>
-
-      {/* FOOTER */}
-      <Footer />
     </div>
   );
 };

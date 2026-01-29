@@ -74,9 +74,9 @@ const Reports = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-        <Loader2 className="w-12 h-12 text-[#009FE3] animate-spin" />
-        <p className="text-gray-500 font-medium">Đang chuẩn bị dữ liệu báo cáo...</p>
+      <div className="flex flex-col items-center justify-center min-h-screen gap-4 bg-white">
+        <div className="w-10 h-10 border-4 border-[#009FE3] border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">Đang chuẩn bị dữ liệu báo cáo...</p>
       </div>
     );
   }
@@ -93,11 +93,11 @@ const Reports = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
             <FileText className="w-8 h-8 text-[#009FE3]" />
             Báo cáo & Thống kê chuyên sâu
           </h1>
-          <p className="text-gray-500 mt-1 font-medium">Phân tích dữ liệu nhân sự thời gian thực</p>
+          <p className="text-slate-500 mt-1 font-bold text-sm">Phân tích dữ liệu nhân sự thời gian thực</p>
         </div>
         <button
           onClick={handleExport}
@@ -112,12 +112,12 @@ const Reports = () => {
       {/* Summary Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {summaryCards.map((card, idx) => (
-          <div key={idx} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 ring-1 ring-slate-900/5">
+          <div key={idx} className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 transition-all hover:shadow-md">
             <div className={`${card.bg} ${card.color} w-12 h-12 flex items-center justify-center rounded-2xl mb-4`}>
               <card.icon className="w-6 h-6" />
             </div>
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{card.title}</p>
-            <p className="text-3xl font-bold text-gray-800 mt-1">{card.value}</p>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{card.title}</p>
+            <p className={`text-3xl font-black mt-1 ${card.color}`}>{card.value}</p>
           </div>
         ))}
       </div>
@@ -127,8 +127,8 @@ const Reports = () => {
         {/* Gender Distribution */}
         <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center">
           <div className="flex items-center gap-3 self-start mb-6">
-            <PieIcon className="w-5 h-5 text-gray-400" />
-            <h2 className="text-lg font-bold text-gray-800">Cơ cấu giới tính</h2>
+            <PieIcon className="w-5 h-5 text-slate-400" />
+            <h2 className="text-lg font-black text-slate-800 uppercase tracking-wider">Cơ cấu giới tính</h2>
           </div>
           <div className="w-full h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -158,8 +158,8 @@ const Reports = () => {
         {/* Status Distribution */}
         <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col">
           <div className="flex items-center gap-3 mb-6">
-            <BarIcon className="w-5 h-5 text-gray-400" />
-            <h2 className="text-lg font-bold text-gray-800">Trạng thái công tác</h2>
+            <BarIcon className="w-5 h-5 text-slate-400" />
+            <h2 className="text-lg font-black text-slate-800 uppercase tracking-wider">Trạng thái công tác</h2>
           </div>
           <div className="w-full h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -180,8 +180,8 @@ const Reports = () => {
         {/* Education Level */}
         <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col lg:col-span-2">
           <div className="flex items-center gap-3 mb-6">
-            <TrendingUp className="w-5 h-5 text-gray-400" />
-            <h2 className="text-lg font-bold text-gray-800">Phân loại theo trình độ đào tạo</h2>
+            <TrendingUp className="w-5 h-5 text-slate-400" />
+            <h2 className="text-lg font-black text-slate-800 uppercase tracking-wider">Phân loại theo trình độ</h2>
           </div>
           <div className="w-full h-[350px]">
             <ResponsiveContainer width="100%" height="100%">

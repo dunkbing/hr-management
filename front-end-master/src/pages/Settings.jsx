@@ -84,9 +84,9 @@ const Settings = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-        <Loader2 className="w-10 h-10 text-[#009FE3] animate-spin" />
-        <p className="text-gray-500 font-medium font-inter">Đang chuẩn bị cấu hình...</p>
+      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 bg-white">
+        <div className="w-10 h-10 border-4 border-[#009FE3] border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">Đang tải cấu hình...</p>
       </div>
     );
   }
@@ -103,11 +103,11 @@ const Settings = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
+          <h1 className="text-2xl font-black text-slate-900 flex items-center gap-3">
             <SettingsIcon className="w-8 h-8 text-[#009FE3]" />
             Cấu hình hệ thống chuyên sâu
           </h1>
-          <p className="text-gray-500 mt-1 font-medium">Thiết lập tham số vận hành và chính sách bảo mật</p>
+          <p className="text-slate-500 mt-1 font-bold text-sm">Thiết lập tham số vận hành và chính sách bảo mật</p>
         </div>
 
         {message.text && (
@@ -126,9 +126,9 @@ const Settings = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`w-full flex items-center gap-3 px-6 py-4 rounded-2xl transition-all duration-300 font-semibold ${activeTab === tab.id
+              className={`w-full flex items-center gap-3 px-6 py-4 rounded-2xl transition-all duration-300 font-bold ${activeTab === tab.id
                 ? "bg-white text-[#009FE3] shadow-lg shadow-blue-100/50 ring-1 ring-blue-50"
-                : "text-gray-500 hover:bg-white hover:text-[#009FE3]"
+                : "text-slate-500 hover:bg-white hover:text-[#009FE3]"
                 }`}
             >
               <tab.icon className="w-5 h-5" />
@@ -145,33 +145,33 @@ const Settings = () => {
                 <div className="space-y-8 animate-in slide-in-from-right duration-500">
                   <div className="flex items-center gap-3 mb-2">
                     <UserCog className="w-6 h-6 text-[#009FE3]" />
-                    <h2 className="text-xl font-bold text-gray-800">Thông tin cơ bản</h2>
+                    <h2 className="text-xl font-black text-slate-950 uppercase tracking-wider">Thông tin cơ bản</h2>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-sm font-bold text-gray-500 uppercase tracking-wider ml-1">Tên hệ thống</label>
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Tên hệ thống</label>
                       <div className="relative">
-                        <Trophy className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <Trophy className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                         <input
                           type="text"
                           value={config.system_name || ""}
                           onChange={(e) => handleChange("system_name", e.target.value)}
-                          className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-400 transition-all font-medium text-gray-700"
+                          className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-bold text-slate-800"
                           placeholder="HRM Application"
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-bold text-gray-500 uppercase tracking-wider ml-1">Email quản trị</label>
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email quản trị</label>
                       <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                         <input
                           type="email"
                           value={config.admin_email || ""}
                           onChange={(e) => handleChange("admin_email", e.target.value)}
-                          className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-400 transition-all font-medium text-gray-700"
+                          className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-bold text-slate-800"
                           placeholder="admin@example.com"
                         />
                       </div>

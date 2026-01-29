@@ -153,10 +153,10 @@ const Positions = () => {
       {/* ================= HEADER ================= */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800">
+          <h1 className="text-2xl font-bold text-slate-900">
             Danh sách chức danh
           </h1>
-          <p className="text-gray-500">
+          <p className="text-sm text-slate-500 font-medium">
             Quản lý chức danh theo khoa và phòng ban
           </p>
         </div>
@@ -166,19 +166,19 @@ const Positions = () => {
       <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
         <div className="flex gap-4 w-full lg:w-auto">
           <div className="relative w-full lg:w-72">
-            <FaSearch className="absolute left-3 top-3 text-gray-400" />
+            <FaSearch className="absolute left-3 top-3 text-slate-400" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Tìm theo tên chức danh"
-              className="pl-10 pr-3 py-2 border rounded-lg w-full bg-white focus:outline-none focus:ring-1 focus:ring-[#009FE3]"
+              className="pl-10 pr-3 py-2 bg-white border border-slate-200 rounded-xl w-full outline-none focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-medium text-slate-700 shadow-sm"
             />
           </div>
 
           <select
             value={unitFilter}
             onChange={(e) => setUnitFilter(e.target.value)}
-            className="border rounded-lg px-3 py-2 bg-white focus:outline-none"
+            className="bg-white border border-slate-200 rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-semibold text-slate-600 shadow-sm"
           >
             <option value="">Tất cả đơn vị</option>
             <option value="Khoa">Khoa</option>
@@ -188,7 +188,7 @@ const Positions = () => {
 
         <button
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-white shadow-sm hover:opacity-90 transition"
+          className="flex items-center gap-2 px-6 py-2 rounded-xl text-white font-bold shadow-lg hover:shadow-blue-200 transition-all active:scale-95"
           style={{ backgroundColor: primary }}
         >
           <FaPlus /> Thêm chức danh
@@ -203,19 +203,19 @@ const Positions = () => {
       </div>
 
       {/* ================= TABLE ================= */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
         {loading ? (
-          <div className="p-10 text-center text-gray-500 italic">Đang tải dữ liệu...</div>
+          <div className="p-10 text-center text-slate-500 font-medium italic">Đang tải dữ liệu...</div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-gray-600 border-b">
+            <thead className="bg-slate-50/80 text-[10px] font-black text-slate-500 text-left uppercase tracking-widest border-b border-slate-50">
               <tr>
-                <th className="px-6 py-4 text-left font-semibold w-16">STT</th>
-                <th className="px-6 py-4 text-left font-semibold">Mã chức danh</th>
-                <th className="px-6 py-4 text-left font-semibold">Tên chức danh</th>
-                <th className="px-6 py-4 text-left font-semibold">Loại đơn vị</th>
-                <th className="px-6 py-4 text-left font-semibold">Tên đơn vị</th>
-                <th className="px-6 py-4 text-center font-semibold">Hành động</th>
+                <th className="px-6 py-4 w-16">STT</th>
+                <th className="px-6 py-4">Mã chức danh</th>
+                <th className="px-6 py-4">Tên chức danh</th>
+                <th className="px-6 py-4">Loại đơn vị</th>
+                <th className="px-6 py-4">Tên đơn vị</th>
+                <th className="px-6 py-4 text-center">Hành động</th>
               </tr>
             </thead>
 
@@ -223,19 +223,19 @@ const Positions = () => {
               {currentItems.map((p, index) => (
                 <tr
                   key={p.id}
-                  className="hover:bg-gray-50 transition"
+                  className="border-b border-slate-50 hover:bg-slate-50/50 transition"
                 >
-                  <td className="px-6 py-4 text-gray-500 w-16">
+                  <td className="px-6 py-4 text-slate-400 font-bold w-16">
                     {indexOfFirstItem + index + 1}
                   </td>
 
                   <td className="px-6 py-4">
-                    <div className="font-semibold text-[#009FE3]">{p.code}</div>
+                    <div className="font-black text-[#009FE3] uppercase tracking-wider">{p.code}</div>
                   </td>
 
                   <td className="px-6 py-4">
-                    <div className="font-medium text-gray-800">{p.name}</div>
-                    <div className="text-xs text-gray-400 line-clamp-1">{p.description}</div>
+                    <div className="font-bold text-slate-900">{p.name}</div>
+                    <div className="text-xs text-slate-500 font-medium line-clamp-1">{p.description}</div>
                   </td>
 
                   <td className="px-6 py-4">
@@ -272,7 +272,7 @@ const Positions = () => {
 
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan="5" className="text-center py-12 text-gray-400 italic">
+                  <td colSpan="6" className="text-center py-12 text-slate-400 font-medium italic">
                     Không tìm thấy dữ liệu chức danh
                   </td>
                 </tr>
@@ -410,9 +410,9 @@ const Positions = () => {
 
 /** ================= STAT CARD ================= */
 const StatCard = ({ title, value, color }) => (
-  <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition">
-    <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">{title}</p>
-    <p className={`text-3xl font-bold mt-1 ${color}`}>{value}</p>
+  <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 hover:shadow-md transition-all">
+    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">{title}</p>
+    <p className={`text-3xl font-black ${color}`}>{value}</p>
   </div>
 );
 

@@ -83,11 +83,11 @@ function Profile() {
     }
   };
 
-  if (loading) return <div className="p-10 text-center text-gray-400 font-bold uppercase tracking-widest text-xs">Đang tải thông tin...</div>;
+  if (loading) return <div className="p-10 text-center text-slate-500 font-medium uppercase tracking-widest text-xs">Đang tải thông tin...</div>;
 
   return (
-    <div className="max-w-4xl mx-auto mt-6 bg-white rounded-3xl shadow-sm border border-slate-100 p-8">
-      <h1 className="text-2xl font-black text-gray-800 mb-8 text-center uppercase tracking-tight">
+    <div className="max-w-4xl mx-auto mt-6 bg-white rounded-[2.5rem] shadow-sm border border-slate-100 p-12">
+      <h1 className="text-2xl font-black text-slate-950 mb-10 text-center uppercase tracking-tight">
         Thông tin cá nhân
       </h1>
 
@@ -118,74 +118,74 @@ function Profile() {
         {/* Section 1: Thông tin cơ bản */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-6">
-            <h3 className="text-sm font-black text-[#009FE3] uppercase tracking-widest border-b border-blue-50 pb-2">Thông tin cơ bản</h3>
+            <h3 className="text-sm font-bold text-[#009FE3] uppercase tracking-widest border-b border-blue-50 pb-2">Thông tin cơ bản</h3>
 
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Họ và tên</label>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Họ và tên</label>
               <input
                 type="text"
                 name="fullName"
                 value={formData.fullName || ""}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-bold text-gray-700"
+                className="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-[#009FE3]/5 focus:bg-white transition-all font-bold text-slate-700 outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Email</label>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Email</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email || ""}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-bold text-gray-700"
+                className="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-[#009FE3]/5 focus:bg-white transition-all font-bold text-slate-700 outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Số điện thoại</label>
+              <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Số điện thoại</label>
               <input
                 type="text"
                 name="phone"
                 value={formData.phone || ""}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-bold text-gray-700"
+                className="w-full px-6 py-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-[#009FE3]/5 focus:bg-white transition-all font-bold text-slate-700 outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Ngày sinh</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Ngày sinh</label>
               <input
                 type="date"
                 name="dob"
                 value={formData.dob || ""}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-bold text-gray-700"
+                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-medium text-slate-900"
               />
             </div>
           </div>
 
           <div className="space-y-6">
-            <h3 className="text-sm font-black text-[#009FE3] uppercase tracking-widest border-b border-blue-50 pb-2">Thông tin định danh</h3>
+            <h3 className="text-sm font-bold text-[#009FE3] uppercase tracking-widest border-b border-blue-50 pb-2">Thông tin định danh</h3>
 
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Số CCCD</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Số CCCD</label>
               <input
                 type="text"
                 name="cccd"
                 value={formData.cccd || ""}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-bold text-gray-700"
+                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-medium text-slate-900"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Giới tính</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Giới tính</label>
               <select
                 name="gender"
                 value={formData.gender || ""}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-bold text-gray-700 appearance-none"
+                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-medium text-slate-900 appearance-none"
               >
                 <option value="">Chọn giới tính</option>
                 <option value="Nam">Nam</option>
@@ -195,24 +195,24 @@ function Profile() {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Dân tộc</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Dân tộc</label>
               <input
                 type="text"
                 name="ethnicity"
                 value={formData.ethnicity || ""}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-bold text-gray-700"
+                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-medium text-slate-900"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Trình độ học vấn</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Trình độ học vấn</label>
               <input
                 type="text"
                 name="educationLevel"
                 value={formData.educationLevel || ""}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-bold text-gray-700"
+                className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-[#009FE3] transition-all font-medium text-slate-900"
               />
             </div>
           </div>
@@ -220,43 +220,43 @@ function Profile() {
 
         {/* Section 2: Thông tin công tác (Read-only) */}
         <div className="space-y-6">
-          <h3 className="text-sm font-black text-[#009FE3] uppercase tracking-widest border-b border-blue-50 pb-2">Thông tin công tác</h3>
+          <h3 className="text-sm font-bold text-[#009FE3] uppercase tracking-widest border-b border-blue-50 pb-2">Thông tin công tác</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Khoa/Viện</label>
-              <p className="text-sm font-bold text-gray-600 bg-slate-50 px-4 py-3 rounded-2xl">{formData.facultyName || "N/A"}</p>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Khoa/Viện</label>
+              <p className="text-sm font-medium text-slate-700 bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">{formData.facultyName || "N/A"}</p>
             </div>
             <div>
-              <label className="block text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Phòng ban</label>
-              <p className="text-sm font-bold text-gray-600 bg-slate-50 px-4 py-3 rounded-2xl">{formData.departmentName || "N/A"}</p>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Phòng ban</label>
+              <p className="text-sm font-medium text-slate-700 bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">{formData.departmentName || "N/A"}</p>
             </div>
             <div>
-              <label className="block text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Chức danh</label>
-              <p className="text-sm font-bold text-gray-600 bg-slate-50 px-4 py-3 rounded-2xl">{formData.positionName || "N/A"}</p>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Chức danh</label>
+              <p className="text-sm font-medium text-slate-700 bg-slate-50 px-4 py-3 rounded-2xl border border-slate-100">{formData.positionName || "N/A"}</p>
             </div>
             <div>
-              <label className="block text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Vai trò hệ thống</label>
-              <p className="text-sm font-bold text-gray-600 bg-slate-50 px-4 py-3 rounded-2xl uppercase">{formData.roleName || "N/A"}</p>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Vai trò hệ thống</label>
+              <p className="text-sm font-medium text-slate-700 bg-slate-50 px-4 py-3 rounded-2xl uppercase border border-slate-100">{formData.roleName || "N/A"}</p>
             </div>
             <div>
-              <label className="block text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Trạng thái làm việc</label>
-              <p className="text-sm font-bold text-emerald-600 bg-emerald-50 px-4 py-3 rounded-2xl">{formData.workingStatus || "Đang làm việc"}</p>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Trạng thái làm việc</label>
+              <p className="text-sm font-bold text-emerald-600 bg-emerald-50 px-4 py-3 rounded-2xl border border-emerald-100">{formData.workingStatus || "Đang làm việc"}</p>
             </div>
           </div>
         </div>
 
         {/* Section 3: Bảo mật */}
         <div className="space-y-6">
-          <h3 className="text-sm font-black text-rose-500 uppercase tracking-widest border-b border-rose-50 pb-2">Bảo mật</h3>
+          <h3 className="text-sm font-bold text-rose-500 uppercase tracking-widest border-b border-rose-50 pb-2">Bảo mật</h3>
           <div>
-            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Đổi mật khẩu mới</label>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Đổi mật khẩu mới</label>
             <input
               type="password"
               name="password"
               value={formData.password || ""}
               onChange={handleChange}
               placeholder="Nhập mật khẩu mới nếu muốn thay đổi..."
-              className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-rose-400 transition-all font-bold text-gray-700"
+              className="w-full px-4 py-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-rose-400 transition-all font-medium text-slate-900 placeholder:font-normal placeholder:text-slate-400"
             />
           </div>
         </div>
@@ -264,7 +264,7 @@ function Profile() {
         <div className="flex justify-center pt-8">
           <button
             type="submit"
-            className="bg-[#009FE3] text-white px-12 py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-[#009FE3] hover:shadow-xl hover:shadow-blue-200 transition-all active:scale-95"
+            className="bg-[#009FE3] text-white px-12 py-4 rounded-2xl font-bold uppercase tracking-widest text-sm hover:bg-[#0077b3] hover:shadow-xl hover:shadow-blue-200 transition-all active:scale-95"
           >
             Cập nhật hồ sơ
           </button>

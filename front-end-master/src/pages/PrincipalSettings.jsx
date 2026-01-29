@@ -129,7 +129,7 @@ const PrincipalSettings = () => {
   return (
     <div className="p-6 space-y-6 bg-gray-100 min-h-screen">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Cài đặt Hiệu trưởng</h1>
+        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">Cài đặt Hiệu trưởng</h1>
         {message && (
           <div className={`px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 animate-bounce
             ${message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
@@ -141,37 +141,37 @@ const PrincipalSettings = () => {
 
       {/* Thông tin cá nhân */}
       <Card className="shadow-md">
-        <CardContent className="p-6 space-y-4">
-          <h2 className="text-xl font-semibold text-gray-700 flex items-center gap-2">
-            <User size={20} /> Thông tin cá nhân
+        <CardContent className="p-8 space-y-8">
+          <h2 className="text-xl font-black text-slate-800 flex items-center gap-3 uppercase tracking-wide">
+            <User size={24} className="text-[#009FE3]" /> Thông tin cá nhân
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex flex-col">
-              <label className="text-gray-600 mb-1 text-sm font-medium">Họ và tên</label>
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Họ và tên</label>
               <input
                 type="text"
                 value={profile.fullName}
                 onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
-                className="border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                className="bg-slate-50 border-none rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#009FE3]/20 font-bold text-slate-800 transition-all"
               />
             </div>
             <div className="flex flex-col">
-              <label className="text-gray-600 mb-1 text-sm font-medium">Email</label>
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Email</label>
               <input
                 type="email"
                 value={profile.email}
                 onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                className="border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                className="bg-slate-50 border-none rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#009FE3]/20 font-bold text-slate-800 transition-all"
               />
             </div>
             <div className="flex flex-col">
-              <label className="text-gray-600 mb-1 text-sm font-medium">Số điện thoại</label>
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Số điện thoại</label>
               <input
                 type="text"
                 value={profile.phone}
                 onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
-                className="border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                className="bg-slate-50 border-none rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#009FE3]/20 font-bold text-slate-800 transition-all"
               />
             </div>
             <div className="flex flex-col">

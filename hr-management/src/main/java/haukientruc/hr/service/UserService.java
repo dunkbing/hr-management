@@ -301,8 +301,9 @@ public class UserService {
 
             if (!isCurrentUserSuperAdmin) {
                 // Nếu KHÔNG phải superadmin -> Chỉ được thao tác với nhóm role mức thấp
-                // Danh sách cho phép của admin
-                List<String> allowedForAdmin = java.util.Arrays.asList("hieutruong", "truongkhoa", "giangvien");
+                // Danh sách cho phép của admin (Khớp với role_code trong DB)
+                List<String> allowedForAdmin = java.util.Arrays.asList("hieu_truong", "truong_don_vi", "nhan_su",
+                        "hieutruong", "truongkhoa", "giangvien");
 
                 if (!allowedForAdmin.contains(code)) {
                     throw new RuntimeException("Bạn không có quyền gán vai trò: " + targetRoleCode);
@@ -415,9 +416,9 @@ public class UserService {
                     { "Họ tên*", "Bắt buộc. Nhập đầy đủ họ tên nhân viên" },
                     { "Tên đăng nhập*", "Bắt buộc. Duy nhất trong hệ thống" },
                     { "Mật khẩu*", "Bắt buộc. Ít nhất 6 ký tự" },
-                    { "Ngày sinh", "Định dạng yyyy-MM-dd (VD: 1990-01-01)" },
+                    { "Ngày sinh", "Định dạng yyyy-MM-dd (VD: 1990-01-01) hoặc dd/MM/yyyy (VD: 01/01/1990)" },
                     { "Vai trò (Mã)*",
-                            "Bắt buộc. Nhập mã vai trò: admin (Quản trị), hieutruong (Hiệu trưởng), truongkhoa (Trưởng khoa), giangvien (Giảng viên)" },
+                            "Bắt buộc. Nhập mã vai trò: superadmin, admin, hieu_truong (Hiệu trưởng), truong_don_vi (Trưởng khoa), nhan_su (Giảng viên/Nhân sự)" },
                     { "Mã Khoa/Phòng ban", "Lấy mã tương ứng trong quản lý Khoa/Phòng ban (VD: CNTT, KETOAN, ...)" },
                     { "Mã Chức vụ", "Lấy mã tương ứng trong quản lý chức vụ (VD: TrG, PhG, ...)" }
             };

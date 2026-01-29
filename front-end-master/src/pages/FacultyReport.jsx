@@ -87,11 +87,11 @@ const FacultyReport = () => {
     <div className="p-6 lg:p-10 bg-[#F8FAFC] min-h-screen space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
+          <h1 className="text-2xl font-black text-slate-900 flex items-center gap-3 uppercase tracking-tight">
             <BarIcon className="w-8 h-8 text-[#009FE3]" />
             Báo cáo Phân tích Nhân sự Khoa
           </h1>
-          <p className="text-gray-500 mt-1 font-medium">Báo cáo chi tiết về cơ cấu và chất lượng đội ngũ giảng viên</p>
+          <p className="text-slate-500 mt-1 font-bold text-sm">Báo cáo chi tiết về cơ cấu và chất lượng đội ngũ giảng viên</p>
         </div>
         <button
           onClick={handleExport}
@@ -108,8 +108,8 @@ const FacultyReport = () => {
             <div className={`${card.bg} ${card.color} w-12 h-12 flex items-center justify-center rounded-2xl mb-4`}>
               <card.icon className="w-6 h-6" />
             </div>
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{card.title}</p>
-            <p className="text-3xl font-bold text-gray-800 mt-1">{card.value}</p>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{card.title}</p>
+            <p className="text-3xl font-black text-slate-900 mt-1">{card.value}</p>
           </div>
         ))}
       </div>
@@ -117,8 +117,8 @@ const FacultyReport = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center">
           <div className="flex items-center gap-3 self-start mb-6">
-            <PieIcon className="w-5 h-5 text-gray-400" />
-            <h2 className="text-lg font-bold text-gray-800">Cơ cấu trình độ giảng viên</h2>
+            <PieIcon className="w-5 h-5 text-[#009FE3]" />
+            <h2 className="text-lg font-black text-slate-900 uppercase tracking-wider">Cơ cấu trình độ giảng viên</h2>
           </div>
           <div className="w-full h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -145,8 +145,8 @@ const FacultyReport = () => {
 
         <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col">
           <div className="flex items-center gap-3 mb-6">
-            <Activity className="w-5 h-5 text-gray-400" />
-            <h2 className="text-lg font-bold text-gray-800">Trạng thái làm việc</h2>
+            <Activity className="w-5 h-5 text-[#009FE3]" />
+            <h2 className="text-lg font-black text-slate-900 uppercase tracking-wider">Trạng thái làm việc</h2>
           </div>
           <div className="w-full h-[300px]">
             <ResponsiveContainer width="100%" height="100%">

@@ -62,8 +62,8 @@ const FacultyProposals = () => {
     <div className="p-8 space-y-8 animate-in fade-in duration-500">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Đề xuất & Yêu cầu của tôi</h1>
-          <p className="text-sm text-gray-500 font-medium">Theo dõi các yêu cầu công tác hoặc cá nhân gửi lên cấp trên.</p>
+          <h1 className="text-2xl font-black text-slate-950 uppercase tracking-tight">Đề xuất & Yêu cầu của tôi</h1>
+          <p className="text-slate-500 mt-1 font-bold text-sm">Theo dõi các yêu cầu công tác hoặc cá nhân gửi lên cấp trên.</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
@@ -91,10 +91,10 @@ const FacultyProposals = () => {
                   <div>
                     <div className="flex items-center gap-3 mb-1">
                       <span className="text-[10px] font-black text-blue-500 bg-blue-50 px-2 py-0.5 rounded-md uppercase tracking-wider">{req.type}</span>
-                      <span className="text-xs text-gray-400 font-medium">{new Date(req.createdAt).toLocaleDateString()}</span>
+                      <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">{new Date(req.createdAt).toLocaleDateString()}</span>
                     </div>
-                    <h3 className="text-lg font-bold text-gray-800 group-hover:text-[#009FE3] transition-colors">{req.title}</h3>
-                    <p className={`text-xs font-bold mt-1 ${status.color.split(' ')[0]}`}>{status.label}</p>
+                    <h3 className="text-lg font-black text-slate-900 group-hover:text-[#009FE3] transition-colors">{req.title}</h3>
+                    <p className={`text-[10px] font-black mt-1 uppercase tracking-widest ${status.color.split(' ')[0]}`}>{status.label}</p>
                   </div>
                 </div>
                 <button

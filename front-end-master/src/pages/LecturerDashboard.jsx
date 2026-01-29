@@ -265,8 +265,8 @@ const StatCard = ({ title, value, icon: Icon, color, onClick }) => {
       </div>
       <div>
         <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">{title}</p>
-        <div className="flex items-end justify-between mt-2">
-          <h3 className="text-4xl font-black text-slate-800">{value}</h3>
+        <div className="flex items-end justify-between mt-4">
+          <h3 className="text-4xl font-black text-slate-950">{value}</h3>
           <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-[#009FE3] group-hover:text-white transition-all shadow-inner">
             <ArrowUpRight size={20} />
           </div>
@@ -281,11 +281,11 @@ const AnnouncementItem = ({ title, date, category }) => (
     <div className="flex items-center gap-6">
       <div className="w-1.5 h-12 bg-[#009FE3] rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
       <div>
-        <h4 className="font-bold text-gray-700 group-hover:text-[#009FE3] transition-colors leading-snug">{title}</h4>
+        <h4 className="font-black text-slate-800 group-hover:text-[#009FE3] transition-colors leading-snug">{title}</h4>
         <div className="flex items-center gap-4 mt-2">
-          <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">{date}</span>
-          <span className="w-1 h-1 bg-gray-200 rounded-full"></span>
-          <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded-md">{category}</span>
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{date}</span>
+          <span className="w-1 h-1 bg-slate-200 rounded-full"></span>
+          <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded-md">{category}</span>
         </div>
       </div>
     </div>
@@ -301,10 +301,10 @@ const QuickLink = ({ icon: Icon, label, onClick }) => (
     className="w-full flex items-center justify-between p-5 bg-slate-50/50 border border-slate-50 hover:bg-[#009FE3] hover:border-[#009FE3] rounded-[1.5rem] transition-all group"
   >
     <div className="flex items-center gap-4">
-      <div className="p-2 bg-white rounded-lg shadow-sm text-[#009FE3] group-hover:text-[#009FE3] transition-colors">
+      <div className="p-2 bg-white rounded-lg shadow-sm text-[#009FE3] group-hover:scale-110 transition-transform">
         <Icon size={18} color="#009FE3" />
       </div>
-      <span className="text-sm font-bold text-gray-600 group-hover:text-white transition-colors">{label}</span>
+      <span className="text-sm font-black text-slate-700 group-hover:text-white transition-colors uppercase tracking-wider">{label}</span>
     </div>
     <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-white group-hover:translate-x-1 transition-all" />
   </button>

@@ -78,11 +78,11 @@ const PrincipalReports = () => {
     <div className="p-6 lg:p-10 space-y-8 animate-in fade-in duration-500 bg-gray-50 min-h-screen">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
+          <h1 className="text-2xl font-black text-slate-900 flex items-center gap-3">
             <FileText className="w-8 h-8 text-[#009FE3]" />
             Báo cáo Tổng hợp Toàn trường
           </h1>
-          <p className="text-gray-500 mt-1">Dữ liệu thống kê nhân sự đồng bộ từ các khoa và phòng ban</p>
+          <p className="text-slate-500 mt-1 font-bold text-sm">Dữ liệu thống kê nhân sự đồng bộ từ các khoa và phòng ban</p>
         </div>
         <button
           onClick={handleExport}
@@ -100,8 +100,8 @@ const PrincipalReports = () => {
               <card.icon className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{card.label}</p>
-              <p className="text-2xl font-bold text-gray-800">{card.value}</p>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{card.label}</p>
+              <p className="text-2xl font-black text-slate-900">{card.value}</p>
             </div>
           </div>
         ))}
@@ -109,7 +109,7 @@ const PrincipalReports = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-          <h2 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
+          <h2 className="text-lg font-black text-slate-900 mb-6 flex items-center gap-2 uppercase tracking-wide">
             <Briefcase className="w-5 h-5 text-[#009FE3]" />
             Phân bổ nhân sự theo Khoa
           </h2>
@@ -129,7 +129,7 @@ const PrincipalReports = () => {
         </div>
 
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-          <h2 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
+          <h2 className="text-lg font-black text-slate-900 mb-6 flex items-center gap-2 uppercase tracking-wide">
             <GraduationCap className="w-5 h-5 text-purple-500" />
             Cơ cấu Trình độ chuyên môn
           </h2>

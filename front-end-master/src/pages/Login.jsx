@@ -71,27 +71,26 @@ function Login() {
         ></div>
       </div>
 
-      {/* Form */}
-      <div className="relative z-10 bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 w-full max-w-md ml-20">
-        <div className="flex flex-col items-center mb-6">
+      <div className="relative z-10 bg-white/95 backdrop-blur-xl rounded-[2.5rem] shadow-2xl p-12 w-full max-w-md ml-20 border border-white/50">
+        <div className="flex flex-col items-center mb-10">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/0/03/Logo_HAU.png"
             alt="Logo HAU"
-            className="w-20 h-20 mb-3 object-contain"
+            className="w-24 h-24 mb-4 object-contain filter drop-shadow-lg"
           />
-          <h1 className="text-2xl font-bold text-gray-800 text-center">
-            HỆ THỐNG QUẢN LÝ NHÂN SỰ
+          <h1 className="text-2xl font-black text-slate-950 text-center uppercase tracking-tight leading-tight">
+            Hệ thống<br />Quản lý nhân sự
           </h1>
         </div>
 
         <form onSubmit={handleLogin}>
           {/* Vai trò */}
-          <div className="mb-5 relative">
-            <FaHome className="absolute left-3 top-3 text-gray-500" />
+          <div className="mb-6 relative group">
+            <FaHome className="absolute left-4 top-4 text-slate-400 group-focus-within:text-[#009FE3] transition-colors" />
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none appearance-none"
+              className="w-full pl-12 pr-10 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-[#009FE3]/10 focus:bg-white focus:border-[#009FE3]/30 transition-all text-sm font-normal text-slate-600 outline-none appearance-none cursor-pointer"
             >
               <option value="superadmin">Siêu quản trị (Super Admin)</option>
               <option value="admin">Quản trị hệ thống (Admin)</option>
@@ -102,35 +101,35 @@ function Login() {
           </div>
 
           {/* Username */}
-          <div className="mb-5 relative">
-            <FaUser className="absolute left-3 top-3 text-gray-500" />
+          <div className="mb-6 relative group">
+            <FaUser className="absolute left-4 top-4 text-slate-400 group-focus-within:text-[#009FE3] transition-colors" />
             <input
               type="text"
               placeholder="Tài khoản"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
+              className="w-full pl-12 pr-6 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-[#009FE3]/10 focus:bg-white focus:border-[#009FE3]/30 transition-all text-sm font-normal text-slate-600 outline-none"
               required
             />
           </div>
 
           {/* Password */}
-          <div className="mb-5 relative">
-            <FaLock className="absolute left-3 top-3 text-gray-500" />
+          <div className="mb-6 relative group">
+            <FaLock className="absolute left-4 top-4 text-slate-400 group-focus-within:text-[#009FE3] transition-colors" />
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Mật khẩu"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:outline-none"
+              className="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-[#009FE3]/10 focus:bg-white focus:border-[#009FE3]/30 transition-all text-sm font-normal text-slate-600 outline-none"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 text-gray-600"
+              className="absolute right-4 top-4 text-slate-300 hover:text-slate-500 transition-colors"
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
+              {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
             </button>
           </div>
 
@@ -147,9 +146,9 @@ function Login() {
           {/* Nút đăng nhập */}
           <button
             type="submit"
-            className="w-full bg-primary text-white p-2 rounded-lg"
+            className="w-full bg-[#009FE3] hover:bg-[#0087c2] text-white py-4 rounded-2xl shadow-xl shadow-blue-100 hover:shadow-blue-200 transition-all font-black text-xs uppercase tracking-[0.2em]"
           >
-            Đăng nhập
+            Đăng nhập hệ thống
           </button>
 
           {/* Hiển thị lỗi */}

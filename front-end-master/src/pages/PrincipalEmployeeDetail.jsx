@@ -87,21 +87,21 @@ const PrincipalEmployeeDetail = () => {
               className="w-32 h-32 rounded-full border-4 border-white shadow-md bg-white object-cover"
             />
             <div className="flex-1 mb-2">
-              <h1 className="text-3xl font-bold text-gray-800">{employee.fullName || employee.username}</h1>
-              <div className="flex items-center gap-3 mt-1 text-gray-600">
-                <span className="flex items-center gap-1 bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
+              <h1 className="text-3xl font-black text-slate-950 uppercase tracking-tight">{employee.fullName || employee.username}</h1>
+              <div className="flex items-center gap-3 mt-2 text-slate-600">
+                <span className="flex items-center gap-1 bg-[#009FE3] text-white px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-100">
                   {displayRole}
                 </span>
-                <span className="text-gray-400">|</span>
-                <span>{displayDept}</span>
+                <span className="text-slate-300">/</span>
+                <span className="text-sm font-black text-slate-500 uppercase tracking-widest">{displayDept}</span>
               </div>
             </div>
             <div className="mb-2">
-              <span className={`px-4 py-2 rounded-lg text-sm font-semibold border ${employee.isActive
-                  ? "bg-green-50 text-green-700 border-green-200"
-                  : "bg-red-50 text-red-700 border-red-200"
+              <span className={`px-4 py-2 rounded-xl text-[10px] font-black border uppercase tracking-widest shadow-sm ${employee.isActive
+                ? "bg-emerald-50 text-emerald-700 border-emerald-100"
+                : "bg-rose-50 text-rose-700 border-rose-100"
                 }`}>
-                {employee.isActive ? "● Đang làm việc" : "● Đã nghỉ việc"}
+                {employee.isActive ? "Đang làm việc" : "Đã nghỉ việc"}
               </span>
             </div>
           </div>
@@ -111,9 +111,9 @@ const PrincipalEmployeeDetail = () => {
       {/* DETAILS GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* CARD 1: THÔNG TIN CÁ NHÂN */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 border-b pb-3">
-            <UserCircle className="text-blue-500" /> Thông tin cá nhân
+        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+          <h3 className="text-lg font-black text-slate-900 mb-8 flex items-center gap-3 border-b border-slate-50 pb-5 uppercase tracking-wider">
+            <UserCircle className="text-[#009FE3]" /> Thông tin cá nhân
           </h3>
           <div className="space-y-4">
             <InfoRow label="Mã nhân viên" value={employee.userId} />
@@ -130,9 +130,9 @@ const PrincipalEmployeeDetail = () => {
 
         {/* CARD 2: CÔNG VIỆC & HỌC VẤN */}
         <div className="space-y-6">
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 border-b pb-3">
-              <BriefcaseBusiness className="text-blue-500" /> Công việc & Đào tạo
+          <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+            <h3 className="text-lg font-black text-slate-900 mb-8 flex items-center gap-3 border-b border-slate-50 pb-5 uppercase tracking-wider">
+              <BriefcaseBusiness className="text-[#009FE3]" /> Công việc & Đào tạo
             </h3>
             <div className="space-y-4">
               <InfoRow label="Đơn vị công tác" value={displayDept} icon={<Building2 size={14} className="mt-1" />} />
@@ -143,9 +143,9 @@ const PrincipalEmployeeDetail = () => {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2 border-b pb-3">
-              <Users className="text-blue-500" /> Hợp đồng lao động
+          <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+            <h3 className="text-lg font-black text-slate-900 mb-8 flex items-center gap-3 border-b border-slate-50 pb-5 uppercase tracking-wider">
+              <Users className="text-[#009FE3]" /> Hợp đồng lao động
             </h3>
             <div className="space-y-4">
               <InfoRow label="Ngày bắt đầu HĐ" value={employee.contractStart} />
@@ -160,10 +160,10 @@ const PrincipalEmployeeDetail = () => {
 
 // Helper Component for consistent rows
 const InfoRow = ({ label, value, icon }) => (
-  <div className="flex justify-between items-start border-b border-dashed border-gray-100 last:border-0 pb-2 last:pb-0">
-    <span className="text-gray-500 text-sm font-medium">{label}</span>
-    <div className="flex items-start gap-2 text-gray-800 font-medium text-right max-w-[60%]">
-      {icon && <span className="text-gray-400">{icon}</span>}
+  <div className="flex justify-between items-center border-b border-slate-50 last:border-0 pb-4 last:pb-0">
+    <span className="text-slate-400 text-[10px] font-black uppercase tracking-widest ml-1">{label}</span>
+    <div className="flex items-center gap-2 text-slate-900 font-bold text-right max-w-[60%]">
+      {icon && <span className="text-slate-300">{icon}</span>}
       <span className="break-words">{value || "---"}</span>
     </div>
   </div>

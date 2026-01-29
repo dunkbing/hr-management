@@ -106,26 +106,26 @@ const FacultyEmployeeDetail = () => {
         </div>
 
         <div className="flex-1 relative z-10 text-center md:text-left">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{employee.fullName}</h1>
+          <h1 className="text-3xl font-black text-slate-950 uppercase tracking-tight mb-3">{employee.fullName}</h1>
 
-          <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
-            <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-lg text-sm font-semibold">
+          <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-6">
+            <span className="px-4 py-1.5 bg-[#009FE3] text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-100">
               {employee.roleName || "Chưa có chức vụ"}
             </span>
-            <span className={`px-3 py-1 rounded-lg text-sm font-semibold ${statusColor[employee.isActive]}`}>
+            <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border border-transparent shadow-sm ${statusColor[employee.isActive]}`}>
               {statusLabel[employee.isActive]}
             </span>
           </div>
 
-          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-gray-600 mt-2">
+          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 text-slate-500 mt-2 font-bold text-xs uppercase tracking-wide">
             <div className="flex items-center gap-2">
-              <Mail size={16} className="text-gray-400" /> {employee.email || "---"}
+              <Mail size={16} className="text-slate-300" /> {employee.email || "---"}
             </div>
             <div className="flex items-center gap-2">
-              <Phone size={16} className="text-gray-400" /> {employee.phone || "---"}
+              <Phone size={16} className="text-slate-300" /> {employee.phone || "---"}
             </div>
             <div className="flex items-center gap-2">
-              <Briefcase size={16} className="text-gray-400" /> {employee.departmentName || employee.facultyName || "---"}
+              <Briefcase size={16} className="text-slate-300" /> {employee.departmentName || employee.facultyName || "---"}
             </div>
           </div>
         </div>
@@ -135,9 +135,9 @@ const FacultyEmployeeDetail = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
         {/* Cột trái: Thông tin cá nhân */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2 border-b pb-3">
-            <User size={20} className="text-blue-500" /> Thông tin cá nhân
+        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+          <h2 className="text-xl font-black text-slate-900 mb-8 flex items-center gap-3 border-b border-slate-50 pb-5 uppercase tracking-wider">
+            <User size={24} className="text-[#009FE3]" /> Thông tin cá nhân
           </h2>
           <div className="space-y-4">
             <DetailItem label="Họ và tên" value={employee.fullName} />
@@ -150,9 +150,9 @@ const FacultyEmployeeDetail = () => {
         </div>
 
         {/* Cột phải: Thông tin công việc */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2 border-b pb-3">
-            <Briefcase size={20} className="text-indigo-500" /> Thông tin công tác
+        <div className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">
+          <h2 className="text-xl font-black text-slate-900 mb-8 flex items-center gap-3 border-b border-slate-50 pb-5 uppercase tracking-wider">
+            <Briefcase size={24} className="text-[#009FE3]" /> Thông tin công tác
           </h2>
           <div className="space-y-4">
             <DetailItem label="Đơn vị công tác" value={employee.departmentName || employee.facultyName || "---"} />
@@ -189,9 +189,9 @@ const FacultyEmployeeDetail = () => {
 };
 
 const DetailItem = ({ label, value }) => (
-  <div className="flex justify-between items-center py-1 border-b border-gray-50 last:border-0 hover:bg-gray-50 transition px-2 rounded-lg">
-    <p className="text-gray-500 text-sm font-medium">{label}</p>
-    <p className="font-semibold text-gray-800 text-right text-sm">{value}</p>
+  <div className="flex justify-between items-center py-4 border-b border-slate-50 last:border-0 hover:bg-slate-50/50 transition px-3 rounded-xl">
+    <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest ml-1">{label}</p>
+    <p className="font-bold text-slate-900 text-right text-sm">{value}</p>
   </div>
 );
 

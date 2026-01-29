@@ -211,30 +211,30 @@ const ContractManagement = () => {
         return (
             <table className="min-w-full border-collapse">
                 <thead>
-                    <tr className="bg-blue-50 text-sm text-gray-700 text-left">
-                        <th className="p-4 font-semibold border-b">Mã HĐ</th>
-                        <th className="p-4 font-semibold border-b">Nhân sự</th>
-                        <th className="p-4 font-semibold border-b">Loại HĐ</th>
-                        <th className="p-4 font-semibold border-b">Ngày ký</th>
-                        <th className="p-4 font-semibold border-b">Hiệu lực</th>
-                        <th className="p-4 font-semibold border-b">Trạng thái</th>
-                        <th className="p-4 font-semibold border-b text-center">Hành động</th>
+                    <tr className="bg-slate-50/80 text-[10px] font-black text-slate-500 text-left uppercase tracking-widest border-b border-slate-50">
+                        <th className="p-4">Mã HĐ</th>
+                        <th className="p-4">Nhân sự</th>
+                        <th className="p-4">Loại HĐ</th>
+                        <th className="p-4">Ngày ký</th>
+                        <th className="p-4">Hiệu lực</th>
+                        <th className="p-4">Trạng thái</th>
+                        <th className="p-4 text-center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     {filtered.map(c => (
-                        <tr key={c.id} className="hover:bg-gray-50 border-b">
-                            <td className="p-4 font-medium text-blue-600">{c.contractCode}</td>
-                            <td className="p-4">{c.fullName}</td>
-                            <td className="p-4">
+                        <tr key={c.id} className="hover:bg-slate-50/50 border-b border-slate-50 transition">
+                            <td className="p-4 font-black text-[#009FE3] uppercase tracking-wider">{c.contractCode}</td>
+                            <td className="p-4 font-bold text-slate-900">{c.fullName}</td>
+                            <td className="p-4 text-slate-600 font-medium">
                                 {c.contractType === "THU_VIEC" && "Thử việc"}
                                 {c.contractType === "XAC_DINH_THOI_HAN" && "Xác định thời hạn"}
                                 {c.contractType === "KHONG_XAC_DINH_THOI_HAN" && "Không xác định thời hạn"}
                             </td>
-                            <td className="p-4">{c.signDate}</td>
-                            <td className="p-4">{c.startDate} - {c.endDate || "∞"}</td>
+                            <td className="p-4 text-slate-600 font-medium">{c.signDate}</td>
+                            <td className="p-4 text-slate-600 font-medium">{c.startDate} - {c.endDate || "∞"}</td>
                             <td className="p-4">
-                                <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${c.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                <span className={`px-2 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${c.status === 'ACTIVE' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
                                     {c.status === 'ACTIVE' ? "Hiệu lực" : c.status === 'EXPIRED' ? "Hết hạn" : "Chấm dứt"}
                                 </span>
                             </td>
@@ -258,28 +258,28 @@ const ContractManagement = () => {
         return (
             <table className="min-w-full border-collapse">
                 <thead>
-                    <tr className="bg-blue-50 text-sm text-gray-700 text-left">
-                        <th className="p-4 font-semibold border-b">Nhân sự</th>
-                        <th className="p-4 font-semibold border-b">Ngày sự kiện</th>
-                        <th className="p-4 font-semibold border-b">Loại sự kiện</th>
-                        <th className="p-4 font-semibold border-b">Thay đổi vị trí</th>
-                        <th className="p-4 font-semibold border-b">Thay đổi đơn vị</th>
-                        <th className="p-4 font-semibold border-b text-center">Hành động</th>
+                    <tr className="bg-slate-50/80 text-[10px] font-black text-slate-500 text-left uppercase tracking-widest border-b border-slate-50">
+                        <th className="p-4">Nhân sự</th>
+                        <th className="p-4">Ngày sự kiện</th>
+                        <th className="p-4">Loại sự kiện</th>
+                        <th className="p-4">Thay đổi vị trí</th>
+                        <th className="p-4">Thay đổi đơn vị</th>
+                        <th className="p-4 text-center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     {filtered.map(h => (
-                        <tr key={h.id} className="hover:bg-gray-50 border-b">
-                            <td className="p-4 font-medium">{h.fullName}</td>
-                            <td className="p-4">{h.eventDate}</td>
-                            <td className="p-4 text-blue-600 font-medium">{h.eventType}</td>
+                        <tr key={h.id} className="hover:bg-slate-50/50 border-b border-slate-50 transition">
+                            <td className="p-4 font-bold text-slate-900">{h.fullName}</td>
+                            <td className="p-4 text-slate-600 font-medium">{h.eventDate}</td>
+                            <td className="p-4 text-[#009FE3] font-bold text-xs uppercase tracking-wider">{h.eventType}</td>
                             <td className="p-4">
-                                <div className="text-xs text-gray-500">Cũ: {h.oldPosition || "-"}</div>
-                                <div className="font-medium">Mới: {h.newPosition || "-"}</div>
+                                <div className="text-[10px] font-bold text-slate-400 uppercase">Cũ: {h.oldPosition || "-"}</div>
+                                <div className="font-bold text-slate-800 text-sm italic">Mới: {h.newPosition || "-"}</div>
                             </td>
                             <td className="p-4">
-                                <div className="text-xs text-gray-500">Cũ: {h.oldDepartment || "-"}</div>
-                                <div className="font-medium">Mới: {h.newDepartment || "-"}</div>
+                                <div className="text-[10px] font-bold text-slate-400 uppercase">Cũ: {h.oldDepartment || "-"}</div>
+                                <div className="font-bold text-slate-800 text-sm italic">Mới: {h.newDepartment || "-"}</div>
                             </td>
                             <td className="p-4 text-center">
                                 <button onClick={() => handleOpenEdit(h)} className="text-blue-500 bg-blue-100 p-2 rounded-full mr-2"><FaEdit /></button>
@@ -293,52 +293,48 @@ const ContractManagement = () => {
     };
 
     return (
-        <div className="p-6 relative">
-            <h1 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-                <FaFileContract /> QUẢN LÝ HỢP ĐỒNG & CÔNG TÁC
+        <div className="p-6 relative space-y-6">
+            <h1 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                <FaFileContract className="text-[#009FE3]" /> QUẢN LÝ HỢP ĐỒNG & CÔNG TÁC
             </h1>
 
-            {/* TABS */}
-            <div className="flex gap-4 border-b mb-6">
+            <div className="flex gap-1 p-1 bg-slate-100 rounded-xl mb-6 w-fit">
                 <button
-                    className={`pb-3 px-4 font-medium transition ${activeTab === 'contracts' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-blue-500'}`}
+                    className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'contracts' ? 'bg-white shadow-sm text-[#009FE3]' : 'text-slate-500 hover:text-slate-700'}`}
                     onClick={() => { setActiveTab('contracts'); setSearchTerm(""); }}
                 >
-                    <FaFileContract className="inline mr-2" /> Danh sách Hợp đồng
+                    <FaFileContract className="inline mr-2" /> Hợp đồng
                 </button>
                 <button
-                    className={`pb-3 px-4 font-medium transition ${activeTab === 'history' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-blue-500'}`}
+                    className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'history' ? 'bg-white shadow-sm text-[#009FE3]' : 'text-slate-500 hover:text-slate-700'}`}
                     onClick={() => { setActiveTab('history'); setSearchTerm(""); }}
                 >
-                    <FaHistory className="inline mr-2" /> Quá trình Công tác
+                    <FaHistory className="inline mr-2" /> Công tác
                 </button>
             </div>
 
-            {/* Toolbar */}
-            <div className="flex justify-between mb-4">
-                <div className="flex items-center border rounded-lg overflow-hidden bg-white shadow-sm">
+            <div className="flex justify-between items-center mb-6">
+                <div className="relative w-80">
+                    <FaSearch className="absolute left-3 top-3 text-slate-400" />
                     <input
                         type="text"
                         placeholder="Tìm kiếm..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="px-3 py-2 outline-none text-sm w-80"
+                        className="pl-10 pr-4 py-2 w-full bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-medium text-slate-700 shadow-sm"
                     />
-                    <button className="bg-blue-600 text-white px-3 py-2">
-                        <FaSearch />
-                    </button>
                 </div>
 
                 <button
                     onClick={handleOpenAdd}
-                    className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium shadow"
+                    className="flex items-center gap-2 bg-[#009FE3] text-white px-6 py-2 rounded-xl font-bold shadow-lg hover:shadow-blue-200 transition-all active:scale-95"
                 >
                     <FaPlus /> Thêm {activeTab === 'contracts' ? 'Hợp đồng' : 'Sự kiện'}
                 </button>
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto border rounded-xl bg-white shadow">
+            <div className="overflow-x-auto border-none rounded-2xl bg-white shadow-sm border border-slate-100">
                 {activeTab === 'contracts' ? renderContractsTable() : renderHistoryTable()}
             </div>
 

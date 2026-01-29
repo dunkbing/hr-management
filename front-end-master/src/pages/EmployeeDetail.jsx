@@ -35,10 +35,10 @@ function EmployeeDetail() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
+      <div className="flex items-center justify-center h-screen bg-white">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-500 italic">Đang tải dữ liệu...</p>
+          <div className="w-10 h-10 border-4 border-[#009FE3] border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">Đang tải hồ sơ...</p>
         </div>
       </div>
     );
@@ -129,7 +129,7 @@ function EmployeeDetail() {
         {/* Right Column: Detailed Tabs */}
         <div className="lg:col-span-2">
           {/* Tab Navigation */}
-          <div className="flex gap-1 p-1 bg-gray-100 rounded-xl mb-6">
+          <div className="flex gap-1 p-1 bg-slate-100 rounded-xl mb-6">
             <TabButton
               label="Cá nhân"
               icon={<FaUser />}
@@ -145,7 +145,7 @@ function EmployeeDetail() {
               primary={mainColor}
             />
             <TabButton
-              label="Định danh & Trình độ"
+              label="Bằng cấp"
               icon={<FaAddressCard />}
               active={activeTab === "id"}
               onClick={() => setActiveTab("id")}
@@ -207,9 +207,9 @@ function EmployeeDetail() {
 const TabButton = ({ label, icon, active, onClick, primary }) => (
   <button
     onClick={onClick}
-    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${active
-        ? "bg-white shadow-sm text-gray-800"
-        : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+    className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 ${active
+      ? "bg-white shadow-sm"
+      : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
       }`}
     style={active ? { color: primary } : {}}
   >
@@ -227,8 +227,8 @@ const SectionHeader = ({ title }) => (
 
 const InfoItem = ({ label, value }) => (
   <div className="space-y-1">
-    <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{label}</p>
-    <p className="text-sm font-semibold text-gray-700">{value || "---"}</p>
+    <p className="text-[10px] font-bold text-slate-400 font-medium uppercase tracking-widest">{label}</p>
+    <p className="text-sm font-black text-slate-800">{value || "---"}</p>
   </div>
 );
 

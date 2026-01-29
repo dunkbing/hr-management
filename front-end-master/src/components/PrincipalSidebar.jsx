@@ -21,28 +21,13 @@ const principalMenu = [
   { label: "Cài đặt", path: "/principal/settings", icon: <Settings size={18} />, iconColor: "#4B5563" },
 ];
 
-const PrincipalSidebar = () => {
+const PrincipalSidebar = ({ collapsed }) => {
   const location = useLocation();
 
   return (
-    <aside className="w-64 bg-white shadow-md flex flex-col">
-      {/* Logo trường */}
-      <Link
-        to="/principal/dashboard"
-        className="p-6 border-b flex items-center gap-3 transition text-primary"
-      >
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/0/03/Logo_HAU.png"
-          alt="Logo Trường Đại học Kiến trúc Hà Nội"
-          className="w-10 h-10 object-contain"
-        />
-        <div className="font-bold leading-tight text-[15px]">
-          TRƯỜNG ĐẠI HỌC <br /> KIẾN TRÚC HÀ NỘI
-        </div>
-      </Link>
-
+    <aside className={`${collapsed ? "w-20" : "w-64"} bg-white shadow-md flex flex-col transition-all duration-300 overflow-hidden`}>
       {/* Menu */}
-      <nav className="mt-4 flex-1">
+      <nav className="mt-8 flex-1">
         {principalMenu.map((item, i) => {
           const active = location.pathname === item.path;
 
@@ -50,8 +35,8 @@ const PrincipalSidebar = () => {
             <Link
               key={i}
               to={item.path}
-              className={`flex items-center gap-3 px-6 py-3 text-gray-600 
-                transition
+              className={`flex items-center gap-3 px-6 py-3 text-slate-600 
+                transition hover:text-primary
                 ${active ? "rounded-r-full mr-2" : ""}`}
               style={active ? { backgroundColor: '#009FE3', color: '#fff' } : {}}
             >
@@ -63,7 +48,7 @@ const PrincipalSidebar = () => {
               </span>
 
               {/* LABEL */}
-              <span className="text-sm font-medium">{item.label}</span>
+              {!collapsed && <span className="text-sm font-semibold truncate">{item.label}</span>}
             </Link>
           );
         })}

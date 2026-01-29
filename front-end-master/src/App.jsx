@@ -42,6 +42,8 @@ import LecturerDashboard from "./pages/LecturerDashboard";
 import LecturerProfile from "./pages/LecturerProfile";
 import LecturerSubmitRequest from "./pages/LecturerSubmitRequest";
 import LecturerMyRequests from "./pages/LecturerMyRequests";
+import NotificationList from "./pages/NotificationList";
+import NotificationDetail from "./pages/NotificationDetail";
 
 
 // Helper component to wrap Profile with correct layout based on role
@@ -54,6 +56,35 @@ const ProfileWithLayout = () => {
     return <FacultyLayout><Profile /></FacultyLayout>;
   }
   return <AdminLayout><Profile /></AdminLayout>;
+};
+
+// Helper component for notifications
+const NotificationWithLayout = () => {
+  const role = localStorage.getItem("role");
+  if (role === "hieutruong" || role === "hieu_truong") {
+    return <PrincipalLayout><NotificationList /></PrincipalLayout>;
+  }
+  if (role === "truongkhoa" || role === "truong_don_vi") {
+    return <FacultyLayout><NotificationList /></FacultyLayout>;
+  }
+  if (role === "giangvien" || role === "nhan_su") {
+    return <LecturerLayout><NotificationList /></LecturerLayout>;
+  }
+  return <AdminLayout><NotificationList /></AdminLayout>;
+};
+
+const NotificationDetailWithLayout = () => {
+  const role = localStorage.getItem("role");
+  if (role === "hieutruong" || role === "hieu_truong") {
+    return <PrincipalLayout><NotificationDetail /></PrincipalLayout>;
+  }
+  if (role === "truongkhoa" || role === "truong_don_vi") {
+    return <FacultyLayout><NotificationDetail /></FacultyLayout>;
+  }
+  if (role === "giangvien" || role === "nhan_su") {
+    return <LecturerLayout><NotificationDetail /></LecturerLayout>;
+  }
+  return <AdminLayout><NotificationDetail /></AdminLayout>;
 };
 
 function App() {
@@ -359,6 +390,16 @@ function App() {
               <LecturerMyRequests />
             </LecturerLayout>
           }
+        />
+
+        {/* NOTIFICATIONS */}
+        <Route
+          path="/notification"
+          element={<NotificationWithLayout />}
+        />
+        <Route
+          path="/notification/:id"
+          element={<NotificationDetailWithLayout />}
         />
       </Routes>
     </Router>

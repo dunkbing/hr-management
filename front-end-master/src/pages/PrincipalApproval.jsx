@@ -70,8 +70,8 @@ const PrincipalApprovalManagement = () => {
             <ShieldCheck size={28} />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Phê duyệt cuối cùng (Hiệu trưởng)</h1>
-            <p className="text-sm text-gray-500 font-medium italic">Các yêu cầu này đã được Admin thẩm định và đang chờ quyết định của bạn.</p>
+            <h1 className="text-2xl font-black text-slate-900">Phê duyệt cuối cùng (Hiệu trưởng)</h1>
+            <p className="text-sm text-slate-500 font-bold italic">Các yêu cầu này đã được Admin thẩm định và đang chờ quyết định của bạn.</p>
           </div>
         </div>
 
@@ -101,33 +101,33 @@ const PrincipalApprovalManagement = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="bg-slate-50/50">
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Yêu cầu</th>
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Người gửi</th>
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Loại</th>
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Ngày gửi</th>
-                <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Hành động</th>
+              <tr className="bg-slate-50/80 text-[10px] font-black text-slate-500 text-left uppercase tracking-widest border-b border-slate-50">
+                <th className="px-6 py-4">Yêu cầu</th>
+                <th className="px-6 py-4">Người gửi</th>
+                <th className="px-6 py-4">Loại</th>
+                <th className="px-6 py-4">Ngày gửi</th>
+                <th className="px-6 py-4 text-center">Hành động</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
               {filteredRequests.map(req => (
-                <tr key={req.id} className="hover:bg-slate-50/50 transition-colors group">
+                <tr key={req.id} className="hover:bg-slate-50/50 border-b border-slate-50 transition-colors group">
                   <td className="px-6 py-5">
-                    <p className="font-bold text-gray-700 group-hover:text-emerald-600 transition-colors">{req.title}</p>
-                    <p className="text-[10px] text-gray-300 font-bold uppercase mt-1">Request ID: #{req.id}</p>
+                    <p className="font-black text-slate-900 group-hover:text-emerald-600 transition-colors uppercase tracking-tight">{req.title}</p>
+                    <p className="text-[10px] text-slate-400 font-black uppercase mt-1">Request ID: #{req.id}</p>
                   </td>
                   <td className="px-6 py-5">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">
+                      <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-black text-slate-500 uppercase">
                         {req.requesterName?.charAt(0) || "U"}
                       </div>
-                      <span className="text-sm font-bold text-gray-600">{req.requesterName}</span>
+                      <span className="text-sm font-black text-slate-800">{req.requesterName}</span>
                     </div>
                   </td>
                   <td className="px-6 py-5">
-                    <span className="text-[10px] font-black text-blue-500 bg-blue-50 px-2.5 py-1 rounded-lg uppercase tracking-wider">{req.type}</span>
+                    <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg uppercase tracking-widest">{req.type}</span>
                   </td>
-                  <td className="px-6 py-5 text-sm text-gray-400 font-medium">
+                  <td className="px-6 py-5 text-xs text-slate-500 font-black uppercase tracking-widest">
                     {new Date(req.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-5">

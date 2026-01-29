@@ -82,25 +82,23 @@ function UserManagement() {
   };
 
   return (
-    <div className="p-6 relative">
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+    <div className="p-6 relative space-y-6">
+      <h1 className="text-2xl font-bold text-slate-900 mb-6">
         QUẢN LÝ TÀI KHOẢN NGƯỜI DÙNG
       </h1>
 
       {/* Toolbar */}
-      <div className="flex justify-between mb-4">
+      <div className="flex justify-between items-center mb-6">
         <div className="flex gap-2">
-          <div className="flex items-center border rounded-lg overflow-hidden bg-white shadow-sm">
+          <div className="relative w-72">
+            <FaSearch className="absolute left-3 top-3 text-slate-400" />
             <input
               type="text"
-              placeholder="Tìm kiếm..."
+              placeholder="Tìm kiếm tài khoản..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-3 py-2 outline-none text-sm w-64"
+              className="pl-10 pr-4 py-2 w-full bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#009FE3]/20 transition-all font-medium text-slate-700 shadow-sm"
             />
-            <button className="bg-[#009FE3] text-white px-3 py-2">
-              <FaSearch />
-            </button>
           </div>
         </div>
 
@@ -113,38 +111,38 @@ function UserManagement() {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto border rounded-xl bg-white shadow">
+      <div className="overflow-x-auto border-none rounded-2xl bg-white shadow-sm border border-slate-100">
         <table className="min-w-full border-collapse">
           <thead>
-            <tr className="bg-gray-100 text-sm text-gray-700 text-left">
-              <th className="p-4 font-semibold border-b">ID</th>
-              <th className="p-4 font-semibold border-b">Tài khoản</th>
-              <th className="p-4 font-semibold border-b">Vai trò</th>
-              <th className="p-4 font-semibold border-b">Trạng thái</th>
-              <th className="p-4 font-semibold border-b">Ngày tạo</th>
-              <th className="p-4 font-semibold border-b text-center">Hành động</th>
+            <tr className="bg-slate-50/80 text-[10px] font-black text-slate-500 text-left uppercase tracking-widest border-b border-slate-50">
+              <th className="p-4">ID</th>
+              <th className="p-4">Tài khoản</th>
+              <th className="p-4">Vai trò</th>
+              <th className="p-4">Trạng thái</th>
+              <th className="p-4">Ngày tạo</th>
+              <th className="p-4 text-center">Hành động</th>
             </tr>
           </thead>
           <tbody>
             {currentUsers.length > 0 ? (
               currentUsers.map((u, index) => (
-                <tr key={u.userId} className="hover:bg-gray-50 border-b">
-                  <td className="p-4">{indexOfFirstItem + index + 1}</td>
-                  <td className="p-4 font-medium text-[#009FE3]">{u.username}</td>
-                  <td className="p-4">
-                    <span className="px-2 py-1 rounded bg-gray-100 text-gray-700 text-xs font-bold uppercase">
+                <tr key={u.userId} className="hover:bg-slate-50/50 border-b border-slate-50 transition">
+                  <td className="p-4 text-slate-400 font-bold">{indexOfFirstItem + index + 1}</td>
+                  <td className="p-4 font-bold text-[#009FE3]">{u.username}</td>
+                  <td className="p-4 text-sm font-medium">
+                    <span className="px-2 py-1 rounded-lg bg-slate-100 text-slate-700 text-[10px] font-black uppercase tracking-widest">
                       {u.role ? u.role.roleCode : "N/A"}
                     </span>
                   </td>
                   <td className="p-4">
                     {u.isActive ? (
-                      <span className="text-green-600 font-medium">Hoạt động</span>
+                      <span className="text-emerald-600 font-bold text-sm">Hoạt động</span>
                     ) : (
-                      <span className="text-red-600">Đã khóa</span>
+                      <span className="text-rose-500 font-bold text-sm">Đã khóa</span>
                     )}
                   </td>
-                  <td className="p-4 text-gray-500 text-sm">
-                    {u.createdAt ? new Date(u.createdAt).toLocaleString() : ""}
+                  <td className="p-4 text-slate-500 font-medium text-sm">
+                    {u.createdAt ? new Date(u.createdAt).toLocaleDateString("vi-VN") : ""}
                   </td>
                   <td className="p-4 text-center">
                     {(() => {
