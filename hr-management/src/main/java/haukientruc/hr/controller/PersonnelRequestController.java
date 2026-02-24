@@ -27,6 +27,11 @@ public class PersonnelRequestController {
         return ResponseEntity.ok(service.getMyRequests(null)); // Service will handle getting current user
     }
 
+    @GetMapping("/pending/faculty-head")
+    public ResponseEntity<List<PersonnelRequestDTO>> getPendingForFacultyHead() {
+        return ResponseEntity.ok(service.getPendingForFacultyHead());
+    }
+
     @GetMapping("/pending/admin")
     public ResponseEntity<List<PersonnelRequestDTO>> getPendingForAdmin() {
         return ResponseEntity.ok(service.getPendingForAdmin());
@@ -35,6 +40,12 @@ public class PersonnelRequestController {
     @GetMapping("/pending/principal")
     public ResponseEntity<List<PersonnelRequestDTO>> getPendingForPrincipal() {
         return ResponseEntity.ok(service.getPendingForPrincipal());
+    }
+
+    @PostMapping("/{id}/approve-faculty-head")
+    public ResponseEntity<Void> approveFacultyHead(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        service.approveByFacultyHead(id, body.get("note"));
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{id}/approve-admin")
@@ -51,8 +62,8 @@ public class PersonnelRequestController {
 
     @PostMapping("/{id}/reject")
     public ResponseEntity<Void> reject(@PathVariable Long id, @RequestBody Map<String, String> body) {
-        boolean isAdmin = Boolean.parseBoolean(body.get("isAdmin"));
-        service.reject(id, body.get("note"), isAdmin);
+        String rejectedBy = body.getOrDefault("rejectedBy", "admin");
+        service.reject(id, body.get("note"), rejectedBy);
         return ResponseEntity.ok().build();
     }
 

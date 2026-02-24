@@ -14,8 +14,8 @@ const AdminLayout = ({ children }) => {
         {/* SIDEBAR - Starts below header */}
         <Sidebar collapsed={collapsed} />
 
-        {/* MAIN AREA */}
-        <main className="flex-1 p-6 overflow-y-auto transition-all duration-300">
+        {/* MAIN AREA - No padding here, let children handle their own spacing */}
+        <main className="flex-1 overflow-y-auto transition-all duration-300">
           {children}
         </main>
       </div>

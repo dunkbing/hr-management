@@ -22,18 +22,39 @@ const FacultyEmployees = () => {
       const res = await axios.get("http://localhost:8080/api/users/my-faculty", {
         headers: { Authorization: `Bearer ${token}` },
       });
+      // Role mapping from English to Vietnamese
+      const roleMapping = {
+        "Faculty Head": "Trưởng khoa",
+        "Lecturer": "Giảng viên",
+        "Dean": "Trưởng khoa",
+        "Vice Dean": "Phó khoa",
+        "Teacher": "Giảng viên",
+        "Professor": "Giáo sư",
+        "Associate Professor": "Phó giáo sư",
+        "Doctor": "Tiến sĩ",
+        "Master": "Thạc sĩ",
+        "Department Head": "Trưởng bộ môn",
+        "Vice Principal": "Phó hiệu trưởng",
+        "Principal": "Hiệu trưởng",
+      };
+
       // Map backend fields to frontend usage
-      const mapped = res.data.map((u) => ({
-        id: u.userId,
-        name: u.fullName || u.username,
-        role: u.positionName || u.roleName || "Chưa có chức vụ",
-        department: u.departmentName || "Trực thuộc Khoa",
-        status: u.isActive ? "Đang làm việc" : "Đã nghỉ",
-        email: u.email || "---",
-        phone: u.phone || "---",
-        avatar: u.avatar || `https://ui-avatars.com/api/?name=${u.fullName || u.username}&background=random`,
-        createdAt: u.createdAt
-      }));
+      const mapped = res.data.map((u) => {
+        const roleNameRaw = u.positionName || u.roleName || "Chưa có chức vụ";
+        const roleNameVietnamese = roleMapping[roleNameRaw] || roleNameRaw;
+
+        return {
+          id: u.userId,
+          name: u.fullName || u.username,
+          role: roleNameVietnamese,
+          department: u.departmentName || "Trực thuộc Khoa",
+          status: u.isActive ? "Đang làm việc" : "Đã nghỉ",
+          email: u.email || "---",
+          phone: u.phone || "---",
+          avatar: u.avatar || `https://ui-avatars.com/api/?name=${u.fullName || u.username}&background=random`,
+          createdAt: u.createdAt
+        };
+      });
       setEmployees(mapped);
     } catch (error) {
       console.error("Failed to fetch faculty employees:", error);
@@ -88,7 +109,7 @@ const FacultyEmployees = () => {
           try {
             const errorObj = JSON.parse(reader.result);
             alert(`Xuất dữ liệu thất bại: ${errorObj.message || errorObj.error || "Lỗi không xác định"}`);
-          } catch (e) {
+          } catch {
             // If not JSON, just show text
             alert(`Xuất dữ liệu thất bại: ${reader.result}`);
           }
@@ -103,14 +124,6 @@ const FacultyEmployees = () => {
   // Calculate stats
   const totalEmployees = employees.length;
   const totalLecturers = employees.filter(e => e.role && e.role.toLowerCase().includes("giảng viên")).length;
-  // Calculate new employees in current month
-  const currentMonth = new Date().getMonth();
-  const currentYear = new Date().getFullYear();
-  const newEmployeesCount = employees.filter(e => {
-    if (!e.createdAt) return false;
-    const d = new Date(e.createdAt);
-    return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
-  }).length;
 
 
   if (loading) return (

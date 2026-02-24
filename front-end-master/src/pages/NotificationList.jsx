@@ -38,17 +38,6 @@ const NotificationList = () => {
         }
     };
 
-    const handleMarkAsRead = async (id) => {
-        try {
-            await axios.put(`http://localhost:8080/api/notifications/${id}/read`, {}, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
-        } catch (err) {
-            console.error("Failed to mark as read", err);
-        }
-    };
-
     const handleMarkAllAsRead = async () => {
         try {
             await axios.put("http://localhost:8080/api/notifications/read-all", {}, {

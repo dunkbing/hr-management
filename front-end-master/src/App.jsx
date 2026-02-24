@@ -34,6 +34,7 @@ import PrincipalFacultyManagement from "./pages/PrincipalFacultyManagement";
 import PrincipalSettings from "./pages/PrincipalSettings";
 import FacultyEmployeeDetail from "./pages/FacultyEmployeeDetail";
 import FacultyProposal from "./pages/FacultyProposal";
+import FacultyHeadApproval from "./pages/FacultyHeadApproval";
 import FacultyReports from "./pages/FacultyReport";
 import FacultySettings from "./pages/FacultySettings";
 // import Departments from "./pages/Departments";
@@ -282,6 +283,14 @@ function App() {
           element={
             <FacultyLayout>
               <FacultyProposal />
+            </FacultyLayout>
+          }
+        />
+        <Route
+          path="/faculty/approvals"
+          element={
+            <FacultyLayout>
+              <FacultyHeadApproval />
             </FacultyLayout>
           }
         />

@@ -40,4 +40,54 @@ public class ReportController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(data);
     }
+
+    @GetMapping("/export-pdf")
+    public ResponseEntity<byte[]> exportPdf() {
+        byte[] data = reportService.exportUsersToPdf();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=bao_cao_nhan_su.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(data);
+    }
+
+    @GetMapping("/faculties/export")
+    public ResponseEntity<byte[]> exportFacultiesExcel() throws IOException {
+        byte[] data = reportService.exportFacultiesToExcel();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=danh_sach_khoa.xlsx")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(data);
+    }
+
+    @GetMapping("/faculties/export-pdf")
+    public ResponseEntity<byte[]> exportFacultiesPdf() {
+        byte[] data = reportService.exportFacultiesToPdf();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=danh_sach_khoa.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(data);
+    }
+
+    @GetMapping("/summary/excel")
+    public ResponseEntity<byte[]> exportSummaryExcel() throws IOException {
+        byte[] data = reportService.exportSummaryToExcel();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=bao_cao_tong_hop.xlsx")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(data);
+    }
+
+    @GetMapping("/summary/pdf")
+    public ResponseEntity<byte[]> exportSummaryPdf() {
+        byte[] data = reportService.exportSummaryToPdf();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=bao_cao_tong_hop.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(data);
+    }
 }

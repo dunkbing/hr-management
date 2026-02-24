@@ -54,7 +54,7 @@ function EmployeeDetail() {
   }
 
   // Placeholder avatar logic
-  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(employee.fullName || employee.username)}&background=009FE3&color=fff&size=256`;
+  const avatarUrl = employee.officialPhoto || employee.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(employee.fullName || employee.username)}&background=009FE3&color=fff&size=256`;
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">

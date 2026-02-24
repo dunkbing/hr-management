@@ -27,6 +27,8 @@ const LecturerMyRequests = () => {
 
     const getStatusInfo = (status) => {
         switch (status) {
+            case "PENDING_FACULTY_HEAD":
+                return { label: "Chờ Trưởng khoa duyệt", color: "text-indigo-600 bg-indigo-50 border-indigo-100", icon: Clock };
             case "PENDING_ADMIN":
                 return { label: "Chờ Admin duyệt", color: "text-blue-600 bg-blue-50 border-blue-100", icon: Clock };
             case "PENDING_PRINCIPAL":
@@ -178,7 +180,13 @@ const LecturerMyRequests = () => {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black text-indigo-400 uppercase tracking-widest ml-1">Ý kiến Trưởng khoa</label>
+                                    <div className="bg-indigo-50/50 p-6 rounded-2xl border border-indigo-100 text-sm font-bold text-indigo-700 min-h-[80px] flex items-center italic">
+                                        {selectedReq.facultyHeadNote || "Đang chờ Trưởng khoa phê duyệt..."}
+                                    </div>
+                                </div>
                                 <div className="space-y-3">
                                     <label className="text-[10px] font-black text-blue-400 uppercase tracking-widest ml-1">Phản hồi từ Admin</label>
                                     <div className="bg-blue-50/50 p-6 rounded-2xl border border-blue-100 text-sm font-bold text-blue-700 min-h-[80px] flex items-center italic">

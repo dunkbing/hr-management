@@ -20,7 +20,6 @@ import {
 } from "lucide-react";
 
 const Settings = () => {
-  const mainColor = "#009FE3";
   const [activeTab, setActiveTab] = useState("general");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

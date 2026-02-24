@@ -2,7 +2,6 @@ package haukientruc.hr.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import haukientruc.hr.entity.User; // Explicit import to fix resolution issues
 import java.time.LocalDate;
 
 @Entity

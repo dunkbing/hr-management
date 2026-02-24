@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   Users,
   FilePlus2,
+  ClipboardCheck,
   BarChart2,
   Settings,
 } from "lucide-react";
@@ -14,6 +15,9 @@ const facultyMenu = [
 
   // ⭐ Tên mới theo yêu cầu
   { label: "Đề xuất & Yêu cầu", path: "/faculty/proposals", icon: <FilePlus2 size={18} />, iconColor: "#F59E0B" },
+
+  // ⭐ Phê duyệt yêu cầu từ nhân viên
+  { label: "Phê duyệt yêu cầu", path: "/faculty/approvals", icon: <ClipboardCheck size={18} />, iconColor: "#8B5CF6" },
 
   { label: "Báo cáo khoa", path: "/faculty/reports", icon: <BarChart2 size={18} />, iconColor: "#64748B" },
 

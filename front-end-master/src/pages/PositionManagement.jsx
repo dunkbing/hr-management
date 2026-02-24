@@ -120,7 +120,7 @@ const Positions = () => {
     try {
       await positionApi.delete(id);
       fetchData();
-    } catch (err) {
+    } catch {
       alert("Lỗi khi xoá chức danh");
     }
   };

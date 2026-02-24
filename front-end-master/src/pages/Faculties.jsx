@@ -4,7 +4,6 @@ import AddFacultyModal from "../components/AddFacultyModal";
 import Pagination from "../components/Pagination";
 
 const Faculties = () => {
-  const mainColor = "#009FE3";
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -61,7 +60,6 @@ const Faculties = () => {
       f.name?.toLowerCase().includes(search.toLowerCase()) ||
       f.code?.toLowerCase().includes(search.toLowerCase());
     const matchStatus = statusFilter ? f.status === statusFilter : true;
-    return matchSearch && matchStatus;
     return matchSearch && matchStatus;
   });
 

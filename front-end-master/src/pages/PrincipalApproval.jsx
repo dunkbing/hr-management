@@ -9,10 +9,21 @@ const PrincipalApprovalManagement = () => {
   const [note, setNote] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const [currentUserSignature, setCurrentUserSignature] = useState(null);
 
   useEffect(() => {
     fetchRequests();
+    fetchCurrentUserSignature();
   }, []);
+
+  const fetchCurrentUserSignature = async () => {
+    try {
+      const res = await axiosClient.get('/users/me');
+      setCurrentUserSignature(res.data.digitalSignature);
+    } catch (err) {
+      console.error('Failed to fetch signature:', err);
+    }
+  };
 
   const fetchRequests = async () => {
     try {
@@ -43,7 +54,7 @@ const PrincipalApprovalManagement = () => {
   const handleReject = async (id) => {
     setActionLoading(true);
     try {
-      await axiosClient.post(`/personnel-requests/${id}/reject`, { note, isAdmin: "false" });
+      await axiosClient.post(`/personnel-requests/${id}/reject`, { note, rejectedBy: "principal" });
       setRequests(requests.filter(r => r.id !== id));
       setSelectedReq(null);
       setNote("");
@@ -195,6 +206,14 @@ const PrincipalApprovalManagement = () => {
                 </div>
               )}
 
+              {!currentUserSignature && (
+                <div className="bg-amber-50 p-4 rounded-2xl border border-amber-200">
+                  <p className="text-xs text-amber-700 font-bold">
+                    ⚠️ <strong>Chưa có chữ ký số!</strong> Vui lòng vào <strong>Cài đặt</strong> để upload chữ ký trước khi phê duyệt.
+                  </p>
+                </div>
+              )}
+
               <div>
                 <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 block flex items-center gap-2">
                   <MessageSquare size={14} />
@@ -219,11 +238,11 @@ const PrincipalApprovalManagement = () => {
                 </button>
                 <button
                   onClick={() => handleApprove(selectedReq.id)}
-                  disabled={actionLoading}
-                  className="flex-3 flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white py-5 rounded-[1.5rem] font-bold shadow-xl shadow-emerald-100 transition-all disabled:opacity-50"
+                  disabled={actionLoading || !currentUserSignature}
+                  className="flex-3 flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white py-5 rounded-[1.5rem] font-bold shadow-xl shadow-emerald-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {actionLoading ? <Loader2 className="animate-spin w-6 h-6" /> : <CheckCircle2 size={24} />}
-                  Chấp thuận & Ban hành
+                  {!currentUserSignature ? '⚠️ Chưa có chữ ký số' : 'Chấp thuận & Ký duyệt 🖋️'}
                 </button>
               </div>
             </div>

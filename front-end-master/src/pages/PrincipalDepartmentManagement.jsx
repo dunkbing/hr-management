@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search, Eye, Users, FileSpreadsheet, Loader2 } from "lucide-react";
+import { Search, Eye, Users, FileSpreadsheet, Loader2, FileText } from "lucide-react";
 import axios from "axios";
 
 const PrincipalDepartmentManagement = () => {
@@ -50,7 +50,7 @@ const PrincipalDepartmentManagement = () => {
     setLoadingStaff(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`http://localhost:8080/api/departments/${dept.id}/staff`, {
+      const res = await axios.get(`http://localhost:8080/api/departments/${dept.departmentId}/staff`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setStaffList(res.data);
@@ -59,6 +59,46 @@ const PrincipalDepartmentManagement = () => {
       alert("Không thể tải danh sách nhân sự.");
     } finally {
       setLoadingStaff(false);
+    }
+  };
+
+  const handleExportExcel = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get("http://localhost:8080/api/departments/export/excel", {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob'
+      });
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'danh_sach_phong_ban.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error("Failed to export Excel:", err);
+      alert("Không thể xuất báo cáo Excel.");
+    }
+  };
+
+  const handleExportPdf = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get("http://localhost:8080/api/departments/export/pdf", {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob'
+      });
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'danh_sach_phong_ban.pdf');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error("Failed to export PDF:", err);
+      alert("Không thể xuất báo cáo PDF.");
     }
   };
 
@@ -110,10 +150,23 @@ const PrincipalDepartmentManagement = () => {
             Danh sách phòng ban ({filteredDepartments.length})
           </h2>
 
-          <button className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 opacity-50 cursor-not-allowed">
-            <FileSpreadsheet size={18} />
-            Xuất báo cáo
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={handleExportExcel}
+              className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition shadow-sm"
+            >
+              <FileSpreadsheet size={18} />
+              <span className="font-bold">Xuất Excel</span>
+            </button>
+
+            <button
+              onClick={handleExportPdf}
+              className="flex items-center gap-2 bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition shadow-sm"
+            >
+              <FileText size={18} />
+              <span className="font-bold">Xuất PDF</span>
+            </button>
+          </div>
         </div>
 
         <table className="w-full text-sm">
@@ -130,19 +183,19 @@ const PrincipalDepartmentManagement = () => {
 
           <tbody>
             {paginatedData.length > 0 ? paginatedData.map((d) => (
-              <tr key={d.id} className="hover:bg-slate-50/50 border-b border-slate-50 transition">
+              <tr key={d.departmentId} className="hover:bg-slate-50/50 border-b border-slate-50 transition">
                 <td className="p-4 font-black text-[#009FE3] uppercase tracking-wider">{d.departmentCode || "---"}</td>
-                <td className="p-4 font-black text-slate-900">{d.departmentName || d.name}</td>
+                <td className="p-4 font-black text-slate-900">{d.departmentName}</td>
                 <td className="p-4 text-slate-500 font-medium truncate max-w-xs">{d.description || "---"}</td>
-                <td className="p-4 font-black text-slate-800">{d.memberCount || 0}</td>
+                <td className="p-4 font-black text-slate-800">{d.totalStaff || 0}</td>
                 <td className="p-4">
                   <span
-                    className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${d.active
+                    className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${d.status === 'ACTIVE'
                       ? "bg-emerald-100 text-emerald-700"
                       : "bg-rose-100 text-rose-700"
                       }`}
                   >
-                    {d.active ? "Đang hoạt động" : "Đã khóa"}
+                    {d.status === 'ACTIVE' ? "Đang hoạt động" : "Đã khóa"}
                   </span>
                 </td>
                 <td className="p-3 flex justify-center gap-3">
@@ -208,13 +261,13 @@ const PrincipalDepartmentManagement = () => {
 
             <div className="space-y-3 text-gray-600">
               <p><strong>Mã phòng ban:</strong> {quickViewData.departmentCode}</p>
-              <p><strong>Tên phòng ban:</strong> {quickViewData.departmentName || quickViewData.name}</p>
+              <p><strong>Tên phòng ban:</strong> {quickViewData.departmentName}</p>
               <p><strong>Mô tả:</strong> {quickViewData.description || "Không có"}</p>
-              <p><strong>Số lượng nhân sự:</strong> {quickViewData.memberCount || 0}</p>
+              <p><strong>Số lượng nhân sự:</strong> {quickViewData.totalStaff || 0}</p>
               <p>
                 <strong>Trạng thái:</strong>{" "}
-                <span className={quickViewData.active ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
-                  {quickViewData.active ? "Hoạt động" : "Đã khóa"}
+                <span className={quickViewData.status === 'ACTIVE' ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
+                  {quickViewData.status === 'ACTIVE' ? "Hoạt động" : "Đã khóa"}
                 </span>
               </p>
             </div>

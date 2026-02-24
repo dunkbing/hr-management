@@ -49,12 +49,27 @@ public class UserController {
     @PostMapping("/avatar")
     public haukientruc.hr.dto.UserDTO uploadAvatar(
             @RequestParam("file") org.springframework.web.multipart.MultipartFile file) throws java.io.IOException {
-        String base64 = java.util.Base64.getEncoder().encodeToString(file.getBytes());
-        String avatarData = "data:" + file.getContentType() + ";base64," + base64;
+        return userService.uploadAvatar(file);
+    }
 
-        haukientruc.hr.dto.UserDTO currentUser = userService.getCurrentUser();
-        currentUser.setAvatar(avatarData);
-        return userService.convertToDto(userService.updateUser(currentUser.getUserId(), currentUser));
+    @PostMapping("/{id}/avatar")
+    public haukientruc.hr.dto.UserDTO uploadAvatarForUser(
+            @PathVariable Long id,
+            @RequestParam("file") org.springframework.web.multipart.MultipartFile file) throws java.io.IOException {
+        return userService.uploadAvatarForUser(id, file);
+    }
+
+    @PostMapping("/{id}/official-photo")
+    public haukientruc.hr.dto.UserDTO uploadOfficialPhoto(
+            @PathVariable Long id,
+            @RequestParam("file") org.springframework.web.multipart.MultipartFile file) throws java.io.IOException {
+        return userService.uploadOfficialPhoto(id, file);
+    }
+
+    @PostMapping("/digital-signature")
+    public haukientruc.hr.dto.UserDTO uploadDigitalSignature(
+            @RequestParam("file") org.springframework.web.multipart.MultipartFile file) throws java.io.IOException {
+        return userService.uploadDigitalSignature(file);
     }
 
     @GetMapping("/{id}")

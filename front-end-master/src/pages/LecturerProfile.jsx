@@ -27,25 +27,24 @@ const LecturerProfile = () => {
         const file = e.target.files[0];
         if (!file) return;
 
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-            setSaving(true);
-            try {
-                await axiosClient.put(`/users/${user.userId}`, {
-                    ...user,
-                    avatar: reader.result
-                });
-                setUser({ ...user, avatar: reader.result });
-                setMessage("Cập nhật ảnh đại diện thành công!");
-                setTimeout(() => setMessage(""), 3000);
-            } catch (err) {
-                console.error(err);
-                alert("Không thể cập nhật ảnh đại diện.");
-            } finally {
-                setSaving(false);
-            }
-        };
-        reader.readAsDataURL(file);
+        const formData = new FormData();
+        formData.append("file", file);
+
+        setSaving(true);
+        try {
+            const res = await axiosClient.post("/users/avatar", formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            });
+            setUser({ ...user, avatar: res.data.avatar });
+            setMessage("Cập nhật ảnh đại diện thành công!");
+            setTimeout(() => setMessage(""), 3000);
+            window.dispatchEvent(new Event("userUpdated"));
+        } catch (err) {
+            console.error(err);
+            alert("Không thể cập nhật ảnh đại diện: " + (err.response?.data?.message || err.message));
+        } finally {
+            setSaving(false);
+        }
     };
 
     if (loading) return (
@@ -130,10 +129,11 @@ const LecturerProfile = () => {
     );
 };
 
-const ProfileItem = ({ icon: Icon, label, value }) => (
+// eslint-disable-next-line no-unused-vars
+const ProfileItem = ({ icon: IconComponent, label, value }) => (
     <div className="flex items-start gap-4 group">
         <div className="p-3 bg-slate-50 text-slate-400 rounded-xl group-hover:bg-[#e0f3fc] group-hover:text-[#009FE3] transition-colors shadow-inner">
-            <Icon size={20} />
+            <IconComponent size={20} />
         </div>
         <div>
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.1em] mb-1.5 ml-0.5">{label}</p>

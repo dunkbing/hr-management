@@ -26,7 +26,7 @@ const QuickViewModal = ({ employee, onClose }) => {
         <div className="space-y-3">
           <div className="flex gap-3 items-center">
             <img
-              src={employee.avatar || `https://ui-avatars.com/api/?name=${employee.name}&background=random`}
+              src={employee.officialPhoto || employee.avatar || `https://ui-avatars.com/api/?name=${employee.name}&background=random`}
               alt="Avatar"
               className="w-16 h-16 rounded-full object-cover border-2 border-blue-100"
             />
@@ -110,7 +110,8 @@ const PrincipalEmployeeList = () => {
         name: u.fullName || u.username,
         email: u.email || "---",
         phone: u.phone,
-        avatar: u.avatar,
+        avatar: u.officialPhoto || u.avatar,
+        officialPhoto: u.officialPhoto,
         // Prioritize Faculty Name, then Department Name, then "Chưa phân công"
         department: u.facultyName || u.departmentName || "Khối Phòng Ban", // Or logic based on roles
         // Role logic
@@ -156,9 +157,45 @@ const PrincipalEmployeeList = () => {
     page * pageSize
   );
 
-  // TODO: Implement backend export for ALL employees if needed
-  const exportExcel = () => {
-    alert("Chức năng xuất Excel toàn trường đang phát triển backend.");
+  // Export Logic
+  const handleExportExcel = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:8080/api/reports/export", {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: "blob",
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Danh_sach_nhan_su_${new Date().toLocaleDateString()}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error("Export Excel failed", err);
+      alert("Không thể xuất file Excel.");
+    }
+  };
+
+  const handleExportPDF = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:8080/api/reports/export-pdf", {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: "blob",
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Bao_cao_nhan_su_${new Date().toLocaleDateString()}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error("Export PDF failed", err);
+      alert("Không thể xuất báo cáo PDF.");
+    }
   };
 
   if (loading) return <div className="flex h-screen items-center justify-center"><Loader2 className="animate-spin text-blue-600" size={40} /></div>;
@@ -174,78 +211,89 @@ const PrincipalEmployeeList = () => {
           <p className="text-slate-500 mt-1 font-bold text-sm">Xem và quản lý tất cả cán bộ, giảng viên, nhân viên</p>
         </div>
 
-        <button
-          //   onClick={exportExcel}
-          className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow opacity-50 cursor-not-allowed"
-          title="Chức năng đang phát triển"
-        >
-          <FileSpreadsheet size={18} />
-          Xuất Excel
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handleExportPDF}
+            className="flex items-center gap-2 bg-[#009FE3] hover:bg-[#007fb1] text-white px-4 py-2 rounded-lg shadow transition-all font-semibold"
+          >
+            <FileSpreadsheet size={18} />
+            Xuất báo cáo (PDF)
+          </button>
+
+          <button
+            onClick={handleExportExcel}
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow transition-all font-semibold"
+          >
+            <FileSpreadsheet size={18} />
+            Xuất Excel
+          </button>
+        </div>
       </div>
 
       {/* ================= SEARCH + FILTERS ================= */}
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6 sticky top-20 z-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+      <div className="sticky top-[-24px] z-20 -mx-6 px-6 py-4 bg-gray-100/95 backdrop-blur-sm mb-2">
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
 
-          {/* TÌM KIẾM */}
-          <div className="md:col-span-5">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Tìm kiếm</label>
-            <div className="flex items-center bg-slate-50 border-none px-3 rounded-xl focus-within:ring-2 focus-within:ring-[#009FE3]/20 transition">
-              <Search size={18} className="text-gray-400" />
-              <input
-                className="w-full px-2 py-2.5 outline-none bg-transparent text-sm"
-                placeholder="Nhập tên hoặc email..."
-                value={search}
-                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-              />
+            {/* TÌM KIẾM */}
+            <div className="md:col-span-5">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Tìm kiếm</label>
+              <div className="flex items-center bg-slate-50 border-none px-3 rounded-xl focus-within:ring-2 focus-within:ring-[#009FE3]/20 transition">
+                <Search size={18} className="text-gray-400" />
+                <input
+                  className="w-full px-2 py-2.5 outline-none bg-transparent text-sm"
+                  placeholder="Nhập tên hoặc email..."
+                  value={search}
+                  onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                />
+              </div>
             </div>
-          </div>
 
-          {/* ĐƠN VỊ */}
-          <div className="md:col-span-3">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Đơn vị / Khoa</label>
-            <div className="relative">
-              <Filter className="absolute left-3 top-3.5 text-slate-400" size={16} />
-              <select
-                className="w-full border-none rounded-xl pl-9 pr-3 py-2.5 bg-slate-50 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-[#009FE3]/20 outline-none cursor-pointer"
-                value={filterDepartment}
-                onChange={(e) => { setFilterDepartment(e.target.value); setPage(1); }}
+            {/* ĐƠN VỊ */}
+            <div className="md:col-span-3">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Đơn vị / Khoa</label>
+              <div className="relative">
+                <Filter className="absolute left-3 top-3.5 text-slate-400" size={16} />
+                <select
+                  className="w-full border-none rounded-xl pl-9 pr-3 py-2.5 bg-slate-50 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-[#009FE3]/20 outline-none cursor-pointer"
+                  value={filterDepartment}
+                  onChange={(e) => { setFilterDepartment(e.target.value); setPage(1); }}
+                >
+                  {departmentOptions.map((d) => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* CHỨC DANH */}
+            <div className="md:col-span-3">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Chức vụ / Vai trò</label>
+              <div className="relative">
+                <Filter className="absolute left-3 top-3.5 text-slate-400" size={16} />
+                <select
+                  className="w-full border-none rounded-xl pl-9 pr-3 py-2.5 bg-slate-50 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-[#009FE3]/20 outline-none cursor-pointer"
+                  value={filterRole}
+                  onChange={(e) => { setFilterRole(e.target.value); setPage(1); }}
+                >
+                  {roleOptions.map((p) => (
+                    <option key={p} value={p}>{p}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* RESET BUTTON */}
+            <div className="md:col-span-1">
+              <button
+                onClick={() => { setSearch(""); setFilterDepartment("Tất cả"); setFilterRole("Tất cả"); setPage(1); }}
+                className="w-full py-2.5 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 text-sm font-medium transition"
               >
-                {departmentOptions.map((d) => (
-                  <option key={d} value={d}>{d}</option>
-                ))}
-              </select>
+                Đặt lại
+              </button>
             </div>
-          </div>
 
-          {/* CHỨC DANH */}
-          <div className="md:col-span-3">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block ml-1">Chức vụ / Vai trò</label>
-            <div className="relative">
-              <Filter className="absolute left-3 top-3.5 text-slate-400" size={16} />
-              <select
-                className="w-full border-none rounded-xl pl-9 pr-3 py-2.5 bg-slate-50 text-sm font-bold text-slate-800 focus:ring-2 focus:ring-[#009FE3]/20 outline-none cursor-pointer"
-                value={filterRole}
-                onChange={(e) => { setFilterRole(e.target.value); setPage(1); }}
-              >
-                {roleOptions.map((p) => (
-                  <option key={p} value={p}>{p}</option>
-                ))}
-              </select>
-            </div>
           </div>
-
-          {/* RESET BUTTON */}
-          <div className="md:col-span-1">
-            <button
-              onClick={() => { setSearch(""); setFilterDepartment("Tất cả"); setFilterRole("Tất cả"); setPage(1); }}
-              className="w-full py-2.5 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 text-sm font-medium transition"
-            >
-              Đặt lại
-            </button>
-          </div>
-
         </div>
       </div>
 

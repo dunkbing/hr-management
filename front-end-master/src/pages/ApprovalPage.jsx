@@ -42,7 +42,7 @@ const ApprovalPage = () => {
   const handleReject = async (id) => {
     setActionLoading(true);
     try {
-      await axiosClient.post(`/personnel-requests/${id}/reject`, { note, isAdmin: "true" });
+      await axiosClient.post(`/personnel-requests/${id}/reject`, { note, rejectedBy: "admin" });
       setRequests(requests.filter(r => r.id !== id));
       setSelectedReq(null);
       setNote("");

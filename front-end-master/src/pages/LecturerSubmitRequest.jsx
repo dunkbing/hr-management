@@ -50,7 +50,7 @@ const LecturerSubmitRequest = () => {
         try {
             await axiosClient.post("/personnel-requests", formData);
 
-            setMessage({ type: "success", text: "Yêu cầu của bạn đã được gửi thành công và đang chờ Admin phê duyệt." });
+            setMessage({ type: "success", text: "Yêu cầu của bạn đã được gửi thành công và đang chờ Trưởng khoa phê duyệt." });
             setFormData({ title: "", type: "NGHI_PHEP", content: "" });
 
             // Redirect after success
@@ -82,7 +82,7 @@ const LecturerSubmitRequest = () => {
                             </div>
                             Gửi yêu cầu phê duyệt
                         </h1>
-                        <p className="text-gray-500 mt-2 font-medium">Yêu cầu của bạn sẽ được phê duyệt qua 2 cấp: Admin và Hiệu trưởng</p>
+                        <p className="text-gray-500 mt-2 font-medium">Yêu cầu của bạn sẽ được phê duyệt qua 3 cấp: Trưởng khoa, Quản trị viên và Hiệu trưởng</p>
                     </div>
                     <button
                         onClick={() => navigate("/lecturer/my-requests")}

@@ -3,7 +3,6 @@ import { FaCamera } from "react-icons/fa";
 import axiosClient from "../api/axiosClient";
 
 function Profile() {
-  const mainColor = "#009FE3"; // Màu chính
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     userId: null,

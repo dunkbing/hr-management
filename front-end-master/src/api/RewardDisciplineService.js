@@ -32,7 +32,6 @@ const deleteRecord = async (id) => {
 };
 
 const downloadFile = (fileName) => {
-    const token = localStorage.getItem('token');
     // Direct download link with token in query param or handle via blob if auth header needed (usually simpler to just open window if token is cookie or query, but here we might need to fetch blob)
     // Actually, for file download with Bearer token, it's better to use axios to get blob and trigger save
 

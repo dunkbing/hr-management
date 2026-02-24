@@ -30,6 +30,8 @@ public class UserDTO {
     private Long positionId;
     private String positionName;
     private String avatar;
+    private String officialPhoto;
+    private String digitalSignature; // Chữ ký số (base64 image)
     private Boolean status;
     private Boolean isActive;
     private java.time.LocalDateTime createdAt;

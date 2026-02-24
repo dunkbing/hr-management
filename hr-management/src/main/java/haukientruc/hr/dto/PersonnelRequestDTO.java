@@ -15,6 +15,8 @@ public class PersonnelRequestDTO {
     private RequestStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String facultyHeadNote;
     private String adminNote;
     private String principalNote;
+    private LocalDateTime principalSignatureDate; // Thời gian Hiệu trưởng ký duyệt
 }

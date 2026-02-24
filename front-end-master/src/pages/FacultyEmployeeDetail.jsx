@@ -76,10 +76,10 @@ const FacultyEmployeeDetail = () => {
     return "Hợp đồng có thời hạn";
   };
 
-  // Safe avatar
-  const avatarUrl = employee.avatar && employee.avatar.startsWith("data:")
+  // Safe avatar - Prioritize official photo
+  const avatarUrl = employee.officialPhoto || (employee.avatar && employee.avatar.startsWith("data:")
     ? employee.avatar
-    : `https://ui-avatars.com/api/?name=${employee.fullName || employee.username}&size=200&background=random`;
+    : `https://ui-avatars.com/api/?name=${employee.fullName || employee.username}&size=200&background=random`);
 
   return (
     <div className="p-6 max-w-5xl mx-auto">

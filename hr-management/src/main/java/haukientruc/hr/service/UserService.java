@@ -6,6 +6,7 @@ import haukientruc.hr.entity.Role;
 import haukientruc.hr.entity.*;
 import haukientruc.hr.repository.*;
 import haukientruc.hr.dto.UserDTO;
+import haukientruc.hr.util.PositionNameTranslator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -115,6 +116,10 @@ public class UserService {
             user.setWorkingStatus(dto.getWorkingStatus());
         if (dto.getAvatar() != null)
             user.setAvatar(dto.getAvatar());
+        if (dto.getOfficialPhoto() != null)
+            user.setOfficialPhoto(dto.getOfficialPhoto());
+        if (dto.getDigitalSignature() != null)
+            user.setDigitalSignature(dto.getDigitalSignature());
 
         if (dto.getRoleId() != null) {
             user.setRole(roleRepository.findById(dto.getRoleId()).orElse(null));
@@ -162,6 +167,8 @@ public class UserService {
         dto.setEducationLevel(user.getEducationLevel());
         dto.setWorkingStatus(user.getWorkingStatus());
         dto.setAvatar(user.getAvatar());
+        dto.setOfficialPhoto(user.getOfficialPhoto());
+        dto.setDigitalSignature(user.getDigitalSignature()); // Map chữ ký số
         dto.setStatus(user.getStatus());
         dto.setIsActive(user.getIsActive());
         dto.setCreatedAt(user.getCreatedAt());
@@ -181,7 +188,10 @@ public class UserService {
         }
         if (user.getPosition() != null) {
             dto.setPositionId(user.getPosition().getId());
-            dto.setPositionName(user.getPosition().getName());
+            // Auto-translate position name from English to Vietnamese
+            String originalPositionName = user.getPosition().getName();
+            String translatedPositionName = PositionNameTranslator.translate(originalPositionName);
+            dto.setPositionName(translatedPositionName);
         }
         return dto;
     }
@@ -618,6 +628,125 @@ public class UserService {
             return java.util.Collections.emptyList();
         }
         return userRepository.findAllById(ids);
+    }
+
+    // ===== AVATAR UPLOAD =====
+    public UserDTO uploadAvatar(MultipartFile file) throws java.io.IOException {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (file.isEmpty()) {
+            throw new RuntimeException("File không được để trống");
+        }
+
+        String contentType = file.getContentType();
+        if (contentType == null || (!contentType.startsWith("image/"))) {
+            throw new RuntimeException("Chỉ chấp nhận file ảnh (PNG, JPG, JPEG)");
+        }
+
+        if (file.getSize() > 2 * 1024 * 1024) {
+            throw new RuntimeException("File không được vượt quá 2MB");
+        }
+
+        String base64 = java.util.Base64.getEncoder().encodeToString(file.getBytes());
+        String avatarData = "data:" + contentType + ";base64," + base64;
+
+        user.setAvatar(avatarData);
+        User saved = userRepository.save(user);
+        luceneService.indexUser(saved);
+
+        return convertToDto(saved);
+    }
+
+    public UserDTO uploadAvatarForUser(Long userId, MultipartFile file) throws java.io.IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+
+        if (file.isEmpty()) {
+            throw new RuntimeException("File không được để trống");
+        }
+
+        String contentType = file.getContentType();
+        if (contentType == null || (!contentType.startsWith("image/"))) {
+            throw new RuntimeException("Chỉ chấp nhận file ảnh (PNG, JPG, JPEG)");
+        }
+
+        if (file.getSize() > 2 * 1024 * 1024) {
+            throw new RuntimeException("File không được vượt quá 2MB");
+        }
+
+        String base64 = java.util.Base64.getEncoder().encodeToString(file.getBytes());
+        String avatarData = "data:" + contentType + ";base64," + base64;
+
+        user.setAvatar(avatarData);
+        User saved = userRepository.save(user);
+        luceneService.indexUser(saved);
+
+        return convertToDto(saved);
+    }
+
+    public UserDTO uploadOfficialPhoto(Long userId, MultipartFile file) throws java.io.IOException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+
+        if (file.isEmpty()) {
+            throw new RuntimeException("File không được để trống");
+        }
+
+        String contentType = file.getContentType();
+        if (contentType == null || (!contentType.startsWith("image/"))) {
+            throw new RuntimeException("Chỉ chấp nhận file ảnh (PNG, JPG, JPEG)");
+        }
+
+        if (file.getSize() > 2 * 1024 * 1024) {
+            throw new RuntimeException("File không được vượt quá 2MB");
+        }
+
+        String base64 = java.util.Base64.getEncoder().encodeToString(file.getBytes());
+        String photoData = "data:" + contentType + ";base64," + base64;
+
+        user.setOfficialPhoto(photoData);
+        User saved = userRepository.save(user);
+        luceneService.indexUser(saved);
+
+        return convertToDto(saved);
+    }
+
+    // ===== DIGITAL SIGNATURE =====
+    public UserDTO uploadDigitalSignature(MultipartFile file) throws java.io.IOException {
+        // Get current user
+        String username = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Validate file
+        if (file.isEmpty()) {
+            throw new RuntimeException("File không được để trống");
+        }
+
+        // Check file type
+        String contentType = file.getContentType();
+        if (contentType == null || (!contentType.startsWith("image/"))) {
+            throw new RuntimeException("Chỉ chấp nhận file ảnh (PNG, JPG, JPEG)");
+        }
+
+        // Check file size (max 2MB)
+        if (file.getSize() > 2 * 1024 * 1024) {
+            throw new RuntimeException("File không được vượt quá 2MB");
+        }
+
+        // Convert to base64
+        String base64 = java.util.Base64.getEncoder().encodeToString(file.getBytes());
+        String signatureData = "data:" + contentType + ";base64," + base64;
+
+        // Save to user
+        user.setDigitalSignature(signatureData);
+        User saved = userRepository.save(user);
+        luceneService.indexUser(saved);
+
+        return convertToDto(saved);
     }
 
     @jakarta.annotation.PostConstruct

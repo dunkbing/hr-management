@@ -82,7 +82,7 @@ const PrincipalEmployeeDetail = () => {
         <div className="px-8 pb-8 relative">
           <div className="flex flex-col md:flex-row gap-6 items-end -mt-12">
             <img
-              src={employee.avatar || `https://ui-avatars.com/api/?name=${employee.fullName || employee.username}&background=random&size=128`}
+              src={employee.officialPhoto || employee.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(employee.fullName || employee.username)}&background=random&size=128`}
               alt="Avatar"
               className="w-32 h-32 rounded-full border-4 border-white shadow-md bg-white object-cover"
             />

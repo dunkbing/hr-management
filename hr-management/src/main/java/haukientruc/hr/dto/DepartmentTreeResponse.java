@@ -16,6 +16,7 @@ public class DepartmentTreeResponse {
     private String status;
     private Long managerId;
     private String managerName;
+    private String description;
     private Integer totalStaff;
     private List<DepartmentTreeResponse> children;
 }

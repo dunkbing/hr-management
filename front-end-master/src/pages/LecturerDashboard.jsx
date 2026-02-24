@@ -246,7 +246,8 @@ const LecturerDashboard = () => {
   );
 };
 
-const StatCard = ({ title, value, icon: Icon, color, onClick }) => {
+// eslint-disable-next-line no-unused-vars
+const StatCard = ({ title, value, icon: IconComponent, color, onClick }) => {
   const themedColors = {
     blue: { icon: "#3B82F6", bg: "bg-blue-500 shadow-blue-100 bg-opacity-10" },
     emerald: { icon: "#10B981", bg: "bg-emerald-500 shadow-emerald-100 bg-opacity-10" },
@@ -261,7 +262,7 @@ const StatCard = ({ title, value, icon: Icon, color, onClick }) => {
       className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all cursor-pointer group"
     >
       <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-8 ${currentTheme.bg}`}>
-        <Icon size={32} color={currentTheme.icon} />
+        <IconComponent size={32} color={currentTheme.icon} />
       </div>
       <div>
         <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">{title}</p>
@@ -295,14 +296,15 @@ const AnnouncementItem = ({ title, date, category }) => (
   </div>
 );
 
-const QuickLink = ({ icon: Icon, label, onClick }) => (
+// eslint-disable-next-line no-unused-vars
+const QuickLink = ({ icon: IconComponent, label, onClick }) => (
   <button
     onClick={onClick}
     className="w-full flex items-center justify-between p-5 bg-slate-50/50 border border-slate-50 hover:bg-[#009FE3] hover:border-[#009FE3] rounded-[1.5rem] transition-all group"
   >
     <div className="flex items-center gap-4">
       <div className="p-2 bg-white rounded-lg shadow-sm text-[#009FE3] group-hover:scale-110 transition-transform">
-        <Icon size={18} color="#009FE3" />
+        <IconComponent size={18} color="#009FE3" />
       </div>
       <span className="text-sm font-black text-slate-700 group-hover:text-white transition-colors uppercase tracking-wider">{label}</span>
     </div>

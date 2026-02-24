@@ -38,17 +38,22 @@ public class PersonnelRequest {
     private LocalDateTime updatedAt;
 
     @Column(columnDefinition = "TEXT")
+    private String facultyHeadNote;
+
+    @Column(columnDefinition = "TEXT")
     private String adminNote;
 
     @Column(columnDefinition = "TEXT")
     private String principalNote;
+
+    private LocalDateTime principalSignatureDate; // Thời gian Hiệu trưởng ký duyệt
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
         if (status == null) {
-            status = RequestStatus.PENDING_ADMIN;
+            status = RequestStatus.PENDING_FACULTY_HEAD;
         }
     }
 

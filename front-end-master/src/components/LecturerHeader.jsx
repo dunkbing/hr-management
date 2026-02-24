@@ -1,32 +1,96 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Bell, LogOut, User as UserIcon, Menu, X } from "lucide-react";
-import axiosClient from "../api/axiosClient";
+import axios from "axios";
 import Avatar from "./Avatar";
 
 const LecturerHeader = ({ onToggleSidebar, collapsed }) => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [notiOpen, setNotiOpen] = useState(false);
     const [user, setUser] = useState(null);
+    const [notifications, setNotifications] = useState([]);
+    const [unreadCount, setUnreadCount] = useState(0);
     const menuRef = useRef();
+    const notiRef = useRef();
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         fetchUser();
+        fetchNotifications();
+
+        // Polling every 30 seconds for new notifications
+        const interval = setInterval(fetchNotifications, 30000);
+
         const handleClickOutside = (e) => {
             if (menuRef.current && !menuRef.current.contains(e.target)) {
                 setMenuOpen(false);
             }
+            if (notiRef.current && !notiRef.current.contains(e.target)) {
+                setNotiOpen(false);
+            }
         };
         document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            clearInterval(interval);
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
     }, []);
 
     const fetchUser = async () => {
+        if (!token) return;
         try {
-            const res = await axiosClient.get("/users/me");
+            const res = await axios.get("http://localhost:8080/api/users/me", {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setUser(res.data);
         } catch (err) {
             console.error("Failed to fetch user info", err);
+        }
+    };
+
+    const fetchNotifications = async () => {
+        if (!token) return;
+        try {
+            const [listRes, countRes] = await Promise.all([
+                axios.get("http://localhost:8080/api/notifications", {
+                    headers: { Authorization: `Bearer ${token}` }
+                }),
+                axios.get("http://localhost:8080/api/notifications/unread-count", {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+            ]);
+            setNotifications(listRes.data);
+            setUnreadCount(countRes.data);
+        } catch (err) {
+            console.error("Failed to fetch notifications", err);
+        }
+    };
+
+    const handleOpenNotification = async (id) => {
+        try {
+            await axios.put(`http://localhost:8080/api/notifications/${id}/read`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+            setUnreadCount(prev => Math.max(0, prev - 1));
+            setNotiOpen(false);
+            navigate(`/notification/${id}`);
+        } catch (err) {
+            console.error("Failed to mark notification as read", err);
+        }
+    };
+
+    const handleReadAll = async () => {
+        try {
+            await axios.put("http://localhost:8080/api/notifications/read-all", {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+            setUnreadCount(0);
+        } catch (err) {
+            console.error("Failed to mark all as read", err);
         }
     };
 
@@ -65,10 +129,78 @@ const LecturerHeader = ({ onToggleSidebar, collapsed }) => {
             </div>
 
             <div className="flex items-center gap-8">
-                <button className="relative p-2 text-slate-400 hover:text-[#009FE3] hover:bg-slate-50 rounded-xl transition-all">
-                    <Bell size={22} />
-                    <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-                </button>
+                {/* Notification Icon with Dropdown */}
+                <div className="relative" ref={notiRef}>
+                    <button
+                        onClick={() => setNotiOpen(!notiOpen)}
+                        className="relative p-2 text-slate-400 hover:text-[#009FE3] hover:bg-slate-50 rounded-xl transition-all"
+                    >
+                        <Bell size={22} />
+                        {unreadCount > 0 && (
+                            <span className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white text-xs flex items-center justify-center rounded-full font-bold">
+                                {unreadCount}
+                            </span>
+                        )}
+                    </button>
+
+                    {/* Notification Dropdown */}
+                    {notiOpen && (
+                        <div className="absolute right-0 mt-3 w-80 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                            <div className="p-4 text-sm font-black text-slate-800 border-b border-slate-100 bg-slate-50/50">
+                                Thông báo
+                            </div>
+
+                            <div className="max-h-96 overflow-y-auto">
+                                {notifications.length === 0 && (
+                                    <div className="p-8 text-center">
+                                        <Bell className="w-12 h-12 text-slate-200 mx-auto mb-3" />
+                                        <p className="text-sm font-bold text-slate-400">Chưa có thông báo</p>
+                                        <p className="text-xs text-slate-400 mt-1">Các thông báo mới sẽ hiển thị ở đây</p>
+                                    </div>
+                                )}
+
+                                {notifications.slice(0, 5).map((item) => (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => handleOpenNotification(item.id)}
+                                        className={`w-full text-left px-4 py-3 border-b border-slate-50 hover:bg-slate-50 transition-colors flex flex-col gap-1 ${!item.read ? "bg-blue-50/30" : ""
+                                            }`}
+                                    >
+                                        <div className={`text-sm ${!item.read ? "font-bold text-slate-900" : "font-semibold text-slate-600"}`}>
+                                            {item.title}
+                                        </div>
+                                        {item.message && (
+                                            <div className="text-xs text-slate-500 line-clamp-2">
+                                                {item.message}
+                                            </div>
+                                        )}
+                                        <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">
+                                            {item.timeDisplay || item.time}
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="flex border-t border-slate-100">
+                                <button
+                                    className="flex-1 py-3 text-xs font-bold text-slate-600 hover:bg-slate-50 border-r border-slate-100 transition-colors"
+                                    onClick={handleReadAll}
+                                >
+                                    Đánh dấu đã đọc hết
+                                </button>
+                                <button
+                                    className="flex-1 py-3 text-xs font-bold text-[#009FE3] hover:bg-slate-50 transition-colors"
+                                    onClick={() => {
+                                        navigate("/notification");
+                                        setNotiOpen(false);
+                                    }}
+                                >
+                                    Xem tất cả
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
 
                 <div className="h-8 w-[1px] bg-slate-100"></div>
 

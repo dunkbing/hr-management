@@ -1,33 +1,41 @@
 package haukientruc.hr;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
+@Slf4j
 public class HrManagementApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HrManagementApplication.class, args);
 	}
 
-	@org.springframework.context.annotation.Bean
-	public org.springframework.boot.CommandLineRunner schemaFix(
-			org.springframework.jdbc.core.JdbcTemplate jdbcTemplate,
-			org.springframework.security.crypto.password.PasswordEncoder passwordEncoder) {
+	@Bean
+	public CommandLineRunner schemaFix(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
 		return args -> {
 			try {
 				System.out.println("🛠️ Starting system initialization...");
 
 				try {
+					jdbcTemplate.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS official_photo TEXT");
 					jdbcTemplate.execute("ALTER TABLE users ALTER COLUMN avatar TYPE TEXT");
-					System.out.println("✅ Schema fixed: Column 'avatar' changed to TEXT");
+					System.out.println("✅ Schema fixed: Columns 'official_photo' and 'avatar' handled");
 				} catch (Exception e) {
-					System.out.println("ℹ️ Avatar column already fixed or handled.");
+					System.out.println("ℹ️ Schema already fixed or handled.");
 				}
 
 				// Seed default roles (matching frontend codes)
 				String[] roles = { "superadmin", "admin", "hieu_truong", "truong_don_vi", "nhan_su" };
-				String[] roleNames = { "Super Admin", "System Admin", "Principal", "Faculty Head", "Lecturer/Staff" };
+				String[] roleNames = { "Quản trị tối cao", "Quản trị hệ thống", "Hiệu trưởng", "Trưởng khoa",
+						"Giảng viên" };
 
 				for (int i = 0; i < roles.length; i++) {
 					try {
@@ -56,6 +64,32 @@ public class HrManagementApplication {
 					}
 				}
 
+				// Seed Default Positions (Vietnamese only)
+				String[][] positions = {
+						{ "TRUONG_KHOA", "Trưởng khoa" },
+						{ "PHO_KHOA", "Phó khoa" },
+						{ "GIANG_VIEN", "Giảng viên" },
+						{ "TRUONG_BO_MON", "Trưởng bộ môn" },
+						{ "GIAO_SU", "Giáo sư" },
+						{ "PHO_GIAO_SU", "Phó giáo sư" },
+						{ "TIEN_SI", "Tiến sĩ" },
+						{ "THAC_SI", "Thạc sĩ" },
+						{ "TRO_LY_GIANG_DAY", "Trợ lý giảng dạy" },
+						{ "NGHIEN_CUU_VIEN", "Nghiên cứu viên" }
+				};
+				for (String[] pos : positions) {
+					try {
+						jdbcTemplate.execute(String.format(
+								"INSERT INTO positions (code, name, created_at, updated_at) " +
+										"SELECT '%s', '%s', NOW(), NOW() " +
+										"WHERE NOT EXISTS (SELECT 1 FROM positions WHERE code = '%s')",
+								pos[0], pos[1], pos[0]));
+						System.out.println("✅ Position seeded: " + pos[1]);
+					} catch (Exception e) {
+						System.err.println("❌ Error seeding position " + pos[0] + ": " + e.getMessage());
+					}
+				}
+
 				// Seed Default Users
 				String[][] users = {
 						{ "superadmin", "superadmin" },
@@ -67,8 +101,8 @@ public class HrManagementApplication {
 
 				for (String[] user : users) {
 					try {
-						Integer roleId = jdbcTemplate.queryForObject(
-								"SELECT role_id FROM roles WHERE role_code = ?", Integer.class, user[1]);
+						Long roleId = jdbcTemplate.queryForObject(
+								"SELECT role_id FROM roles WHERE role_code = ?", Long.class, user[1]);
 						String defaultHash = passwordEncoder.encode("123456");
 
 						if (roleId != null) {
@@ -87,8 +121,8 @@ public class HrManagementApplication {
 
 							// Assign Faculty for 'truongkhoa' and 'giangvien' to 'CNTT'
 							if (user[0].equals("truongkhoa") || user[0].equals("giangvien")) {
-								Integer facultyId = jdbcTemplate.queryForObject(
-										"SELECT id FROM faculties WHERE code = 'CNTT'", Integer.class);
+								Long facultyId = jdbcTemplate.queryForObject(
+										"SELECT id FROM faculties WHERE code = 'CNTT'", Long.class);
 								if (facultyId != null) {
 									jdbcTemplate.update("UPDATE users SET faculty_id = ? WHERE username = ?", facultyId,
 											user[0]);
@@ -103,11 +137,40 @@ public class HrManagementApplication {
 					}
 				}
 
+				// Fix for existing users: Update khoacntt to be Faculty Head of CNTT
+				try {
+					// Check if khoacntt user exists
+					Integer khoacnttCount = jdbcTemplate.queryForObject(
+							"SELECT COUNT(*) FROM users WHERE username = 'khoacntt'", Integer.class);
+
+					if (khoacnttCount != null && khoacnttCount > 0) {
+						Long truongDonViRoleId = jdbcTemplate.queryForObject(
+								"SELECT role_id FROM roles WHERE role_code = 'truong_don_vi'", Long.class);
+						Long cnttFacultyId = jdbcTemplate.queryForObject(
+								"SELECT id FROM faculties WHERE code = 'CNTT'", Long.class);
+
+						if (truongDonViRoleId != null && cnttFacultyId != null) {
+							jdbcTemplate.update(
+									"UPDATE users SET role_id = ?, faculty_id = ? WHERE username = 'khoacntt'",
+									truongDonViRoleId, cnttFacultyId);
+							System.out
+									.println("🔧 Fixed user 'khoacntt': assigned role truong_don_vi and faculty CNTT");
+						}
+					}
+				} catch (Exception e) {
+					System.err.println("⚠️ Could not fix khoacntt user: " + e.getMessage());
+				}
+
 				System.out.println("🚀 System ready for login!");
 			} catch (Throwable t) {
 				System.err.println("🚨 CRITICAL: System initialization failed unexpectedly!");
 				t.printStackTrace();
 			}
 		};
+	}
+
+	@EventListener
+	public void onContextClosed(ContextClosedEvent event) {
+		log.info("🛑 Application context is closing. Event: {}", event);
 	}
 }

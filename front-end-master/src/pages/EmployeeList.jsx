@@ -19,10 +19,6 @@ function EmployeeList() {
   const [employees, setEmployees] = useState([]);
   const [faculties, setFaculties] = useState([]);
   const [departments, setDepartments] = useState([]);
-  const [positions, setPositions] = useState([]);
-  const [roles, setRoles] = useState([]);
-
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [unitType, setUnitType] = useState("");
   const [unitName, setUnitName] = useState("");
@@ -40,27 +36,21 @@ function EmployeeList() {
 
   const fetchData = async () => {
     try {
-      setLoading(true);
+
       const token = localStorage.getItem("token");
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
-      const [usersResp, facResp, depResp, posResp, rolesResp] = await Promise.all([
+      const [usersResp, facResp, depResp] = await Promise.all([
         axios.get(`${API_BASE_URL}/users`, config),
         axios.get(`${API_BASE_URL}/faculties`, config),
         axios.get(`${API_BASE_URL}/departments`, config),
-        axios.get(`${API_BASE_URL}/positions`, config),
-        axios.get(`${API_BASE_URL}/roles`, config),
       ]);
       setEmployees(usersResp.data);
       setFaculties(facResp.data);
       setDepartments(depResp.data);
-      setPositions(posResp.data);
-      setRoles(rolesResp.data);
     } catch (error) {
       console.error("Error fetching data:", error);
       alert("Lỗi khi tải dữ liệu");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -125,7 +115,7 @@ function EmployeeList() {
         });
         alert("Xoá thành công");
         fetchData();
-      } catch (error) {
+      } catch {
         alert("Xoá thất bại");
       }
     }
@@ -140,7 +130,6 @@ function EmployeeList() {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filtered.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -437,7 +426,7 @@ function ImportExcelModal({ onClose, onSuccess }) {
         try {
           const errorJson = JSON.parse(decodedString);
           errorMsg = errorJson.message || errorMsg;
-        } catch (e) {
+        } catch {
           errorMsg = decodedString || errorMsg;
         }
       }

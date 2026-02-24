@@ -4,8 +4,6 @@ import AddDepartmentModal from "../components/AddDepartmentModal";
 import Pagination from "../components/Pagination";
 
 const Departments = () => {
-  const mainColor = "#009FE3";
-
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [departments, setDepartments] = useState([]);
@@ -59,7 +57,6 @@ const Departments = () => {
       d.departmentName?.toLowerCase().includes(search.toLowerCase()) ||
       d.departmentCode?.toLowerCase().includes(search.toLowerCase());
     const matchStatus = statusFilter ? d.status === statusFilter : true;
-    return matchSearch && matchStatus;
     return matchSearch && matchStatus;
   });
 

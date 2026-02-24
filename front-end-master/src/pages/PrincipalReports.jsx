@@ -40,9 +40,28 @@ const PrincipalReports = () => {
     fetchStats();
   }, [token]);
 
+  const handleExportPDF = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/reports/summary/pdf", {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: "blob",
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `Bao_cao_tong_hop_${new Date().toLocaleDateString()}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error("Export PDF failed", err);
+      alert("Xuất PDF thất bại.");
+    }
+  };
+
   const handleExport = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/reports/export", {
+      const response = await axios.get("http://localhost:8080/api/reports/summary/excel", {
         headers: { Authorization: `Bearer ${token}` },
         responseType: "blob",
       });
@@ -54,7 +73,8 @@ const PrincipalReports = () => {
       link.click();
       link.remove();
     } catch (err) {
-      console.error("Export failed", err);
+      console.error("Export Excel failed", err);
+      alert("Xuất Excel thất bại.");
     }
   };
 
@@ -84,13 +104,22 @@ const PrincipalReports = () => {
           </h1>
           <p className="text-slate-500 mt-1 font-bold text-sm">Dữ liệu thống kê nhân sự đồng bộ từ các khoa và phòng ban</p>
         </div>
-        <button
-          onClick={handleExport}
-          className="flex items-center gap-2 bg-[#009FE3] hover:bg-[#009FE3] text-white px-5 py-2.5 rounded-xl shadow-md transition-all font-semibold"
-        >
-          <Download className="w-5 h-5" />
-          Tải báo cáo Excel
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handleExportPDF}
+            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-xl shadow-md transition-all font-semibold"
+          >
+            <Download className="w-5 h-5" />
+            Xuất PDF
+          </button>
+          <button
+            onClick={handleExport}
+            className="flex items-center gap-2 bg-[#009FE3] hover:bg-[#0098da] text-white px-5 py-2.5 rounded-xl shadow-md transition-all font-semibold"
+          >
+            <Download className="w-5 h-5" />
+            Xuất Excel
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

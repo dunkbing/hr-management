@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search, Eye, Users, FileSpreadsheet, Loader2 } from "lucide-react";
+import { Search, Eye, Users, FileSpreadsheet, FileText, Loader2 } from "lucide-react";
 import axios from "axios";
 
 const PrincipalFacultyManagement = () => {
@@ -34,6 +34,46 @@ const PrincipalFacultyManagement = () => {
       console.error("Failed to fetch faculties", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleExportExcel = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get("http://localhost:8080/api/reports/faculties/export", {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: "blob"
+      });
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "danh_sach_khoa.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error("Export Excel failed", err);
+      alert("Xuất Excel thất bại.");
+    }
+  };
+
+  const handleExportPDF = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get("http://localhost:8080/api/reports/faculties/export-pdf", {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: "blob"
+      });
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "danh_sach_khoa.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error("Export PDF failed", err);
+      alert("Xuất PDF thất bại.");
     }
   };
 
@@ -97,10 +137,24 @@ const PrincipalFacultyManagement = () => {
         <div className="flex justify-between items-center mb-6">
           <h2 className="font-black text-lg text-slate-800 uppercase tracking-wider">Danh sách khoa ({filteredFaculties.length})</h2>
 
-          <button className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 opacity-50 cursor-not-allowed">
-            <FileSpreadsheet size={18} />
-            Xuất báo cáo
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={handleExportPDF}
+              className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-xl 
+                         hover:bg-red-700 transition-all shadow-sm hover:shadow-md font-bold text-xs uppercase"
+            >
+              <FileText size={16} />
+              Xuất PDF
+            </button>
+            <button
+              onClick={handleExportExcel}
+              className="flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-xl 
+                         hover:bg-emerald-700 transition-all shadow-sm hover:shadow-md font-bold text-xs uppercase"
+            >
+              <FileSpreadsheet size={16} />
+              Xuất Excel
+            </button>
+          </div>
         </div>
 
         <table className="w-full text-sm">
@@ -121,15 +175,15 @@ const PrincipalFacultyManagement = () => {
                 <td className="p-4 font-black text-[#009FE3] uppercase tracking-wider">{f.code || "---"}</td>
                 <td className="p-4 font-black text-slate-900">{f.name}</td>
                 <td className="p-4 text-slate-700 font-bold">{f.deanName || "---"}</td>
-                <td className="p-4 font-black text-slate-800">{f.memberCount || 0}</td>
+                <td className="p-4 font-black text-slate-800">{f.totalStaff || 0}</td>
                 <td className="p-4">
                   <span
-                    className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${!f.isDeleted
+                    className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${f.status === 'ACTIVE'
                       ? "bg-emerald-100 text-emerald-700"
                       : "bg-rose-100 text-rose-700"
                       }`}
                   >
-                    {!f.isDeleted ? "Đang hoạt động" : "Tạm dừng"}
+                    {f.status === 'ACTIVE' ? "Đang hoạt động" : "Tạm dừng"}
                   </span>
                 </td>
 
@@ -201,11 +255,11 @@ const PrincipalFacultyManagement = () => {
               <p><strong>Trưởng khoa:</strong> {quickViewData.deanName || "Chưa có"}</p>
               <p><strong>Mô tả:</strong> {quickViewData.description || "Không có"}</p>
               <p><strong>Ngày thành lập:</strong> {quickViewData.establishedDate || "---"}</p>
-              <p><strong>Số lượng nhân sự:</strong> {quickViewData.memberCount || 0}</p>
+              <p><strong>Số lượng nhân sự:</strong> {quickViewData.totalStaff || 0}</p>
               <p>
                 <strong>Trạng thái:</strong>{" "}
-                <span className={!quickViewData.isDeleted ? "text-green-600 font-bold" : "text-red-500 font-bold"}>
-                  {!quickViewData.isDeleted ? "Đang hoạt động" : "Tạm dừng"}
+                <span className={quickViewData.status === 'ACTIVE' ? "text-green-600 font-bold" : "text-red-500 font-bold"}>
+                  {quickViewData.status === 'ACTIVE' ? "Đang hoạt động" : "Tạm dừng"}
                 </span>
               </p>
             </div>

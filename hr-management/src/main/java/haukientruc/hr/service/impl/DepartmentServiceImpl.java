@@ -72,6 +72,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             res.setManagerId(d.getManager().getUserId());
             res.setManagerName(d.getManager().getUsername());
         }
+        res.setDescription(d.getDescription());
         res.setTotalStaff(userRepository.findByDepartment_Id(d.getId()).size());
         // Flat list không cần children recursive
         return res;
@@ -91,6 +92,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             res.setManagerId(d.getManager().getUserId());
             res.setManagerName(d.getManager().getUsername());
         }
+        res.setDescription(d.getDescription());
         res.setTotalStaff(userRepository.findByDepartment_Id(d.getId()).size());
 
         List<DepartmentTreeResponse> children = new ArrayList<>();

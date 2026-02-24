@@ -104,6 +104,8 @@ const AddEmployee = () => {
           nationality: u.nationality || "",
           educationLevel: u.educationLevel || "",
           workingStatus: u.workingStatus || "Đang làm việc",
+          avatar: u.avatar || "",
+          officialPhoto: u.officialPhoto || "",
         });
 
         setRoleId(u.roleId || "");
@@ -204,6 +206,80 @@ const AddEmployee = () => {
         onSubmit={handleSubmit}
         className="bg-white shadow-xl shadow-gray-200/50 rounded-2xl p-8 space-y-8 max-w-4xl mx-auto border border-gray-100"
       >
+        {/* --- Personnel Photo Upload (Official) --- */}
+        <div className="flex flex-col items-center pb-8 border-b border-gray-50">
+          <div className="relative group">
+            <div className="w-32 h-32 rounded-3xl bg-slate-100 overflow-hidden border-4 border-white shadow-xl flex items-center justify-center">
+              {form.officialPhoto ? (
+                <img src={form.officialPhoto} alt="Personnel Photo" className="w-full h-full object-cover" />
+              ) : (
+                <div className="text-slate-300 flex flex-col items-center">
+                  <FaUserPlus size={40} />
+                  <span className="text-[10px] font-black uppercase tracking-widest mt-2">No Photo</span>
+                </div>
+              )}
+              {form.uploadingPhoto && (
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
+            </div>
+            {isEdit && (
+              <label className="absolute -bottom-2 -right-2 p-2.5 bg-[#009FE3] text-white rounded-2xl shadow-lg border-2 border-white cursor-pointer hover:bg-[#008bc7] transition-all active:scale-90">
+                <FaUserEdit size={14} />
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const uploadData = new FormData();
+                    uploadData.append("file", file);
+
+                    setForm(prev => ({ ...prev, uploadingPhoto: true }));
+                    try {
+                      const res = await axios.post(`${API_BASE_URL}/users/${id}/official-photo`, uploadData, {
+                        headers: {
+                          Authorization: `Bearer ${localStorage.getItem("token")}`,
+                          "Content-Type": "multipart/form-data"
+                        }
+                      });
+                      setForm(prev => ({ ...prev, officialPhoto: res.data.officialPhoto, uploadingPhoto: false }));
+                      alert("✅ Cập nhật hình ảnh nhân sự thành công!");
+                    } catch (err) {
+                      console.error(err);
+                      alert("❌ Lỗi khi tải ảnh lên");
+                      setForm(prev => ({ ...prev, uploadingPhoto: false }));
+                    }
+                  }}
+                />
+              </label>
+            )}
+            {!isEdit && (
+              <label className="absolute -bottom-2 -right-2 p-2.5 bg-emerald-500 text-white rounded-2xl shadow-lg border-2 border-white cursor-pointer hover:bg-emerald-600 transition-all active:scale-90">
+                <FaUserPlus size={14} />
+                <input
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setForm(prev => ({ ...prev, officialPhoto: reader.result }));
+                    };
+                    reader.readAsDataURL(file);
+                  }}
+                />
+              </label>
+            )}
+          </div>
+          <p className="mt-4 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Hình ảnh hồ sơ nhân sự (Chính thức)</p>
+        </div>
+
         {/* --- Phần 1: Đơn vị & Chức trách --- */}
         <div>
           <h3 className="text-lg font-black text-slate-900 mb-6 flex items-center gap-2 uppercase tracking-wide">

@@ -17,6 +17,19 @@ const Header = ({ onToggleSidebar, collapsed }) => {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  // Xác định URL dashboard dựa trên role
+  const getDashboardUrl = () => {
+    if (role === "hieutruong" || role === "hieu_truong") {
+      return "/principal/dashboard";
+    } else if (role === "truongkhoa" || role === "truong_don_vi") {
+      return "/faculty/dashboard";
+    } else if (role === "giangvien" || role === "nhan_su") {
+      return "/lecturer/dashboard";
+    }
+    return "/dashboard"; // Default to admin dashboard
+  };
 
   useEffect(() => {
     fetchUser();
@@ -42,6 +55,9 @@ const Header = ({ onToggleSidebar, collapsed }) => {
       clearInterval(interval);
       window.removeEventListener("userUpdated", handleUpdate);
       document.removeEventListener("mousedown", handleClickOutside);
+      // Clean up any stuck states
+      setMenuOpen(false);
+      setNotiOpen(false);
     };
   }, []);
 
@@ -107,7 +123,7 @@ const Header = ({ onToggleSidebar, collapsed }) => {
   };
 
   return (
-    <header className="flex items-center justify-between bg-white px-6 py-4 shadow-sm relative z-30 border-b border-slate-100">
+    <header className="flex items-center justify-between bg-white px-6 py-4 shadow-sm relative z-30 border-b border-slate-100 transition-colors">
       <div className="flex items-center gap-8">
         {/* Toggle Sidebar Button */}
         <button
@@ -119,7 +135,7 @@ const Header = ({ onToggleSidebar, collapsed }) => {
         </button>
 
         {/* Logo & University Title - Unified Blue Branding */}
-        <Link to="/dashboard" className="flex items-center gap-3 group">
+        <Link to={getDashboardUrl()} className="flex items-center gap-3 group">
           <div className="bg-slate-50 p-1.5 rounded-xl shadow-inner group-hover:bg-[#009FE3]/5 transition-colors">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/0/03/Logo_HAU.png"
