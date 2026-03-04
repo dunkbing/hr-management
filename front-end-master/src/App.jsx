@@ -32,6 +32,7 @@ import PrincipalEmployeeDetail from "./pages/PrincipalEmployeeDetail";
 import PrincipalDepartmentManagement from "./pages/PrincipalDepartmentManagement";
 import PrincipalFacultyManagement from "./pages/PrincipalFacultyManagement";
 import PrincipalSettings from "./pages/PrincipalSettings";
+import SignatureVerification from "./pages/SignatureVerification";
 import FacultyEmployeeDetail from "./pages/FacultyEmployeeDetail";
 import FacultyProposal from "./pages/FacultyProposal";
 import FacultyHeadApproval from "./pages/FacultyHeadApproval";
@@ -349,6 +350,14 @@ function App() {
           element={
             <PrincipalLayout>
               <PrincipalSettings />
+            </PrincipalLayout>
+          }
+        />
+        <Route
+          path="/principal/verify-signature"
+          element={
+            <PrincipalLayout>
+              <SignatureVerification />
             </PrincipalLayout>
           }
         />

@@ -23,6 +23,8 @@ public class PersonnelRequestService {
         private final UserService userService;
         private final LuceneService luceneService;
         private final NotificationService notificationService;
+        private final ReportService reportService;
+        private final DigitalSignatureService digitalSignatureService;
 
         public PersonnelRequestDTO createRequest(PersonnelRequestDTO dto) {
                 // Use current user from security context for better security and reliability
@@ -253,6 +255,16 @@ public class PersonnelRequestService {
 
                 request.setStatus(RequestStatus.APPROVED);
                 request.setPrincipalNote(note);
+
+                // Generate and cryptographically sign the PDF
+                try {
+                        byte[] unsignedPdf = reportService.generatePersonnelRequestPdf(request);
+                        byte[] signedPdf = digitalSignatureService.signPdf(unsignedPdf);
+                        request.setSignedPdfData(signedPdf);
+                } catch (Exception e) {
+                        throw new RuntimeException("Failed to generate signed PDF", e);
+                }
+
                 repository.save(request);
                 luceneService.indexPersonnelRequest(request);
 
@@ -323,7 +335,13 @@ public class PersonnelRequestService {
                 dto.setAdminNote(req.getAdminNote());
                 dto.setPrincipalNote(req.getPrincipalNote());
                 dto.setPrincipalSignatureDate(req.getPrincipalSignatureDate()); // Map thời gian ký
+                dto.setHasSignedPdf(req.getSignedPdfData() != null && req.getSignedPdfData().length > 0);
                 return dto;
+        }
+
+        public PersonnelRequest getRequestEntity(Long id) {
+                return repository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Request not found"));
         }
 
         public List<PersonnelRequestDTO> searchRequests(String query) {

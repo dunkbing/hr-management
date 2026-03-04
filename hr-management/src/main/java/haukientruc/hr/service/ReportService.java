@@ -3,6 +3,7 @@ package haukientruc.hr.service;
 import haukientruc.hr.dto.ReportStatsDTO;
 import haukientruc.hr.entity.Department;
 import haukientruc.hr.entity.Faculty;
+import haukientruc.hr.entity.PersonnelRequest;
 import haukientruc.hr.entity.User;
 import haukientruc.hr.repository.DepartmentRepository;
 import haukientruc.hr.repository.FacultyRepository;
@@ -561,6 +562,52 @@ public class ReportService {
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setBackgroundColor(java.awt.Color.LIGHT_GRAY);
             table.addCell(cell);
+        }
+    }
+
+    public byte[] generatePersonnelRequestPdf(PersonnelRequest request) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, out);
+            document.open();
+
+            com.lowagie.text.Font titleFont = getVietnameseFont(18, com.lowagie.text.Font.BOLD);
+            com.lowagie.text.Font sectionFont = getVietnameseFont(14, com.lowagie.text.Font.BOLD);
+            com.lowagie.text.Font normalFont = getVietnameseFont(12, com.lowagie.text.Font.NORMAL);
+
+            Paragraph title = new Paragraph("QUYET DINH PHE DUYET", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+            document.add(new Paragraph(" "));
+
+            document.add(new Paragraph("Tieu de: " + request.getTitle(), sectionFont));
+            document.add(new Paragraph("Loai yeu cau: " + request.getType(), normalFont));
+            document.add(new Paragraph("Nguoi yeu cau: " +
+                    (request.getRequester().getFullName() != null ? request.getRequester().getFullName()
+                            : request.getRequester().getUsername()), normalFont));
+            document.add(new Paragraph("Noi dung: " + request.getContent(), normalFont));
+            document.add(new Paragraph(" "));
+
+            document.add(new Paragraph("Y kien Truong don vi: " +
+                    (request.getFacultyHeadNote() != null ? request.getFacultyHeadNote() : ""), normalFont));
+            document.add(new Paragraph("Y kien Quan tri vien: " +
+                    (request.getAdminNote() != null ? request.getAdminNote() : ""), normalFont));
+            document.add(new Paragraph("Y kien Hieu truong: " +
+                    (request.getPrincipalNote() != null ? request.getPrincipalNote() : ""), normalFont));
+            document.add(new Paragraph(" "));
+
+            if (request.getPrincipalSignatureDate() != null) {
+                document.add(new Paragraph("Ngay ky: " +
+                        request.getPrincipalSignatureDate().format(
+                                java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                        normalFont));
+            }
+
+            document.close();
+            return out.toByteArray();
+        } catch (Exception e) {
+            log.error("Error generating personnel request PDF", e);
+            throw new RuntimeException("Error generating personnel request PDF", e);
         }
     }
 

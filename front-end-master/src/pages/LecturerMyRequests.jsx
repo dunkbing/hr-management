@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ClipboardList, Clock, CheckCircle2, XCircle, Search, Eye, Loader2, Filter, AlertCircle, ChevronDown } from "lucide-react";
+import { ClipboardList, Clock, CheckCircle2, XCircle, Search, Eye, Loader2, Filter, AlertCircle, ChevronDown, Download } from "lucide-react";
 import axiosClient from "../api/axiosClient";
 
 const LecturerMyRequests = () => {
@@ -130,6 +130,29 @@ const LecturerMyRequests = () => {
                                     </div>
 
                                     <div className="flex items-center gap-3 self-end md:self-center">
+                                        {req.hasSignedPdf && (
+                                            <button
+                                                onClick={() => {
+                                                    const token = localStorage.getItem("token");
+                                                    fetch(`http://localhost:8080/api/personnel-requests/${req.id}/signed-pdf`, {
+                                                        headers: { Authorization: `Bearer ${token}` }
+                                                    })
+                                                        .then(res => res.blob())
+                                                        .then(blob => {
+                                                            const url = window.URL.createObjectURL(blob);
+                                                            const a = document.createElement("a");
+                                                            a.href = url;
+                                                            a.download = `quyet_dinh_${req.id}.pdf`;
+                                                            a.click();
+                                                            window.URL.revokeObjectURL(url);
+                                                        });
+                                                }}
+                                                className="flex items-center gap-2 px-6 py-3 bg-emerald-50 hover:bg-emerald-600 text-emerald-600 hover:text-white rounded-xl font-bold text-xs uppercase tracking-widest transition-all hover:shadow-lg active:scale-95"
+                                            >
+                                                <Download size={16} />
+                                                PDF
+                                            </button>
+                                        )}
                                         <button
                                             onClick={() => setSelectedReq(req)}
                                             className="flex items-center gap-2 px-6 py-3 bg-slate-50 hover:bg-[#009FE3] text-gray-500 hover:text-white rounded-xl font-bold text-xs uppercase tracking-widest transition-all hover:shadow-lg active:scale-95"

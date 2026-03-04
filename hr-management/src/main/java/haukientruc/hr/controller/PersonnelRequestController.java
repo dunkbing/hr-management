@@ -1,10 +1,16 @@
 package haukientruc.hr.controller;
 
 import haukientruc.hr.dto.PersonnelRequestDTO;
+import haukientruc.hr.dto.SignatureVerificationResult;
+import haukientruc.hr.entity.PersonnelRequest;
+import haukientruc.hr.service.DigitalSignatureService;
 import haukientruc.hr.service.PersonnelRequestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +22,7 @@ import java.util.Map;
 public class PersonnelRequestController {
 
     private final PersonnelRequestService service;
+    private final DigitalSignatureService digitalSignatureService;
 
     @PostMapping
     public ResponseEntity<PersonnelRequestDTO> create(@RequestBody PersonnelRequestDTO dto) {
@@ -70,5 +77,25 @@ public class PersonnelRequestController {
     @GetMapping("/search")
     public ResponseEntity<List<PersonnelRequestDTO>> search(@RequestParam("q") String query) {
         return ResponseEntity.ok(service.searchRequests(query));
+    }
+
+    @GetMapping("/{id}/signed-pdf")
+    public ResponseEntity<byte[]> downloadSignedPdf(@PathVariable Long id) {
+        PersonnelRequest request = service.getRequestEntity(id);
+        if (request.getSignedPdfData() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=quyet_dinh_" + id + ".pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(request.getSignedPdfData());
+    }
+
+    @PostMapping("/verify-signature")
+    public ResponseEntity<SignatureVerificationResult> verifySignature(
+            @RequestParam("file") MultipartFile file) throws Exception {
+        byte[] pdfBytes = file.getBytes();
+        SignatureVerificationResult result = digitalSignatureService.verifyPdf(pdfBytes);
+        return ResponseEntity.ok(result);
     }
 }

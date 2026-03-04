@@ -8,6 +8,7 @@ import {
   CheckCircle,
   BarChart2,
   Settings,
+  ShieldCheck,
 } from "lucide-react";
 
 // ⭐ Menu theo đúng thứ tự yêu cầu
@@ -17,6 +18,7 @@ const principalMenu = [
   { label: "Quản lý phòng ban", path: "/principal/departments", icon: <Building2 size={18} />, iconColor: "#F59E0B" },
   { label: "Quản lý khoa", path: "/principal/faculties", icon: <School size={18} />, iconColor: "#8B5CF6" },
   { label: "Phê duyệt", path: "/principal/approvals", icon: <CheckCircle size={18} />, iconColor: "#6366F1" },
+  { label: "Xac minh chu ky", path: "/principal/verify-signature", icon: <ShieldCheck size={18} />, iconColor: "#059669" },
   { label: "Báo cáo - Thống kê", path: "/principal/reports", icon: <BarChart2 size={18} />, iconColor: "#64748B" },
   { label: "Cài đặt", path: "/principal/settings", icon: <Settings size={18} />, iconColor: "#4B5563" },
 ];
