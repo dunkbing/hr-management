@@ -119,21 +119,25 @@ public class DigitalSignatureService {
         signature.setSignDate(Calendar.getInstance());
 
         SignatureInterface signatureInterface = content -> {
-            CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
-            ContentSigner signer = new JcaContentSignerBuilder("SHA256withRSA")
-                    .setProvider("BC")
-                    .build(privateKey);
-            gen.addSignerInfoGenerator(
-                    new JcaSignerInfoGeneratorBuilder(
-                            new JcaDigestCalculatorProviderBuilder()
-                                    .setProvider("BC")
-                                    .build())
-                            .build(signer, (X509Certificate) certChain[0]));
-            gen.addCertificates(new JcaCertStore(Arrays.asList(certChain)));
+            try {
+                CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
+                ContentSigner signer = new JcaContentSignerBuilder("SHA256withRSA")
+                        .setProvider("BC")
+                        .build(privateKey);
+                gen.addSignerInfoGenerator(
+                        new JcaSignerInfoGeneratorBuilder(
+                                new JcaDigestCalculatorProviderBuilder()
+                                        .setProvider("BC")
+                                        .build())
+                                .build(signer, (X509Certificate) certChain[0]));
+                gen.addCertificates(new JcaCertStore(Arrays.asList(certChain)));
 
-            CMSTypedData cmsData = new CMSProcessableByteArray(content.readAllBytes());
-            CMSSignedData signedData = gen.generate(cmsData, false);
-            return signedData.getEncoded();
+                CMSTypedData cmsData = new CMSProcessableByteArray(content.readAllBytes());
+                CMSSignedData signedData = gen.generate(cmsData, false);
+                return signedData.getEncoded();
+            } catch (Exception e) {
+                throw new IOException("Failed to create CMS signature", e);
+            }
         };
 
         document.addSignature(signature, signatureInterface);

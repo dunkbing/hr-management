@@ -51,10 +51,10 @@ public class User {
     @JoinColumn(name = "position_id")
     private Position position;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Column(columnDefinition = "TEXT")
     private String avatar;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Column(columnDefinition = "TEXT")
     private String officialPhoto;
 
     @Column(columnDefinition = "TEXT")

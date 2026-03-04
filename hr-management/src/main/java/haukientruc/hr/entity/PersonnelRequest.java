@@ -48,8 +48,7 @@ public class PersonnelRequest {
 
     private LocalDateTime principalSignatureDate; // Thời gian Hiệu trưởng ký duyệt
 
-    @Lob
-    @Column(name = "signed_pdf_data")
+    @Column(name = "signed_pdf_data", columnDefinition = "BYTEA")
     private byte[] signedPdfData;
 
     @PrePersist
