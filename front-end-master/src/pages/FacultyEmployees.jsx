@@ -3,14 +3,49 @@ import { Search, Filter, FileSpreadsheet, Eye, Grid, List as ListIcon, User, Mai
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+const roleMapping = {
+  "Faculty Head": "Trưởng khoa",
+  "Lecturer": "Giảng viên",
+  "Dean": "Trưởng khoa",
+  "Vice Dean": "Phó khoa",
+  "Teacher": "Giảng viên",
+  "Professor": "Giáo sư",
+  "Associate Professor": "Phó giáo sư",
+  "Doctor": "Tiến sĩ",
+  "Master": "Thạc sĩ",
+  "Department Head": "Trưởng bộ môn",
+  "Vice Principal": "Phó hiệu trưởng",
+  "Principal": "Hiệu trưởng",
+};
+
+const mapFacultyUser = (u) => {
+  const roleNameRaw = u.positionName || u.roleName || "Chưa có chức vụ";
+  const roleNameVietnamese = roleMapping[roleNameRaw] || roleNameRaw;
+
+  return {
+    id: u.userId,
+    name: u.fullName || u.username,
+    role: roleNameVietnamese,
+    department: u.departmentName || "Trực thuộc Khoa",
+    facultyId: u.facultyId,
+    status: u.isActive ? "Đang làm việc" : "Đã nghỉ",
+    email: u.email || "---",
+    phone: u.phone || "---",
+    avatar: u.avatar || `https://ui-avatars.com/api/?name=${u.fullName || u.username}&background=random`,
+    createdAt: u.createdAt
+  };
+};
+
 const FacultyEmployees = () => {
   const [employees, setEmployees] = useState([]);
+  const [displayEmployees, setDisplayEmployees] = useState([]);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [departmentFilter, setDepartmentFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState("grid"); // "grid" | "list"
+  const [myFacultyId, setMyFacultyId] = useState(null);
 
   useEffect(() => {
     fetchEmployees();
@@ -22,40 +57,15 @@ const FacultyEmployees = () => {
       const res = await axios.get("http://localhost:8080/api/users/my-faculty", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      // Role mapping from English to Vietnamese
-      const roleMapping = {
-        "Faculty Head": "Trưởng khoa",
-        "Lecturer": "Giảng viên",
-        "Dean": "Trưởng khoa",
-        "Vice Dean": "Phó khoa",
-        "Teacher": "Giảng viên",
-        "Professor": "Giáo sư",
-        "Associate Professor": "Phó giáo sư",
-        "Doctor": "Tiến sĩ",
-        "Master": "Thạc sĩ",
-        "Department Head": "Trưởng bộ môn",
-        "Vice Principal": "Phó hiệu trưởng",
-        "Principal": "Hiệu trưởng",
-      };
 
-      // Map backend fields to frontend usage
-      const mapped = res.data.map((u) => {
-        const roleNameRaw = u.positionName || u.roleName || "Chưa có chức vụ";
-        const roleNameVietnamese = roleMapping[roleNameRaw] || roleNameRaw;
-
-        return {
-          id: u.userId,
-          name: u.fullName || u.username,
-          role: roleNameVietnamese,
-          department: u.departmentName || "Trực thuộc Khoa",
-          status: u.isActive ? "Đang làm việc" : "Đã nghỉ",
-          email: u.email || "---",
-          phone: u.phone || "---",
-          avatar: u.avatar || `https://ui-avatars.com/api/?name=${u.fullName || u.username}&background=random`,
-          createdAt: u.createdAt
-        };
-      });
+      const mapped = res.data.map(mapFacultyUser);
       setEmployees(mapped);
+      setDisplayEmployees(mapped);
+
+      // Determine faculty ID from the fetched users
+      if (res.data.length > 0 && res.data[0].facultyId) {
+        setMyFacultyId(res.data[0].facultyId);
+      }
     } catch (error) {
       console.error("Failed to fetch faculty employees:", error);
     } finally {
@@ -63,19 +73,45 @@ const FacultyEmployees = () => {
     }
   };
 
-  const filteredEmployees = employees.filter((emp) => {
-    const matchSearch =
-      emp.name.toLowerCase().includes(search.toLowerCase()) ||
-      emp.email.toLowerCase().includes(search.toLowerCase());
+  // Server-side search with debounce
+  useEffect(() => {
+    if (search.trim() === "") {
+      setDisplayEmployees(employees);
+      return;
+    }
 
+    const delayDebounceFn = setTimeout(async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get(`http://localhost:8080/api/users/search?q=${encodeURIComponent(search)}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        // Filter search results to only include users from this faculty
+        const mapped = res.data.map(mapFacultyUser);
+        const facultyFiltered = myFacultyId
+          ? mapped.filter(u => u.facultyId === myFacultyId)
+          : mapped;
+        setDisplayEmployees(facultyFiltered);
+      } catch (err) {
+        console.error("Search failed", err);
+        // Fallback to client-side filtering
+        setDisplayEmployees(employees.filter(emp =>
+          emp.name.toLowerCase().includes(search.toLowerCase()) ||
+          emp.email.toLowerCase().includes(search.toLowerCase())
+        ));
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [search, employees, myFacultyId]);
+
+  const filteredEmployees = displayEmployees.filter((emp) => {
     const matchRole = roleFilter === "all" ? true : emp.role === roleFilter;
     const matchDepartment =
       departmentFilter === "all" ? true : emp.department === departmentFilter;
-
-    // Simple status filter mapping
     const matchStatus = statusFilter === "all" ? true : emp.status === statusFilter;
 
-    return matchSearch && matchRole && matchDepartment && matchStatus;
+    return matchRole && matchDepartment && matchStatus;
   });
 
   // Calculate unique departments for filter

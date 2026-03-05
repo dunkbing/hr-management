@@ -90,6 +90,20 @@ const PrincipalEmployeeList = () => {
   const [departmentOptions, setDepartmentOptions] = useState(["Tất cả"]);
   const [roleOptions, setRoleOptions] = useState(["Tất cả"]);
 
+  const [allEmployees, setAllEmployees] = useState([]);
+
+  const mapUser = (u) => ({
+    id: u.userId,
+    name: u.fullName || u.username,
+    email: u.email || "---",
+    phone: u.phone,
+    avatar: u.officialPhoto || u.avatar,
+    officialPhoto: u.officialPhoto,
+    department: u.facultyName || u.departmentName || "Khối Phòng Ban",
+    role: u.positionName || u.roleName || "Nhân viên",
+    status: u.isActive ? "Đang làm việc" : "Đã nghỉ"
+  });
+
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -102,26 +116,10 @@ const PrincipalEmployeeList = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      const rawData = res.data;
-
-      // Map data
-      const mapped = rawData.map(u => ({
-        id: u.userId,
-        name: u.fullName || u.username,
-        email: u.email || "---",
-        phone: u.phone,
-        avatar: u.officialPhoto || u.avatar,
-        officialPhoto: u.officialPhoto,
-        // Prioritize Faculty Name, then Department Name, then "Chưa phân công"
-        department: u.facultyName || u.departmentName || "Khối Phòng Ban", // Or logic based on roles
-        // Role logic
-        role: u.positionName || u.roleName || "Nhân viên",
-        status: u.isActive ? "Đang làm việc" : "Đã nghỉ"
-      }));
-
+      const mapped = res.data.map(mapUser);
+      setAllEmployees(mapped);
       setEmployees(mapped);
 
-      // Extract unique options for filters
       const depts = new Set(["Tất cả"]);
       const roles = new Set(["Tất cả"]);
       mapped.forEach(e => {
@@ -140,14 +138,39 @@ const PrincipalEmployeeList = () => {
     }
   };
 
-  // Filter Logic
+  // Server-side search with debounce
+  useEffect(() => {
+    if (search.trim() === "") {
+      setEmployees(allEmployees);
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get(`http://localhost:8080/api/users/search?q=${encodeURIComponent(search)}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setEmployees(res.data.map(mapUser));
+      } catch (err) {
+        console.error("Search failed", err);
+        // Fallback to client-side filtering
+        setEmployees(allEmployees.filter(e =>
+          e.name.toLowerCase().includes(search.toLowerCase()) ||
+          e.email.toLowerCase().includes(search.toLowerCase())
+        ));
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [search, allEmployees]);
+
+  // Filter Logic (applied on top of search results)
   const filteredEmployees = employees.filter((e) => {
-    const matchSearch = e.name.toLowerCase().includes(search.toLowerCase()) ||
-      e.email.toLowerCase().includes(search.toLowerCase());
     const matchDept = filterDepartment === "Tất cả" || e.department === filterDepartment;
     const matchRole = filterRole === "Tất cả" || e.role === filterRole;
 
-    return matchSearch && matchDept && matchRole;
+    return matchDept && matchRole;
   });
 
   // Pagination Logic
