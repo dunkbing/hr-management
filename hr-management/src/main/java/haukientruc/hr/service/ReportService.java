@@ -597,10 +597,34 @@ public class ReportService {
             document.add(new Paragraph(" "));
 
             if (request.getPrincipalSignatureDate() != null) {
-                document.add(new Paragraph("Ngay ky: " +
+                document.add(new Paragraph(" "));
+
+                // Right-aligned signature block
+                Paragraph signLabel = new Paragraph("Hieu truong ky", sectionFont);
+                signLabel.setAlignment(Element.ALIGN_RIGHT);
+                document.add(signLabel);
+
+                // Embed principal's signature image if available
+                if (request.getPrincipalSignature() != null && request.getPrincipalSignature().startsWith("data:image")) {
+                    try {
+                        String base64Data = request.getPrincipalSignature()
+                                .substring(request.getPrincipalSignature().indexOf(",") + 1);
+                        byte[] imageBytes = java.util.Base64.getDecoder().decode(base64Data);
+                        com.lowagie.text.Image sigImage = com.lowagie.text.Image.getInstance(imageBytes);
+                        sigImage.scaleToFit(150, 80);
+                        sigImage.setAlignment(Element.ALIGN_RIGHT);
+                        document.add(sigImage);
+                    } catch (Exception e) {
+                        log.warn("Could not embed signature image: {}", e.getMessage());
+                    }
+                }
+
+                Paragraph dateLabel = new Paragraph("Ngay ky: " +
                         request.getPrincipalSignatureDate().format(
                                 java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-                        normalFont));
+                        normalFont);
+                dateLabel.setAlignment(Element.ALIGN_RIGHT);
+                document.add(dateLabel);
             }
 
             document.close();
