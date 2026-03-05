@@ -1,12 +1,14 @@
 package haukientruc.hr.service;
 
 import haukientruc.hr.dto.PersonnelRequestDTO;
+import haukientruc.hr.dto.UserDTO;
 import haukientruc.hr.entity.PersonnelRequest;
 import haukientruc.hr.entity.RequestStatus;
 import haukientruc.hr.entity.User;
 import haukientruc.hr.repository.PersonnelRequestRepository;
 import haukientruc.hr.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PersonnelRequestService {
 
         private final PersonnelRequestRepository repository;
@@ -25,68 +28,96 @@ public class PersonnelRequestService {
         private final NotificationService notificationService;
 
         public PersonnelRequestDTO createRequest(PersonnelRequestDTO dto) {
-                // Use current user from security context for better security and reliability
-                haukientruc.hr.dto.UserDTO currentUserDto = userService.getCurrentUser();
+                UserDTO currentUserDto = userService.getCurrentUser();
                 User requester = userRepository.findById(currentUserDto.getUserId())
                                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+                // Determine initial status based on role
+                RequestStatus initialStatus = RequestStatus.PENDING_FACULTY_HEAD;
+                String roleCode = requester.getRole() != null ? requester.getRole().getRoleCode() : "";
+
+                log.info("Creating request for user: {} with role: {}", requester.getUsername(), roleCode);
+
+                if ("truong_don_vi".equalsIgnoreCase(roleCode) || "truongkhoa".equalsIgnoreCase(roleCode)) {
+                        initialStatus = RequestStatus.PENDING_ADMIN;
+                } else if ("admin".equalsIgnoreCase(roleCode) || "superadmin".equalsIgnoreCase(roleCode)) {
+                        initialStatus = RequestStatus.PENDING_PRINCIPAL;
+                } else if ("hieu_truong".equalsIgnoreCase(roleCode) || "hieutruong".equalsIgnoreCase(roleCode)) {
+                        initialStatus = RequestStatus.APPROVED;
+                }
 
                 PersonnelRequest request = PersonnelRequest.builder()
                                 .requester(requester)
                                 .title(dto.getTitle())
                                 .content(dto.getContent())
                                 .type(dto.getType())
-                                .status(RequestStatus.PENDING_FACULTY_HEAD)
+                                .status(initialStatus)
                                 .build();
 
                 PersonnelRequest saved = repository.save(request);
                 luceneService.indexPersonnelRequest(saved);
 
-                System.out.println("📝 CREATE REQUEST DEBUG:");
-                System.out.println("  Request ID: " + saved.getId());
-                System.out.println("  Title: " + saved.getTitle());
-                System.out.println("  Requester: " + requester.getUsername() + " (ID: " + requester.getUserId() + ")");
-                System.out.println("  Requester Faculty: " + (requester.getFaculty() != null
-                                ? requester.getFaculty().getName() + " (ID: " + requester.getFaculty().getId() + ")"
-                                : "NULL"));
-                System.out.println("  Status: " + saved.getStatus());
-
-                // Send notification to Faculty Head(s)
-                List<User> facultyHeads;
-
-                if (requester.getFaculty() != null) {
-                        // If requester has faculty, send to faculty heads of that faculty
-                        facultyHeads = userRepository.findByRole_RoleCodeAndFaculty_Id(
-                                        "truong_don_vi", requester.getFaculty().getId());
-                        System.out.println("  Found " + facultyHeads.size() + " faculty heads in "
-                                        + requester.getFaculty().getName());
-                } else {
-                        // If requester has NO faculty, send to ALL faculty heads
-                        System.out.println("  ⚠️ Requester has no faculty! Sending notification to ALL faculty heads.");
-                        facultyHeads = userRepository.findByRole_RoleCode("truong_don_vi");
-                        System.out.println("  Found " + facultyHeads.size() + " faculty heads total");
-                }
-                String notifTitle = "📩 Yêu cầu mới từ giảng viên";
-                String notifMessage = String.format(
-                                "Bạn có yêu cầu mới từ %s cần phê duyệt.\n\n" +
-                                                "Tiêu đề: %s\n" +
-                                                "Loại: %s\n" +
-                                                "Nội dung: %s",
-                                requester.getFullName() != null ? requester.getFullName() : requester.getUsername(),
-                                saved.getTitle(),
-                                saved.getType(),
-                                saved.getContent().length() > 100 ? saved.getContent().substring(0, 100) + "..."
-                                                : saved.getContent());
-
-                for (User facultyHead : facultyHeads) {
-                        System.out.println("  📧 Sending notification to: " + facultyHead.getUsername());
-                        notificationService.createNotification(facultyHead, notifTitle, notifMessage);
-                }
-
-                if (facultyHeads.isEmpty()) {
-                        System.out.println("  ⚠️ WARNING: No faculty heads found! No notifications sent.");
+                // Send notifications based on initial status
+                try {
+                        if (initialStatus == RequestStatus.PENDING_FACULTY_HEAD) {
+                                sendNotificationToFacultyHeads(saved, requester);
+                        } else if (initialStatus == RequestStatus.PENDING_ADMIN) {
+                                sendNotificationToAdmins(saved, requester, null);
+                        } else if (initialStatus == RequestStatus.PENDING_PRINCIPAL) {
+                                sendNotificationToPrincipals(saved, requester, null);
+                        }
+                } catch (Exception e) {
+                        log.error("Failed to send initial notifications", e);
                 }
 
                 return convertToDto(saved);
+        }
+
+        private void sendNotificationToFacultyHeads(PersonnelRequest saved, User requester) {
+                List<User> facultyHeads;
+                if (requester.getFaculty() != null) {
+                        facultyHeads = userRepository.findByRole_RoleCodeAndFaculty_Id(
+                                        "truong_don_vi", requester.getFaculty().getId());
+                } else {
+                        facultyHeads = userRepository.findByRole_RoleCode("truong_don_vi");
+                }
+
+                String notifTitle = "📩 Yêu cầu mới từ giảng viên";
+                String notifMessage = String.format("Bạn có yêu cầu mới từ %s cần phê duyệt.\n\nTiêu đề: %s",
+                                requester.getFullName() != null ? requester.getFullName() : requester.getUsername(),
+                                saved.getTitle());
+
+                for (User fh : facultyHeads) {
+                        notificationService.createNotification(fh, notifTitle, notifMessage);
+                }
+        }
+
+        private void sendNotificationToAdmins(PersonnelRequest saved, User requester, String note) {
+                List<User> admins = userRepository.findByRole_RoleCode("admin");
+                String title = "📋 Yêu cầu mới cần thẩm định";
+                String message = String.format("Yêu cầu \"%s\" từ %s cần Admin thẩm định.\n\n" +
+                                "Ghi chú từ cấp trước: %s",
+                                saved.getTitle(),
+                                requester.getFullName() != null ? requester.getFullName() : requester.getUsername(),
+                                note != null && !note.isEmpty() ? note : "Không có ghi chú");
+
+                for (User admin : admins) {
+                        notificationService.createNotification(admin, title, message);
+                }
+        }
+
+        private void sendNotificationToPrincipals(PersonnelRequest saved, User requester, String note) {
+                List<User> principals = userRepository.findByRole_RoleCode("hieu_truong");
+                String title = "🎓 Yêu cầu cần ký duyệt";
+                String message = String.format("Yêu cầu \"%s\" từ %s cần Hiệu trưởng ký duyệt.\n\n" +
+                                "Ghi chú từ Admin: %s",
+                                saved.getTitle(),
+                                requester.getFullName() != null ? requester.getFullName() : requester.getUsername(),
+                                note != null && !note.isEmpty() ? note : "Không có ghi chú");
+
+                for (User principal : principals) {
+                        notificationService.createNotification(principal, title, message);
+                }
         }
 
         public List<PersonnelRequestDTO> getMyRequests(Long userId) {
@@ -100,55 +131,20 @@ public class PersonnelRequestService {
         }
 
         public List<PersonnelRequestDTO> getPendingForFacultyHead() {
-                // Get current user's faculty
-                haukientruc.hr.dto.UserDTO currentUserDto = userService.getCurrentUser();
+                UserDTO currentUserDto = userService.getCurrentUser();
                 User currentUser = userRepository.findById(currentUserDto.getUserId())
                                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-                System.out.println("🔍 DEBUG getPendingForFacultyHead:");
-                System.out.println("  Current User: " + currentUser.getUsername() + " (ID: " + currentUser.getUserId()
-                                + ")");
-                System.out.println("  Current User Faculty: " + (currentUser.getFaculty() != null
-                                ? currentUser.getFaculty().getName() + " (ID: " + currentUser.getFaculty().getId() + ")"
-                                : "NULL"));
-
-                // Get all pending requests for debugging
-                List<PersonnelRequest> allPending = repository.findByStatus(RequestStatus.PENDING_FACULTY_HEAD);
-                System.out.println("  Total PENDING_FACULTY_HEAD requests: " + allPending.size());
-
-                for (PersonnelRequest req : allPending) {
-                        System.out.println("    - Request ID: " + req.getId() +
-                                        ", Title: " + req.getTitle() +
-                                        ", Requester: " + req.getRequester().getUsername() +
-                                        ", Requester Faculty: "
-                                        + (req.getRequester().getFaculty() != null
-                                                        ? req.getRequester().getFaculty().getName() + " (ID: "
-                                                                        + req.getRequester().getFaculty().getId() + ")"
-                                                        : "NULL"));
-                }
-
-                // Filter by faculty if user has one
                 if (currentUser.getFaculty() != null) {
                         Long facultyId = currentUser.getFaculty().getId();
-
-                        // Show requests from same faculty OR requests with no faculty
-                        List<PersonnelRequest> filtered = repository.findByStatus(RequestStatus.PENDING_FACULTY_HEAD)
+                        return repository.findByStatus(RequestStatus.PENDING_FACULTY_HEAD)
                                         .stream()
                                         .filter(req -> req.getRequester().getFaculty() == null ||
                                                         req.getRequester().getFaculty().getId().equals(facultyId))
-                                        .collect(Collectors.toList());
-
-                        System.out.println("  Filtered requests for faculty " + currentUser.getFaculty().getName()
-                                        + ": " + filtered.size());
-                        System.out.println("  (Includes requests with no faculty assignment)");
-
-                        return filtered.stream()
                                         .map(this::convertToDto)
                                         .collect(Collectors.toList());
                 }
 
-                // If faculty head has no faculty, return all
-                System.out.println("  ⚠️ Faculty Head has no faculty assigned! Returning ALL requests.");
                 return repository.findByStatus(RequestStatus.PENDING_FACULTY_HEAD).stream()
                                 .map(this::convertToDto)
                                 .collect(Collectors.toList());
@@ -186,21 +182,10 @@ public class PersonnelRequestService {
                 notificationService.createNotification(request.getRequester(), title, message);
 
                 // Send notification to Admin(s)
-                List<User> admins = userRepository.findByRole_RoleCode("admin");
-                String adminNotifTitle = "📋 Yêu cầu mới cần thẩm định";
-                String adminNotifMessage = String.format(
-                                "Có yêu cầu \"%s\" từ %s đã được Trưởng đơn vị phê duyệt và cần Admin thẩm định.\n\n"
-                                                +
-                                                "Loại: %s\n" +
-                                                "Ghi chú từ Trưởng đơn vị: %s",
-                                request.getTitle(),
-                                request.getRequester().getFullName() != null ? request.getRequester().getFullName()
-                                                : request.getRequester().getUsername(),
-                                request.getType(),
-                                note != null && !note.isEmpty() ? note : "Không có ghi chú");
-
-                for (User admin : admins) {
-                        notificationService.createNotification(admin, adminNotifTitle, adminNotifMessage);
+                try {
+                        sendNotificationToAdmins(request, request.getRequester(), note);
+                } catch (Exception e) {
+                        log.error("Failed to notify admins", e);
                 }
         }
 
@@ -224,22 +209,10 @@ public class PersonnelRequestService {
                 notificationService.createNotification(request.getRequester(), title, message);
 
                 // Send notification to Principal(s)
-                List<User> principals = userRepository.findByRole_RoleCode("hieu_truong");
-                String principalNotifTitle = "🎓 Yêu cầu cần ký duyệt";
-                String principalNotifMessage = String.format(
-                                "Có yêu cầu \"%s\" từ %s đã được Admin phê duyệt và cần Hiệu trưởng ký duyệt.\n\n"
-                                                +
-                                                "Loại: %s\n" +
-                                                "Ghi chú từ Admin: %s",
-                                request.getTitle(),
-                                request.getRequester().getFullName() != null ? request.getRequester().getFullName()
-                                                : request.getRequester().getUsername(),
-                                request.getType(),
-                                note != null && !note.isEmpty() ? note : "Không có ghi chú");
-
-                for (User principal : principals) {
-                        notificationService.createNotification(principal, principalNotifTitle,
-                                        principalNotifMessage);
+                try {
+                        sendNotificationToPrincipals(request, request.getRequester(), note);
+                } catch (Exception e) {
+                        log.error("Failed to notify principal", e);
                 }
         }
 
@@ -248,7 +221,11 @@ public class PersonnelRequestService {
                 PersonnelRequest request = repository.findById(id)
                                 .orElseThrow(() -> new RuntimeException("Request not found"));
 
-                // 🔏 Tự động gắn thời gian ký duyệt
+                UserDTO currentUserDto = userService.getCurrentUser();
+                User principal = userRepository.findById(currentUserDto.getUserId())
+                                .orElseThrow(() -> new RuntimeException("Principal not found"));
+
+                request.setPrincipalSignature(principal.getDigitalSignature());
                 request.setPrincipalSignatureDate(LocalDateTime.now());
 
                 request.setStatus(RequestStatus.APPROVED);
@@ -274,7 +251,6 @@ public class PersonnelRequestService {
                 request.setStatus(RequestStatus.REJECTED);
 
                 String rejectorName = "";
-                // Set note based on who rejected it
                 switch (rejectedBy.toLowerCase()) {
                         case "faculty_head":
                                 request.setFacultyHeadNote(note);
@@ -322,7 +298,8 @@ public class PersonnelRequestService {
                 dto.setFacultyHeadNote(req.getFacultyHeadNote());
                 dto.setAdminNote(req.getAdminNote());
                 dto.setPrincipalNote(req.getPrincipalNote());
-                dto.setPrincipalSignatureDate(req.getPrincipalSignatureDate()); // Map thời gian ký
+                dto.setPrincipalSignature(req.getPrincipalSignature());
+                dto.setPrincipalSignatureDate(req.getPrincipalSignatureDate());
                 return dto;
         }
 

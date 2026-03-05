@@ -46,6 +46,9 @@ public class PersonnelRequest {
     @Column(columnDefinition = "TEXT")
     private String principalNote;
 
+    @Column(columnDefinition = "TEXT")
+    private String principalSignature; // Lưu trữ hình ảnh chữ ký số tại thời điểm ký
+
     private LocalDateTime principalSignatureDate; // Thời gian Hiệu trưởng ký duyệt
 
     @PrePersist

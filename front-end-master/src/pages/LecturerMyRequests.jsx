@@ -147,8 +147,8 @@ const LecturerMyRequests = () => {
 
             {/* Modal chi tiết */}
             {selectedReq && (
-                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-[3rem] w-full max-w-2xl shadow-2xl overflow-hidden animate-in zoom-in duration-300 relative border border-white/20">
+                <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-[3rem] w-full max-w-4xl shadow-2xl overflow-hidden animate-in zoom-in duration-300 flex flex-col max-h-[90vh] relative border border-white/20">
                         <div className={`p-8 md:p-12 ${getStatusInfo(selectedReq.status).color} bg-opacity-10 border-b border-white`}>
                             <div className="flex justify-between items-start">
                                 <div className="space-y-2">
@@ -172,7 +172,8 @@ const LecturerMyRequests = () => {
                             </div>
                         </div>
 
-                        <div className="p-8 md:p-12 space-y-8 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                        {/* Scrollable Content */}
+                        <div className="p-8 md:p-12 space-y-12 overflow-y-auto flex-1 custom-scrollbar">
                             <div className="space-y-3">
                                 <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Nội dung đề xuất</label>
                                 <div className="bg-slate-50 p-8 rounded-[2rem] text-gray-700 leading-relaxed italic border border-slate-100 font-medium whitespace-pre-wrap">
@@ -200,6 +201,22 @@ const LecturerMyRequests = () => {
                                     </div>
                                 </div>
                             </div>
+
+                            {selectedReq.status === "APPROVED" && selectedReq.principalSignature && (
+                                <div className="pt-6 border-t border-slate-100">
+                                    <div className="flex flex-col items-center justify-center p-8 bg-slate-50/50 rounded-[2rem] border border-dashed border-slate-200">
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Chữ ký xác nhận của Hiệu trưởng</p>
+                                        <img
+                                            src={selectedReq.principalSignature}
+                                            alt="Principal Signature"
+                                            className="max-h-32 object-contain mix-blend-multiply"
+                                        />
+                                        <p className="text-[10px] font-bold text-slate-300 uppercase mt-4">
+                                            Ký ngày: {new Date(selectedReq.principalSignatureDate).toLocaleString()}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         <div className="p-8 bg-slate-50/50 border-t border-slate-100 flex justify-end">
