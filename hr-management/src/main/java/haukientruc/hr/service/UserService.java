@@ -749,7 +749,7 @@ public class UserService {
         return convertToDto(saved);
     }
 
-    @jakarta.annotation.PostConstruct
+    @org.springframework.context.event.EventListener(org.springframework.boot.context.event.ApplicationReadyEvent.class)
     public void reindex() {
         List<User> all = userRepository.findAll();
         for (User u : all) {

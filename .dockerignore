@@ -1,0 +1,67 @@
+# flyctl launch added from front-end-master/.gitignore
+# Logs
+front-end-master/**/logs
+front-end-master/**/*.log
+front-end-master/**/npm-debug.log*
+front-end-master/**/yarn-debug.log*
+front-end-master/**/yarn-error.log*
+front-end-master/**/pnpm-debug.log*
+front-end-master/**/lerna-debug.log*
+
+front-end-master/**/node_modules
+front-end-master/**/dist
+front-end-master/**/dist-ssr
+front-end-master/**/*.local
+
+# Editor directories and files
+front-end-master/**/.vscode/*
+!front-end-master/**/.vscode/extensions.json
+front-end-master/**/.idea
+front-end-master/**/.DS_Store
+front-end-master/**/*.suo
+front-end-master/**/*.ntvs*
+front-end-master/**/*.njsproj
+front-end-master/**/*.sln
+front-end-master/**/*.sw?
+
+# flyctl launch added from front-end-master/node_modules/tailwindcss/stubs/.gitignore
+!front-end-master/node_modules/tailwindcss/stubs/**/*
+
+# flyctl launch added from hr-management/.gitignore
+hr-management/**/HELP.md
+hr-management/**/target
+hr-management/**/.mvn/wrapper/maven-wrapper.jar
+!hr-management/**/**/src/main/**/target
+!hr-management/**/**/src/test/**/target
+
+### STS ###
+hr-management/**/.apt_generated
+hr-management/**/.classpath
+hr-management/**/.factorypath
+hr-management/**/.project
+hr-management/**/.settings
+hr-management/**/.springBeans
+hr-management/**/.sts4-cache
+
+### IntelliJ IDEA ###
+hr-management/**/.idea
+hr-management/**/*.iws
+hr-management/**/*.iml
+hr-management/**/*.ipr
+
+### NetBeans ###
+hr-management/nbproject/private
+hr-management/nbbuild
+hr-management/dist
+hr-management/nbdist
+hr-management/.nb-gradle
+hr-management/**/build
+!hr-management/**/**/src/main/**/build
+!hr-management/**/**/src/test/**/build
+
+### VS Code ###
+hr-management/**/.vscode
+
+### Keystore (private keys) ###
+hr-management/**/keystore
+fly.toml
