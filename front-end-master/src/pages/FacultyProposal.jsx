@@ -170,7 +170,7 @@ const FacultyProposals = () => {
       {/* MODAL: DETAIL */}
       {selectedReq && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-[2.5rem] w-full max-w-xl shadow-2xl animate-in zoom-in duration-300 overflow-hidden">
+          <div className="bg-white rounded-[2.5rem] w-full max-w-xl shadow-2xl animate-in zoom-in duration-300 overflow-hidden flex flex-col max-h-[90vh]">
             <div className="p-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
               <div>
                 <span className="text-[10px] font-black text-blue-500 bg-blue-100/50 px-3 py-1 rounded-full uppercase tracking-widest">{selectedReq.type}</span>
@@ -178,7 +178,7 @@ const FacultyProposals = () => {
               </div>
               <button onClick={() => setSelectedReq(null)} className="text-gray-400 hover:text-gray-600"><X size={24} /></button>
             </div>
-            <div className="p-8 space-y-6">
+            <div className="p-8 space-y-6 overflow-y-auto flex-1 custom-scrollbar">
               <div>
                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Nội dung đề xuất</p>
                 <div className="bg-slate-50 p-6 rounded-2xl text-gray-700 italic border border-slate-100">
@@ -197,6 +197,23 @@ const FacultyProposals = () => {
                 </div>
               </div>
 
+              {selectedReq.status === "APPROVED" && selectedReq.principalSignature && (
+                <div className="pt-6 border-t border-slate-100 mt-6">
+                  <div className="flex flex-col items-center justify-center p-6 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Chữ ký Hiệu trưởng</p>
+                    <img
+                      src={selectedReq.principalSignature}
+                      alt="Principal Signature"
+                      className="max-h-24 object-contain mix-blend-multiply"
+                    />
+                    {selectedReq.principalSignatureDate && (
+                      <p className="text-[10px] font-bold text-slate-300 uppercase mt-4">
+                        Ký ngày: {new Date(selectedReq.principalSignatureDate).toLocaleString()}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
               <div className="pt-4 border-t border-slate-50 flex justify-center">
                 <button
                   onClick={() => setSelectedReq(null)}

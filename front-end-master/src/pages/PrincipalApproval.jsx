@@ -166,8 +166,8 @@ const PrincipalApprovalManagement = () => {
       {/* Modal chi tiết cho Hiệu trưởng */}
       {selectedReq && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-[3rem] w-full max-w-2xl shadow-2xl overflow-hidden animate-in zoom-in duration-300">
-            <div className="p-10 bg-gradient-to-br from-emerald-600 to-teal-700 text-white relative">
+          <div className="bg-white rounded-[3rem] w-full max-w-2xl shadow-2xl overflow-hidden animate-in zoom-in duration-300 flex flex-col max-h-[90vh]">
+            <div className="p-10 bg-gradient-to-br from-emerald-600 to-teal-700 text-white relative flex-shrink-0">
               <div className="flex justify-between items-start">
                 <div>
                   <span className="text-[10px] font-black bg-white/20 px-3 py-1 rounded-full uppercase tracking-widest border border-white/20">Cấp 2 - Hiệu trưởng</span>
@@ -180,8 +180,8 @@ const PrincipalApprovalManagement = () => {
               </div>
             </div>
 
-            <div className="p-10 space-y-8">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="p-10 space-y-8 overflow-y-auto flex-1 custom-scrollbar">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                   <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest">Loại yêu cầu</p>
                   <p className="font-bold text-gray-700 mt-1">{selectedReq.type}</p>
@@ -227,7 +227,20 @@ const PrincipalApprovalManagement = () => {
                 />
               </div>
 
-              <div className="flex gap-4 pt-2">
+              {currentUserSignature && (
+                <div className="bg-slate-50 p-6 rounded-3xl border border-dashed border-slate-200">
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 block">Xem trước chữ ký số sẽ áp dụng</label>
+                  <div className="flex justify-center">
+                    <img
+                      src={currentUserSignature}
+                      alt="Signature Preview"
+                      className="max-h-24 object-contain mix-blend-multiply"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-2">
                 <button
                   onClick={() => handleReject(selectedReq.id)}
                   disabled={actionLoading}
@@ -239,7 +252,7 @@ const PrincipalApprovalManagement = () => {
                 <button
                   onClick={() => handleApprove(selectedReq.id)}
                   disabled={actionLoading || !currentUserSignature}
-                  className="flex-3 flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white py-5 rounded-[1.5rem] font-bold shadow-xl shadow-emerald-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-[2] flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white py-5 rounded-[1.5rem] font-bold shadow-xl shadow-emerald-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {actionLoading ? <Loader2 className="animate-spin w-6 h-6" /> : <CheckCircle2 size={24} />}
                   {!currentUserSignature ? '⚠️ Chưa có chữ ký số' : 'Chấp thuận & Ký duyệt 🖋️'}
