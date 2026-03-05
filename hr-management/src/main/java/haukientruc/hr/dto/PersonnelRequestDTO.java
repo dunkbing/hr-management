@@ -18,6 +18,7 @@ public class PersonnelRequestDTO {
     private String facultyHeadNote;
     private String adminNote;
     private String principalNote;
+    private String principalSignature;
     private LocalDateTime principalSignatureDate; // Thời gian Hiệu trưởng ký duyệt
     private boolean hasSignedPdf;
 }

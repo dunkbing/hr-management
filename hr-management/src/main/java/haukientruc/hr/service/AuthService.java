@@ -41,7 +41,7 @@ public class AuthService {
                 log.info("Role validation: requested='{}', actual='{}'", requestedRole, actualRole);
 
                 // Validate role - user must select the correct role for their account
-                boolean roleMatches = requestedRole.equals(actualRole) ||
+                 boolean roleMatches = requestedRole.equals(actualRole) ||
                                 (requestedRole.equals("nhan_su") && actualRole.equals("giangvien")) ||
                                 (requestedRole.equals("giangvien") && actualRole.equals("nhan_su")) ||
                                 (requestedRole.equals("hieu_truong") && actualRole.equals("hieutruong")) ||
